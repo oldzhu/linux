@@ -4,9 +4,9 @@
 #include "../perf.h"
 #include "evlist.h"
 #include "evsel.h"
-#include "parse-options.h"
+#include <subcmd/parse-options.h>
 #include "parse-events.h"
-#include "exec_cmd.h"
+#include <subcmd/exec-cmd.h>
 #include "string.h"
 #include "symbol.h"
 #include "cache.h"
@@ -122,6 +122,10 @@ struct event_symbol event_symbols_sw[PERF_COUNT_SW_MAX] = {
 	},
 	[PERF_COUNT_SW_DUMMY] = {
 		.symbol = "dummy",
+		.alias  = "",
+	},
+	[PERF_COUNT_SW_BPF_OUTPUT] = {
+		.symbol = "bpf-output",
 		.alias  = "",
 	},
 };
@@ -632,19 +636,20 @@ int parse_events_load_bpf(struct parse_events_evlist *data,
 	struct bpf_object *obj;
 
 	obj = bpf__prepare_load(bpf_file_name, source);
-	if (IS_ERR(obj) || !obj) {
+	if (IS_ERR(obj)) {
 		char errbuf[BUFSIZ];
 		int err;
 
-		err = obj ? PTR_ERR(obj) : -EINVAL;
+		err = PTR_ERR(obj);
 
 		if (err == -ENOTSUP)
 			snprintf(errbuf, sizeof(errbuf),
 				 "BPF support is not compiled");
 		else
-			snprintf(errbuf, sizeof(errbuf),
-				 "BPF object file '%s' is invalid",
-				 bpf_file_name);
+			bpf__strerror_prepare_load(bpf_file_name,
+						   source,
+						   -err, errbuf,
+						   sizeof(errbuf));
 
 		data->error->help = strdup("(add -v to see detail)");
 		data->error->str = strdup(errbuf);
@@ -1878,7 +1883,7 @@ restart:
 
 	for (i = 0; i < max; i++, syms++) {
 
-		if (event_glob != NULL &&
+		if (event_glob != NULL && syms->symbol != NULL &&
 		    !(strglobmatch(syms->symbol, event_glob) ||
 		      (syms->alias && strglobmatch(syms->alias, event_glob))))
 			continue;
