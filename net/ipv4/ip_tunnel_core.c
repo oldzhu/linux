@@ -114,7 +114,12 @@ int iptunnel_pull_header(struct sk_buff *skb, int hdr_len, __be16 inner_proto,
 	skb->vlan_tci = 0;
 	skb_set_queue_mapping(skb, 0);
 	skb_scrub_packet(skb, xnet);
+<<<<<<< HEAD
 	return 0;
+=======
+
+	return iptunnel_pull_offloads(skb);
+>>>>>>> upstream/master
 }
 EXPORT_SYMBOL_GPL(iptunnel_pull_header);
 

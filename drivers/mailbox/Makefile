@@ -20,6 +20,11 @@ obj-$(CONFIG_BCM2835_MBOX)	+= bcm2835-mailbox.o
 
 obj-$(CONFIG_STI_MBOX)		+= mailbox-sti.o
 
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_TI_MESSAGE_MANAGER) += ti-msgmgr.o
+
+>>>>>>> upstream/master
 obj-$(CONFIG_XGENE_SLIMPRO_MBOX) += mailbox-xgene-slimpro.o
 
 obj-$(CONFIG_HI6220_MBOX)	+= hi6220-mailbox.o

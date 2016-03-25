@@ -397,7 +397,11 @@ config LWTUNNEL
 	  with light weight tunnel state associated with fib routes.
 
 config DST_CACHE
+<<<<<<< HEAD
 	bool "dst cache"
+=======
+	bool
+>>>>>>> upstream/master
 	default n
 
 config NET_DEVLINK

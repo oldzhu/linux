@@ -304,6 +304,25 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
 					     gfp_t flags);
 
 struct sk_buff *iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
+<<<<<<< HEAD
+=======
+
+static inline int iptunnel_pull_offloads(struct sk_buff *skb)
+{
+	if (skb_is_gso(skb)) {
+		int err;
+
+		err = skb_unclone(skb, GFP_ATOMIC);
+		if (unlikely(err))
+			return err;
+		skb_shinfo(skb)->gso_type &= ~(NETIF_F_GSO_ENCAP_ALL >>
+					       NETIF_F_GSO_SHIFT);
+	}
+
+	skb->encapsulation = 0;
+	return 0;
+}
+>>>>>>> upstream/master
 
 static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)
 {

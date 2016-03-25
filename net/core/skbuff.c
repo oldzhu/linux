@@ -815,7 +815,11 @@ void napi_consume_skb(struct sk_buff *skb, int budget)
 	trace_consume_skb(skb);
 
 	/* if SKB is a clone, don't handle this case */
+<<<<<<< HEAD
 	if (unlikely(skb->fclone != SKB_FCLONE_UNAVAILABLE)) {
+=======
+	if (skb->fclone != SKB_FCLONE_UNAVAILABLE) {
+>>>>>>> upstream/master
 		__kfree_skb(skb);
 		return;
 	}

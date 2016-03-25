@@ -1,7 +1,11 @@
 config LUSTRE_FS
 	tristate "Lustre file system client support"
 	depends on m && !MIPS && !XTENSA && !SUPERH
+<<<<<<< HEAD
 	select LNET
+=======
+	depends on LNET
+>>>>>>> upstream/master
 	select CRYPTO
 	select CRYPTO_CRC32
 	select CRYPTO_CRC32_PCLMUL if X86

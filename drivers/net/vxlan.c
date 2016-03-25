@@ -1143,7 +1143,7 @@ static int vxlan_igmp_leave(struct vxlan_dev *vxlan)
 static bool vxlan_remcsum(struct vxlanhdr *unparsed,
 			  struct sk_buff *skb, u32 vxflags)
 {
-	size_t start, offset, plen;
+	size_t start, offset;
 
 	if (!(unparsed->vx_flags & VXLAN_HF_RCO) || skb->remcsum_offload)
 		goto out;
@@ -1151,11 +1151,17 @@ static bool vxlan_remcsum(struct vxlanhdr *unparsed,
 	start = vxlan_rco_start(unparsed->vx_vni);
 	offset = start + vxlan_rco_offset(unparsed->vx_vni);
 
+<<<<<<< HEAD
 	plen = sizeof(struct vxlanhdr) + offset + sizeof(u16);
 
 	if (!pskb_may_pull(skb, plen))
 		return false;
 
+=======
+	if (!pskb_may_pull(skb, offset + sizeof(u16)))
+		return false;
+
+>>>>>>> upstream/master
 	skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, offset,
 			    !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
 out:
@@ -1813,7 +1819,11 @@ static struct dst_entry *vxlan6_get_route(struct vxlan_dev *vxlan,
 	fl6.flowi6_tos = RT_TOS(tos);
 	fl6.daddr = *daddr;
 	fl6.saddr = vxlan->cfg.saddr.sin6.sin6_addr;
+<<<<<<< HEAD
 	fl6.flowlabel = label;
+=======
+	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
+>>>>>>> upstream/master
 	fl6.flowi6_mark = skb->mark;
 	fl6.flowi6_proto = IPPROTO_UDP;
 
