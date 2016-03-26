@@ -115,7 +115,12 @@ int iptunnel_pull_header(struct sk_buff *skb, int hdr_len, __be16 inner_proto,
 	skb_set_queue_mapping(skb, 0);
 	skb_scrub_packet(skb, xnet);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return 0;
+=======
+
+	return iptunnel_pull_offloads(skb);
+>>>>>>> upstream/master
 =======
 
 	return iptunnel_pull_offloads(skb);

@@ -1792,15 +1792,21 @@ static int smc911x_probe(struct net_device *dev)
 	const char *version_string;
 	unsigned long irq_flags;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct dma_slave_config	config;
 	dma_cap_mask_t mask;
 	struct pxad_param param;
 =======
+=======
+>>>>>>> upstream/master
 #ifdef SMC_USE_DMA
 	struct dma_slave_config	config;
 	dma_cap_mask_t mask;
 	struct pxad_param param;
 #endif
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 	DBG(SMC_DEBUG_FUNC, dev, "--> %s\n", __func__);

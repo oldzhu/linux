@@ -305,7 +305,10 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
 
 struct sk_buff *iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 
 static inline int iptunnel_pull_offloads(struct sk_buff *skb)
 {
@@ -322,6 +325,9 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
 	skb->encapsulation = 0;
 	return 0;
 }
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)

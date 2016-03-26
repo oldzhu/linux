@@ -1152,6 +1152,7 @@ static bool vxlan_remcsum(struct vxlanhdr *unparsed,
 	offset = start + vxlan_rco_offset(unparsed->vx_vni);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	plen = sizeof(struct vxlanhdr) + offset + sizeof(u16);
 
 	if (!pskb_may_pull(skb, plen))
@@ -1204,6 +1205,53 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
 			  struct vxlan_sock *vs,
 			  struct sk_buff *skb)
 {
+=======
+	if (!pskb_may_pull(skb, offset + sizeof(u16)))
+		return false;
+
+	skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, offset,
+			    !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
+out:
+	unparsed->vx_flags &= ~VXLAN_HF_RCO;
+	unparsed->vx_vni &= VXLAN_VNI_MASK;
+	return true;
+}
+
+static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
+				struct sk_buff *skb, u32 vxflags,
+				struct vxlan_metadata *md)
+{
+	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
+	struct metadata_dst *tun_dst;
+
+	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
+		goto out;
+
+	md->gbp = ntohs(gbp->policy_id);
+
+	tun_dst = (struct metadata_dst *)skb_dst(skb);
+	if (tun_dst) {
+		tun_dst->u.tun_info.key.tun_flags |= TUNNEL_VXLAN_OPT;
+		tun_dst->u.tun_info.options_len = sizeof(*md);
+	}
+	if (gbp->dont_learn)
+		md->gbp |= VXLAN_GBP_DONT_LEARN;
+
+	if (gbp->policy_applied)
+		md->gbp |= VXLAN_GBP_POLICY_APPLIED;
+
+	/* In flow-based mode, GBP is carried in dst_metadata */
+	if (!(vxflags & VXLAN_F_COLLECT_METADATA))
+		skb->mark = md->gbp;
+out:
+	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
+}
+
+static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+			  struct vxlan_sock *vs,
+			  struct sk_buff *skb)
+{
+>>>>>>> upstream/master
 	union vxlan_addr saddr;
 
 	skb_reset_mac_header(skb);
@@ -1332,10 +1380,17 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
 		 */
 		goto drop;
 	}
+<<<<<<< HEAD
 
 	if (!vxlan_set_mac(vxlan, vs, skb))
 		goto drop;
 
+=======
+
+	if (!vxlan_set_mac(vxlan, vs, skb))
+		goto drop;
+
+>>>>>>> upstream/master
 	oiph = skb_network_header(skb);
 	skb_reset_network_header(skb);
 
@@ -1820,7 +1875,11 @@ static struct dst_entry *vxlan6_get_route(struct vxlan_dev *vxlan,
 	fl6.daddr = *daddr;
 	fl6.saddr = vxlan->cfg.saddr.sin6.sin6_addr;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fl6.flowlabel = label;
+=======
+	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
+>>>>>>> upstream/master
 =======
 	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
 >>>>>>> upstream/master

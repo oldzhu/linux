@@ -261,7 +261,11 @@ static int get_dprc_icid(struct fsl_mc_io *mc_io,
 	error = dprc_open(mc_io, 0, container_id, &dprc_handle);
 	if (error < 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		dev_err(&mc_io->dev, "dprc_open() failed: %d\n", error);
+=======
+		dev_err(mc_io->dev, "dprc_open() failed: %d\n", error);
+>>>>>>> upstream/master
 =======
 		dev_err(mc_io->dev, "dprc_open() failed: %d\n", error);
 >>>>>>> upstream/master
@@ -272,7 +276,11 @@ static int get_dprc_icid(struct fsl_mc_io *mc_io,
 	error = dprc_get_attributes(mc_io, 0, dprc_handle, &attr);
 	if (error < 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		dev_err(&mc_io->dev, "dprc_get_attributes() failed: %d\n",
+=======
+		dev_err(mc_io->dev, "dprc_get_attributes() failed: %d\n",
+>>>>>>> upstream/master
 =======
 		dev_err(mc_io->dev, "dprc_get_attributes() failed: %d\n",
 >>>>>>> upstream/master

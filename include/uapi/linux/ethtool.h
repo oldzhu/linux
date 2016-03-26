@@ -1649,9 +1649,15 @@ enum ethtool_reset_flags {
  *	(>= 0); on return, if handshake in progress, negative if
  *	request size unsupported by kernel: absolute value indicates
 <<<<<<< HEAD
+<<<<<<< HEAD
  *	kernel recommended size and cmd field is 0, as well as all the
  *	other fields; otherwise (handshake completed), strictly
  *	positive to indicate size used by kernel and cmd field is
+=======
+ *	kernel expected size and all the other fields but cmd
+ *	are 0; otherwise (handshake completed), strictly positive
+ *	to indicate size used by kernel and cmd field stays
+>>>>>>> upstream/master
 =======
  *	kernel expected size and all the other fields but cmd
  *	are 0; otherwise (handshake completed), strictly positive

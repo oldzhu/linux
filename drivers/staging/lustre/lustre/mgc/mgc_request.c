@@ -1283,7 +1283,11 @@ static int mgc_apply_recover_logs(struct obd_device *mgc,
 		rc = -ENOMEM;
 		lcfg = lustre_cfg_new(LCFG_PARAM, &bufs);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!lcfg) {
+=======
+		if (IS_ERR(lcfg)) {
+>>>>>>> upstream/master
 =======
 		if (IS_ERR(lcfg)) {
 >>>>>>> upstream/master

@@ -1381,7 +1381,10 @@ out:
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 static struct sk_buff **ipip_gro_receive(struct sk_buff **head,
 					 struct sk_buff *skb)
 {
@@ -1395,6 +1398,9 @@ static struct sk_buff **ipip_gro_receive(struct sk_buff **head,
 	return inet_gro_receive(head, skb);
 }
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 #define SECONDS_PER_DAY	86400
 
@@ -1419,7 +1425,11 @@ __be32 inet_current_timestamp(void)
 
 	/* Convert to network byte order. */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return htons(msecs);
+=======
+	return htonl(msecs);
+>>>>>>> upstream/master
 =======
 	return htonl(msecs);
 >>>>>>> upstream/master

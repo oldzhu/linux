@@ -10,6 +10,12 @@ TODO:
 - switch to use MAC80211
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+A mac80211 driver for this hardware already was integrated at
+drivers/net/wireless/realtek/rtl8xxxu/
+
+>>>>>>> upstream/master
 =======
 A mac80211 driver for this hardware already was integrated at
 drivers/net/wireless/realtek/rtl8xxxu/

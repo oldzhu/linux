@@ -329,7 +329,11 @@ static int mc_polling_wait_preemptible(struct fsl_mc_io *mc_io,
 
 		if (time_after_eq(jiffies, jiffies_until_timeout)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			dev_dbg(&mc_io->dev,
+=======
+			dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 			dev_dbg(mc_io->dev,
 >>>>>>> upstream/master
@@ -375,7 +379,11 @@ static int mc_polling_wait_atomic(struct fsl_mc_io *mc_io,
 		timeout_usecs -= MC_CMD_COMPLETION_POLLING_MAX_SLEEP_USECS;
 		if (timeout_usecs == 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			dev_dbg(&mc_io->dev,
+=======
+			dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 			dev_dbg(mc_io->dev,
 >>>>>>> upstream/master
@@ -435,7 +443,11 @@ int mc_send_command(struct fsl_mc_io *mc_io, struct mc_command *cmd)
 
 	if (status != MC_CMD_STATUS_OK) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		dev_dbg(&mc_io->dev,
+=======
+		dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 		dev_dbg(mc_io->dev,
 >>>>>>> upstream/master

@@ -88,7 +88,10 @@ config STI_MBOX
 	  hardware for interprocessor communication.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 config TI_MESSAGE_MANAGER
 	tristate "Texas Instruments Message Manager Driver"
 	depends on ARCH_KEYSTONE
@@ -100,6 +103,9 @@ config TI_MESSAGE_MANAGER
 	  multiple processors within the SoC. Select this driver if your
 	  platform has support for the hardware block.
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 config HI6220_MBOX
 	tristate "Hi6220 Mailbox"
