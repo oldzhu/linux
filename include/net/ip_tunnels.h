@@ -306,7 +306,10 @@ struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
 struct sk_buff *iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 
@@ -326,6 +329,9 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
 	return 0;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

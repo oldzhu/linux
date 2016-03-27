@@ -465,11 +465,17 @@ static int nvm_core_init(struct nvm_dev *dev)
 
 	dev->total_secs = dev->nr_luns * dev->sec_per_lun;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 	dev->lun_map = kcalloc(BITS_TO_LONGS(dev->nr_luns),
 					sizeof(unsigned long), GFP_KERNEL);
 	if (!dev->lun_map)
 		return -ENOMEM;
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	INIT_LIST_HEAD(&dev->online_targets);
 	mutex_init(&dev->mlock);

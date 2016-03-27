@@ -766,6 +766,11 @@ struct adapter {
 	struct list_head mac_hlist; /* list of MAC addresses in MPS Hash */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+	void *iscsi_ppm;
+>>>>>>> upstream/master
 =======
 
 	void *iscsi_ppm;

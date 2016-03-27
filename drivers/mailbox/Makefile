@@ -22,6 +22,11 @@ obj-$(CONFIG_STI_MBOX)		+= mailbox-sti.o
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_TI_MESSAGE_MANAGER) += ti-msgmgr.o
+
+>>>>>>> upstream/master
 =======
 obj-$(CONFIG_TI_MESSAGE_MANAGER) += ti-msgmgr.o
 

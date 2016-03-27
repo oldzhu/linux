@@ -1043,6 +1043,11 @@ static int rrpc_map_init(struct rrpc *rrpc)
 	int ret;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	slba = rrpc->soffset >> (ilog2(dev->sec_size) - 9);
+
+>>>>>>> upstream/master
 =======
 	slba = rrpc->soffset >> (ilog2(dev->sec_size) - 9);
 
@@ -1069,7 +1074,11 @@ static int rrpc_map_init(struct rrpc *rrpc)
 
 	/* Bring up the mapping table from device */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	ret = dev->ops->get_l2p_tbl(dev, 0, dev->total_secs, rrpc_l2p_update,
+=======
+	ret = dev->ops->get_l2p_tbl(dev, slba, rrpc->nr_sects, rrpc_l2p_update,
+>>>>>>> upstream/master
 =======
 	ret = dev->ops->get_l2p_tbl(dev, slba, rrpc->nr_sects, rrpc_l2p_update,
 >>>>>>> upstream/master
@@ -1185,8 +1194,14 @@ static int rrpc_luns_init(struct rrpc *rrpc, int lun_begin, int lun_end)
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		rrpc->total_blocks += dev->blks_per_lun;
 		rrpc->nr_sects += dev->sec_per_lun;
+=======
+		lun = dev->mt->get_lun(dev, lunid);
+		if (!lun)
+			goto err;
+>>>>>>> upstream/master
 =======
 		lun = dev->mt->get_lun(dev, lunid);
 		if (!lun)

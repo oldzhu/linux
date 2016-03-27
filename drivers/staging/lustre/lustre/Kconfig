@@ -3,7 +3,11 @@ config LUSTRE_FS
 	depends on m && !MIPS && !XTENSA && !SUPERH
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	select LNET
+=======
+	depends on LNET
+>>>>>>> upstream/master
 =======
 	depends on LNET
 >>>>>>> upstream/master

@@ -564,8 +564,11 @@ enum fw_flowc_mnem {
 	FW_FLOWC_MNEM_TXDATAPLEN_MAX,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	FW_FLOWC_MNEM_SCHEDCLASS = 11,
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	FW_FLOWC_MNEM_TCPSTATE,
@@ -575,6 +578,9 @@ enum fw_flowc_mnem {
 	FW_FLOWC_MNEM_SND_SCALE,
 	FW_FLOWC_MNEM_RCV_SCALE,
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

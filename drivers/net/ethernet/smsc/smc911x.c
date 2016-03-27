@@ -1793,10 +1793,13 @@ static int smc911x_probe(struct net_device *dev)
 	unsigned long irq_flags;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct dma_slave_config	config;
 	dma_cap_mask_t mask;
 	struct pxad_param param;
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 #ifdef SMC_USE_DMA
@@ -1805,6 +1808,9 @@ static int smc911x_probe(struct net_device *dev)
 	struct pxad_param param;
 #endif
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

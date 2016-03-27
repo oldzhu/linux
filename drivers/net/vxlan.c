@@ -1153,11 +1153,17 @@ static bool vxlan_remcsum(struct vxlanhdr *unparsed,
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	plen = sizeof(struct vxlanhdr) + offset + sizeof(u16);
 
 	if (!pskb_may_pull(skb, plen))
 		return false;
 
+=======
+	if (!pskb_may_pull(skb, offset + sizeof(u16)))
+		return false;
+
+>>>>>>> upstream/master
 =======
 	if (!pskb_may_pull(skb, offset + sizeof(u16)))
 		return false;
@@ -1170,6 +1176,7 @@ out:
 	unparsed->vx_vni &= VXLAN_VNI_MASK;
 	return true;
 }
+<<<<<<< HEAD
 
 static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
 				struct sk_buff *skb, u32 vxflags,
@@ -1183,6 +1190,21 @@ static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
 
 	md->gbp = ntohs(gbp->policy_id);
 
+=======
+
+static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
+				struct sk_buff *skb, u32 vxflags,
+				struct vxlan_metadata *md)
+{
+	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
+	struct metadata_dst *tun_dst;
+
+	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
+		goto out;
+
+	md->gbp = ntohs(gbp->policy_id);
+
+>>>>>>> upstream/master
 	tun_dst = (struct metadata_dst *)skb_dst(skb);
 	if (tun_dst) {
 		tun_dst->u.tun_info.key.tun_flags |= TUNNEL_VXLAN_OPT;
@@ -1205,6 +1227,7 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
 			  struct vxlan_sock *vs,
 			  struct sk_buff *skb)
 {
+<<<<<<< HEAD
 =======
 	if (!pskb_may_pull(skb, offset + sizeof(u16)))
 		return false;
@@ -1251,6 +1274,8 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
 			  struct vxlan_sock *vs,
 			  struct sk_buff *skb)
 {
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	union vxlan_addr saddr;
 
@@ -1381,6 +1406,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
 		goto drop;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	if (!vxlan_set_mac(vxlan, vs, skb))
 		goto drop;
@@ -1394,6 +1420,15 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
 	oiph = skb_network_header(skb);
 	skb_reset_network_header(skb);
 
+=======
+
+	if (!vxlan_set_mac(vxlan, vs, skb))
+		goto drop;
+
+	oiph = skb_network_header(skb);
+	skb_reset_network_header(skb);
+
+>>>>>>> upstream/master
 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
 		++vxlan->dev->stats.rx_frame_errors;
 		++vxlan->dev->stats.rx_errors;
@@ -1876,7 +1911,11 @@ static struct dst_entry *vxlan6_get_route(struct vxlan_dev *vxlan,
 	fl6.saddr = vxlan->cfg.saddr.sin6.sin6_addr;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	fl6.flowlabel = label;
+=======
+	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
+>>>>>>> upstream/master
 =======
 	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
 >>>>>>> upstream/master

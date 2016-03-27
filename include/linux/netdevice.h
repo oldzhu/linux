@@ -1102,7 +1102,11 @@ struct tc_to_netdev {
  *	appropriate rx headroom value allows avoiding skb head copy on
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  *	forward. Setting a negative value reset the rx headroom to the
+=======
+ *	forward. Setting a negative value resets the rx headroom to the
+>>>>>>> upstream/master
 =======
  *	forward. Setting a negative value resets the rx headroom to the
 >>>>>>> upstream/master

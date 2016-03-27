@@ -258,7 +258,11 @@ static int gennvm_blocks_init(struct nvm_dev *dev, struct gen_nvm *gn)
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (dev->ops->get_l2p_tbl) {
+=======
+	if ((dev->identity.dom & NVM_RSP_L2P) && dev->ops->get_l2p_tbl) {
+>>>>>>> upstream/master
 =======
 	if ((dev->identity.dom & NVM_RSP_L2P) && dev->ops->get_l2p_tbl) {
 >>>>>>> upstream/master

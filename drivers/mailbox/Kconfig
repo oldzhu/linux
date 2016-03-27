@@ -89,7 +89,10 @@ config STI_MBOX
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 config TI_MESSAGE_MANAGER
@@ -104,6 +107,9 @@ config TI_MESSAGE_MANAGER
 	  platform has support for the hardware block.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

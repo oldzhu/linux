@@ -2172,7 +2172,10 @@ static int get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
 	struct wilc_vif *vif = netdev_priv(priv->dev);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	struct wilc *wl;
@@ -2183,6 +2186,9 @@ static int get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
 	if (!wl->initialized)
 		return -EIO;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

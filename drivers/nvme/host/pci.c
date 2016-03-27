@@ -742,8 +742,11 @@ static void __nvme_process_cq(struct nvme_queue *nvmeq, unsigned int *tag)
 		struct request *req;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if ((status & 1) != phase)
 			break;
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 		if (++head == nvmeq->q_depth) {
@@ -777,7 +780,11 @@ static void __nvme_process_cq(struct nvme_queue *nvmeq, unsigned int *tag)
 		if (req->cmd_type == REQ_TYPE_DRV_PRIV && req->special)
 			memcpy(req->special, &cqe, sizeof(cqe));
 <<<<<<< HEAD
+<<<<<<< HEAD
 		blk_mq_complete_request(req, status >> 1);
+=======
+		blk_mq_complete_request(req, le16_to_cpu(cqe.status) >> 1);
+>>>>>>> upstream/master
 =======
 		blk_mq_complete_request(req, le16_to_cpu(cqe.status) >> 1);
 >>>>>>> upstream/master

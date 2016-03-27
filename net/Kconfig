@@ -399,7 +399,11 @@ config LWTUNNEL
 config DST_CACHE
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	bool "dst cache"
+=======
+	bool
+>>>>>>> upstream/master
 =======
 	bool
 >>>>>>> upstream/master

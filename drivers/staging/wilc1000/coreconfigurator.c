@@ -340,7 +340,12 @@ s32 wilc_parse_network_info(u8 *msg_buffer,
 			network_info->ies = kmemdup(ies, ies_len, GFP_KERNEL);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (!network_info->ies)
+=======
+			if (!network_info->ies) {
+				kfree(network_info);
+>>>>>>> upstream/master
 =======
 			if (!network_info->ies) {
 				kfree(network_info);
@@ -386,9 +391,12 @@ s32 wilc_parse_assoc_resp_info(u8 *buffer, u32 buffer_len,
 		connect_resp_info->ies = kmemdup(ies, ies_len, GFP_KERNEL);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!connect_resp_info->ies)
 			return -ENOMEM;
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 		if (!connect_resp_info->ies) {
