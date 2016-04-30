@@ -1103,7 +1103,11 @@ struct tc_to_netdev {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  *	forward. Setting a negative value reset the rx headroom to the
+=======
+ *	forward. Setting a negative value resets the rx headroom to the
+>>>>>>> upstream/master
 =======
  *	forward. Setting a negative value resets the rx headroom to the
 >>>>>>> upstream/master
@@ -2132,7 +2136,10 @@ struct napi_gro_cb {
 	/* Used in foo-over-udp, set in udp[46]_gro_receive */
 	u8	is_ipv6:1;
 
-	/* 7 bit hole */
+	/* Used in GRE, set in fou/gue_gro_receive */
+	u8	is_fou:1;
+
+	/* 6 bit hole */
 
 	/* used to support CHECKSUM_COMPLETE for tunneling protocols */
 	__wsum	csum;

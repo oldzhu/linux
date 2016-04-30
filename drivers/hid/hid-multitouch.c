@@ -1169,6 +1169,10 @@ static void mt_release_contacts(struct hid_device *hid)
 							   MT_TOOL_FINGER,
 							   false);
 			}
+<<<<<<< HEAD
+=======
+			input_mt_sync_frame(input_dev);
+>>>>>>> upstream/master
 			input_sync(input_dev);
 		}
 	}

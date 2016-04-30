@@ -111,6 +111,7 @@ static void swap_slot_free_notify(struct page *page)
 		SetPageDirty(page);
 		disk->fops->swap_slot_free_notify(sis->bdev,
 				offset);
+<<<<<<< HEAD
 	}
 }
 
@@ -126,8 +127,28 @@ static void end_swap_bio_read(struct bio *bio)
 			 iminor(bio->bi_bdev->bd_inode),
 			 (unsigned long long)bio->bi_iter.bi_sector);
 		goto out;
+=======
+>>>>>>> upstream/master
+	}
+}
+
+static void end_swap_bio_read(struct bio *bio)
+{
+	struct page *page = bio->bi_io_vec[0].bv_page;
+
+<<<<<<< HEAD
+=======
+	if (bio->bi_error) {
+		SetPageError(page);
+		ClearPageUptodate(page);
+		pr_alert("Read-error on swap-device (%u:%u:%llu)\n",
+			 imajor(bio->bi_bdev->bd_inode),
+			 iminor(bio->bi_bdev->bd_inode),
+			 (unsigned long long)bio->bi_iter.bi_sector);
+		goto out;
 	}
 
+>>>>>>> upstream/master
 	SetPageUptodate(page);
 	swap_slot_free_notify(page);
 out:
@@ -252,7 +273,7 @@ out:
 
 static sector_t swap_page_sector(struct page *page)
 {
-	return (sector_t)__page_file_index(page) << (PAGE_CACHE_SHIFT - 9);
+	return (sector_t)__page_file_index(page) << (PAGE_SHIFT - 9);
 }
 
 int __swap_writepage(struct page *page, struct writeback_control *wbc,
@@ -353,7 +374,15 @@ int swap_readpage(struct page *page)
 
 	ret = bdev_read_page(sis->bdev, swap_page_sector(page), page);
 	if (!ret) {
+<<<<<<< HEAD
 		swap_slot_free_notify(page);
+=======
+		if (trylock_page(page)) {
+			swap_slot_free_notify(page);
+			unlock_page(page);
+		}
+
+>>>>>>> upstream/master
 		count_vm_event(PSWPIN);
 		return 0;
 	}

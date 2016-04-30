@@ -626,6 +626,7 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans, u32 dst_addr,
 
 	iwl_write32(trans, FH_TCSR_CHNL_TX_CONFIG_REG(FH_SRVC_CHNL),
 		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CHNL_PAUSE);
+<<<<<<< HEAD
 
 	iwl_write32(trans, FH_SRVC_CHNL_SRAM_ADDR_REG(FH_SRVC_CHNL),
 		    dst_addr);
@@ -647,6 +648,29 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans, u32 dst_addr,
 		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CREDIT_DISABLE |
 		    FH_TCSR_TX_CONFIG_REG_VAL_CIRQ_HOST_ENDTFD);
 
+=======
+
+	iwl_write32(trans, FH_SRVC_CHNL_SRAM_ADDR_REG(FH_SRVC_CHNL),
+		    dst_addr);
+
+	iwl_write32(trans, FH_TFDIB_CTRL0_REG(FH_SRVC_CHNL),
+		    phy_addr & FH_MEM_TFDIB_DRAM_ADDR_LSB_MSK);
+
+	iwl_write32(trans, FH_TFDIB_CTRL1_REG(FH_SRVC_CHNL),
+		    (iwl_get_dma_hi_addr(phy_addr)
+			<< FH_MEM_TFDIB_REG1_ADDR_BITSHIFT) | byte_cnt);
+
+	iwl_write32(trans, FH_TCSR_CHNL_TX_BUF_STS_REG(FH_SRVC_CHNL),
+		    BIT(FH_TCSR_CHNL_TX_BUF_STS_REG_POS_TB_NUM) |
+		    BIT(FH_TCSR_CHNL_TX_BUF_STS_REG_POS_TB_IDX) |
+		    FH_TCSR_CHNL_TX_BUF_STS_REG_VAL_TFDB_VALID);
+
+	iwl_write32(trans, FH_TCSR_CHNL_TX_CONFIG_REG(FH_SRVC_CHNL),
+		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CHNL_ENABLE |
+		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CREDIT_DISABLE |
+		    FH_TCSR_TX_CONFIG_REG_VAL_CIRQ_HOST_ENDTFD);
+
+>>>>>>> upstream/master
 	iwl_trans_release_nic_access(trans, &flags);
 
 	ret = wait_event_timeout(trans_pcie->ucode_write_waitq,
@@ -732,8 +756,8 @@ static int iwl_pcie_rsa_race_bug_wa(struct iwl_trans *trans)
 	 */
 	val = iwl_read_prph(trans, PREG_AUX_BUS_WPROT_0);
 	if (val & (BIT(1) | BIT(17))) {
-		IWL_INFO(trans,
-			 "can't access the RSA semaphore it is write protected\n");
+		IWL_DEBUG_INFO(trans,
+			       "can't access the RSA semaphore it is write protected\n");
 		return 0;
 	}
 
@@ -1669,6 +1693,7 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
 		for (i = 0; i < trans_pcie->allocated_vector; i++)
 			free_irq(trans_pcie->msix_entries[i].vector,
 				 &trans_pcie->msix_entries[i]);
+<<<<<<< HEAD
 
 		pci_disable_msix(trans_pcie->pci_dev);
 		trans_pcie->msix_enabled = false;
@@ -1677,6 +1702,16 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
 
 		iwl_pcie_free_ict(trans);
 
+=======
+
+		pci_disable_msix(trans_pcie->pci_dev);
+		trans_pcie->msix_enabled = false;
+	} else {
+		free_irq(trans_pcie->pci_dev->irq, trans);
+
+		iwl_pcie_free_ict(trans);
+
+>>>>>>> upstream/master
 		pci_disable_msi(trans_pcie->pci_dev);
 	}
 	iounmap(trans_pcie->hw_base);

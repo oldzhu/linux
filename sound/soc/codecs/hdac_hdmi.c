@@ -462,6 +462,7 @@ static int hdac_hdmi_enable_pin(struct hdac_ext_device *hdac,
 {
 	int mux_idx;
 	struct hdac_hdmi_pin *pin = dai_map->pin;
+<<<<<<< HEAD
 
 	for (mux_idx = 0; mux_idx < pin->num_mux_nids; mux_idx++) {
 		if (pin->mux_nids[mux_idx] == dai_map->cvt->nid) {
@@ -478,6 +479,24 @@ static int hdac_hdmi_enable_pin(struct hdac_ext_device *hdac,
 	snd_hdac_codec_write(&hdac->hdac, pin->nid, 0,
 			AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
 
+=======
+
+	for (mux_idx = 0; mux_idx < pin->num_mux_nids; mux_idx++) {
+		if (pin->mux_nids[mux_idx] == dai_map->cvt->nid) {
+			snd_hdac_codec_write(&hdac->hdac, pin->nid, 0,
+					AC_VERB_SET_CONNECT_SEL, mux_idx);
+			break;
+		}
+	}
+
+	if (mux_idx == pin->num_mux_nids)
+		return -EIO;
+
+	/* Enable out path for this pin widget */
+	snd_hdac_codec_write(&hdac->hdac, pin->nid, 0,
+			AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+
+>>>>>>> upstream/master
 	hdac_hdmi_set_power_state(hdac, dai_map, AC_PWRST_D0);
 
 	snd_hdac_codec_write(&hdac->hdac, pin->nid, 0,
@@ -634,9 +653,15 @@ static void hdac_hdmi_pcm_close(struct snd_pcm_substream *substream,
 				AC_VERB_SET_CHANNEL_STREAMID, 0);
 		snd_hdac_codec_write(&hdac->hdac, dai_map->cvt->nid, 0,
 				AC_VERB_SET_STREAM_FORMAT, 0);
+<<<<<<< HEAD
 
 		hdac_hdmi_set_power_state(hdac, dai_map, AC_PWRST_D3);
 
+=======
+
+		hdac_hdmi_set_power_state(hdac, dai_map, AC_PWRST_D3);
+
+>>>>>>> upstream/master
 		snd_hdac_codec_write(&hdac->hdac, dai_map->pin->nid, 0,
 			AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
 
@@ -701,6 +726,7 @@ static struct hdac_hdmi_pcm *hdac_hdmi_get_pcm(struct hdac_ext_device *edev,
 {
 	struct hdac_hdmi_priv *hdmi = edev->private_data;
 	struct hdac_hdmi_pcm *pcm = NULL;
+<<<<<<< HEAD
 
 	list_for_each_entry(pcm, &hdmi->pcm_list, head) {
 		if (pcm->pin == pin)
@@ -754,6 +780,61 @@ static int hdac_hdmi_set_pin_mux(struct snd_kcontrol *kcontrol,
 	}
 	mutex_unlock(&hdmi->pin_mutex);
 
+=======
+
+	list_for_each_entry(pcm, &hdmi->pcm_list, head) {
+		if (pcm->pin == pin)
+			return pcm;
+	}
+
+	return NULL;
+}
+
+/*
+ * Based on user selection, map the PINs with the PCMs.
+ */
+static int hdac_hdmi_set_pin_mux(struct snd_kcontrol *kcontrol,
+		struct snd_ctl_elem_value *ucontrol)
+{
+	int ret;
+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+	struct snd_soc_dapm_widget *w = snd_soc_dapm_kcontrol_widget(kcontrol);
+	struct snd_soc_dapm_context *dapm = w->dapm;
+	struct hdac_hdmi_pin *pin = w->priv;
+	struct hdac_ext_device *edev = to_hda_ext_device(dapm->dev);
+	struct hdac_hdmi_priv *hdmi = edev->private_data;
+	struct hdac_hdmi_pcm *pcm = NULL;
+	const char *cvt_name =  e->texts[ucontrol->value.enumerated.item[0]];
+
+	ret = snd_soc_dapm_put_enum_double(kcontrol, ucontrol);
+	if (ret < 0)
+		return ret;
+
+	mutex_lock(&hdmi->pin_mutex);
+	list_for_each_entry(pcm, &hdmi->pcm_list, head) {
+		if (pcm->pin == pin)
+			pcm->pin = NULL;
+
+		/*
+		 * Jack status is not reported during device probe as the
+		 * PCMs are not registered by then. So report it here.
+		 */
+		if (!strcmp(cvt_name, pcm->cvt->name) && !pcm->pin) {
+			pcm->pin = pin;
+			if (pin->eld.monitor_present && pin->eld.eld_valid) {
+				dev_dbg(&edev->hdac.dev,
+					"jack report for pcm=%d\n",
+					pcm->pcm_id);
+
+				snd_jack_report(pcm->jack, SND_JACK_AVOUT);
+			}
+			mutex_unlock(&hdmi->pin_mutex);
+			return ret;
+		}
+	}
+	mutex_unlock(&hdmi->pin_mutex);
+
+>>>>>>> upstream/master
 	return ret;
 }
 
@@ -930,6 +1011,7 @@ static int create_fill_widget_route_map(struct snd_soc_dapm_context *dapm)
 		/* For pin_mux to pin mapping */
 		num_routes++;
 	}
+<<<<<<< HEAD
 
 	route = devm_kzalloc(dapm->dev, (sizeof(*route) * num_routes),
 							GFP_KERNEL);
@@ -959,6 +1041,37 @@ static int create_fill_widget_route_map(struct snd_soc_dapm_context *dapm)
 
 	return 0;
 
+=======
+
+	route = devm_kzalloc(dapm->dev, (sizeof(*route) * num_routes),
+							GFP_KERNEL);
+	if (!route)
+		return -ENOMEM;
+
+	i = 0;
+	/* Add pin <- NULL <- mux route map */
+	list_for_each_entry(pin, &hdmi->pin_list, head) {
+		int sink_index = i + hdmi->num_cvt;
+		int src_index = sink_index + hdmi->num_pin;
+
+		hdac_hdmi_fill_route(&route[i],
+				widgets[sink_index].name, NULL,
+				widgets[src_index].name, NULL);
+		i++;
+
+	}
+
+	hdac_hdmi_add_pinmux_cvt_route(edev, widgets, route, i);
+
+	snd_soc_dapm_new_controls(dapm, widgets,
+		((2 * hdmi->num_pin) + hdmi->num_cvt));
+
+	snd_soc_dapm_add_routes(dapm, route, num_routes);
+	snd_soc_dapm_new_widgets(dapm->card);
+
+	return 0;
+
+>>>>>>> upstream/master
 }
 
 static int hdac_hdmi_init_dai_map(struct hdac_ext_device *edev)
@@ -1420,6 +1533,7 @@ static int hdmi_codec_remove(struct snd_soc_codec *codec)
 }
 
 #ifdef CONFIG_PM
+<<<<<<< HEAD
 static int hdmi_codec_resume(struct snd_soc_codec *codec)
 {
 	struct hdac_ext_device *edev = snd_soc_codec_get_drvdata(codec);
@@ -1446,6 +1560,41 @@ static int hdmi_codec_resume(struct snd_soc_codec *codec)
 			msleep(50);
 		}
 	}
+=======
+static int hdmi_codec_prepare(struct device *dev)
+{
+	struct hdac_ext_device *edev = to_hda_ext_device(dev);
+	struct hdac_device *hdac = &edev->hdac;
+
+	pm_runtime_get_sync(&edev->hdac.dev);
+
+	/*
+	 * Power down afg.
+	 * codec_read is preferred over codec_write to set the power state.
+	 * This way verb is send to set the power state and response
+	 * is received. So setting power state is ensured without using loop
+	 * to read the state.
+	 */
+	snd_hdac_codec_read(hdac, hdac->afg, 0,	AC_VERB_SET_POWER_STATE,
+							AC_PWRST_D3);
+
+	return 0;
+}
+
+static void hdmi_codec_complete(struct device *dev)
+{
+	struct hdac_ext_device *edev = to_hda_ext_device(dev);
+	struct hdac_hdmi_priv *hdmi = edev->private_data;
+	struct hdac_hdmi_pin *pin;
+	struct hdac_device *hdac = &edev->hdac;
+
+	/* Power up afg */
+	snd_hdac_codec_read(hdac, hdac->afg, 0,	AC_VERB_SET_POWER_STATE,
+							AC_PWRST_D0);
+
+	hdac_hdmi_skl_enable_all_pins(&edev->hdac);
+	hdac_hdmi_skl_enable_dp12(&edev->hdac);
+>>>>>>> upstream/master
 
 	/*
 	 * As the ELD notify callback request is not entertained while the
@@ -1455,6 +1604,7 @@ static int hdmi_codec_resume(struct snd_soc_codec *codec)
 	list_for_each_entry(pin, &hdmi->pin_list, head)
 		hdac_hdmi_present_sense(pin, 1);
 
+<<<<<<< HEAD
 	/*
 	 * Codec power is turned ON during controller resume.
 	 * Turn it OFF here
@@ -1471,6 +1621,13 @@ static int hdmi_codec_resume(struct snd_soc_codec *codec)
 }
 #else
 #define hdmi_codec_resume NULL
+=======
+	pm_runtime_put_sync(&edev->hdac.dev);
+}
+#else
+#define hdmi_codec_prepare NULL
+#define hdmi_codec_complete NULL
+>>>>>>> upstream/master
 #endif
 
 static struct snd_soc_codec_driver hdmi_hda_codec = {
@@ -1570,6 +1727,7 @@ static int hdac_hdmi_runtime_suspend(struct device *dev)
 	if (!bus)
 		return 0;
 
+<<<<<<< HEAD
 	/* Power down afg */
 	if (!snd_hdac_check_power_state(hdac, hdac->afg, AC_PWRST_D3)) {
 		snd_hdac_codec_write(hdac, hdac->afg, 0,
@@ -1584,6 +1742,17 @@ static int hdac_hdmi_runtime_suspend(struct device *dev)
 		}
 	}
 
+=======
+	/*
+	 * Power down afg.
+	 * codec_read is preferred over codec_write to set the power state.
+	 * This way verb is send to set the power state and response
+	 * is received. So setting power state is ensured without using loop
+	 * to read the state.
+	 */
+	snd_hdac_codec_read(hdac, hdac->afg, 0,	AC_VERB_SET_POWER_STATE,
+							AC_PWRST_D3);
+>>>>>>> upstream/master
 	err = snd_hdac_display_power(bus, false);
 	if (err < 0) {
 		dev_err(bus->dev, "Cannot turn on display power on i915\n");
@@ -1616,9 +1785,8 @@ static int hdac_hdmi_runtime_resume(struct device *dev)
 	hdac_hdmi_skl_enable_dp12(&edev->hdac);
 
 	/* Power up afg */
-	if (!snd_hdac_check_power_state(hdac, hdac->afg, AC_PWRST_D0))
-		snd_hdac_codec_write(hdac, hdac->afg, 0,
-			AC_VERB_SET_POWER_STATE, AC_PWRST_D0);
+	snd_hdac_codec_read(hdac, hdac->afg, 0,	AC_VERB_SET_POWER_STATE,
+							AC_PWRST_D0);
 
 	return 0;
 }
@@ -1629,6 +1797,8 @@ static int hdac_hdmi_runtime_resume(struct device *dev)
 
 static const struct dev_pm_ops hdac_hdmi_pm = {
 	SET_RUNTIME_PM_OPS(hdac_hdmi_runtime_suspend, hdac_hdmi_runtime_resume, NULL)
+	.prepare = hdmi_codec_prepare,
+	.complete = hdmi_codec_complete,
 };
 
 static const struct hda_device_id hdmi_list[] = {

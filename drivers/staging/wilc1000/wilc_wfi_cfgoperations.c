@@ -2173,7 +2173,10 @@ static int get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 =======
@@ -2187,6 +2190,9 @@ static int get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
 		return -EIO;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

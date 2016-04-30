@@ -376,6 +376,11 @@ config MTK_THERMAL
 	tristate "Temperature sensor driver for mediatek SoCs"
 	depends on ARCH_MEDIATEK || COMPILE_TEST
 	depends on HAS_IOMEM
+<<<<<<< HEAD
+=======
+	depends on NVMEM || NVMEM=n
+	depends on RESET_CONTROLLER
+>>>>>>> upstream/master
 	default y
 	help
 	  Enable this option if you want to have support for thermal management

@@ -2042,6 +2042,7 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
 			    !!(parities & (1 << bit_idx)))
 				qed_int_deassertion_parity(p_hwfn, p_bit,
 							   bit_idx);
+<<<<<<< HEAD
 
 			bit_idx += ATTENTION_LENGTH(p_bit->flags);
 		}
@@ -2090,6 +2091,56 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
 					bit_len--;
 				}
 
+=======
+
+			bit_idx += ATTENTION_LENGTH(p_bit->flags);
+		}
+	}
+
+	/* Find non-parity cause for attention and act */
+	for (k = 0; k < MAX_ATTN_GRPS; k++) {
+		struct aeu_invert_reg_bit *p_aeu;
+
+		/* Handle only groups whose attention is currently deasserted */
+		if (!(deasserted_bits & (1 << k)))
+			continue;
+
+		for (i = 0; i < NUM_ATTN_REGS; i++) {
+			u32 aeu_en = MISC_REG_AEU_ENABLE1_IGU_OUT_0 +
+				     i * sizeof(u32) +
+				     k * sizeof(u32) * NUM_ATTN_REGS;
+			u32 en, bits;
+
+			en = qed_rd(p_hwfn, p_hwfn->p_dpc_ptt, aeu_en);
+			bits = aeu_inv_arr[i] & en;
+
+			/* Skip if no bit from this group is currently set */
+			if (!bits)
+				continue;
+
+			/* Find all set bits from current register which belong
+			 * to current group, making them responsible for the
+			 * previous assertion.
+			 */
+			for (j = 0, bit_idx = 0; bit_idx < 32; j++) {
+				u8 bit, bit_len;
+				u32 bitmask;
+
+				p_aeu = &sb_attn_sw->p_aeu_desc[i].bits[j];
+
+				/* No need to handle parity-only bits */
+				if (p_aeu->flags == ATTENTION_PAR)
+					continue;
+
+				bit = bit_idx;
+				bit_len = ATTENTION_LENGTH(p_aeu->flags);
+				if (p_aeu->flags & ATTENTION_PAR_INT) {
+					/* Skip Parity */
+					bit++;
+					bit_len--;
+				}
+
+>>>>>>> upstream/master
 				bitmask = bits & (((1 << bit_len) - 1) << bit);
 				if (bitmask) {
 					/* Handle source of the attention */
@@ -2707,10 +2758,17 @@ int qed_int_unregister_cb(struct qed_hwfn *p_hwfn, u8 pi)
 
 	if (p_sp_sb->pi_info_arr[pi].comp_cb == NULL)
 		return -ENOMEM;
+<<<<<<< HEAD
 
 	p_sp_sb->pi_info_arr[pi].comp_cb = NULL;
 	p_sp_sb->pi_info_arr[pi].cookie = NULL;
 
+=======
+
+	p_sp_sb->pi_info_arr[pi].comp_cb = NULL;
+	p_sp_sb->pi_info_arr[pi].cookie = NULL;
+
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -2750,7 +2808,11 @@ void qed_int_igu_enable_int(struct qed_hwfn *p_hwfn,
 int qed_int_igu_enable(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 		       enum qed_int_mode int_mode)
 {
+<<<<<<< HEAD
 	int rc;
+=======
+	int rc = 0;
+>>>>>>> upstream/master
 
 	/* Configure AEU signal change to produce attentions */
 	qed_wr(p_hwfn, p_ptt, IGU_REG_ATTENTION_ENABLE, 0);

@@ -199,11 +199,30 @@ static void ndesc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
 {
 	unsigned int tdes1 = p->des1;
 
+<<<<<<< HEAD
+=======
+	if (is_fs)
+		tdes1 |= TDES1_FIRST_SEGMENT;
+	else
+		tdes1 &= ~TDES1_FIRST_SEGMENT;
+
+	if (likely(csum_flag))
+		tdes1 |= (TX_CIC_FULL) << TDES1_CHECKSUM_INSERTION_SHIFT;
+	else
+		tdes1 &= ~(TX_CIC_FULL << TDES1_CHECKSUM_INSERTION_SHIFT);
+
+	if (ls)
+		tdes1 |= TDES1_LAST_SEGMENT;
+
+	p->des1 = tdes1;
+
+>>>>>>> upstream/master
 	if (mode == STMMAC_CHAIN_MODE)
 		norm_set_tx_desc_len_on_chain(p, len);
 	else
 		norm_set_tx_desc_len_on_ring(p, len);
 
+<<<<<<< HEAD
 	if (is_fs)
 		tdes1 |= TDES1_FIRST_SEGMENT;
 	else
@@ -221,6 +240,10 @@ static void ndesc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
 		tdes1 |= TDES0_OWN;
 
 	p->des1 = tdes1;
+=======
+	if (tx_own)
+		p->des0 |= TDES0_OWN;
+>>>>>>> upstream/master
 }
 
 static void ndesc_set_tx_ic(struct dma_desc *p)

@@ -426,6 +426,7 @@ extern signed long schedule_timeout(signed long timeout);
 extern signed long schedule_timeout_interruptible(signed long timeout);
 extern signed long schedule_timeout_killable(signed long timeout);
 extern signed long schedule_timeout_uninterruptible(signed long timeout);
+extern signed long schedule_timeout_idle(signed long timeout);
 asmlinkage void schedule(void);
 extern void schedule_preempt_disabled(void);
 
@@ -719,7 +720,7 @@ struct signal_struct {
 	struct task_cputime cputime_expires;
 
 #ifdef CONFIG_NO_HZ_FULL
-	unsigned long tick_dep_mask;
+	atomic_t tick_dep_mask;
 #endif
 
 	struct list_head cpu_timers[3];
@@ -1548,7 +1549,7 @@ struct task_struct {
 #endif
 
 #ifdef CONFIG_NO_HZ_FULL
-	unsigned long tick_dep_mask;
+	atomic_t tick_dep_mask;
 #endif
 	unsigned long nvcsw, nivcsw; /* context switch counts */
 	u64 start_time;		/* monotonic time in nsec */
@@ -1848,6 +1849,9 @@ struct task_struct {
 	unsigned long	task_state_change;
 #endif
 	int pagefault_disabled;
+#ifdef CONFIG_MMU
+	struct task_struct *oom_reaper_list;
+#endif
 /* CPU-specific state of this task */
 	struct thread_struct thread;
 /*

@@ -726,7 +726,7 @@ static int ocfs2_release_dquot(struct dquot *dquot)
 		dqgrab(dquot);
 		/* First entry on list -> queue work */
 		if (llist_add(&OCFS2_DQUOT(dquot)->list, &osb->dquot_drop_list))
-			queue_work(ocfs2_wq, &osb->dquot_drop_work);
+			queue_work(osb->ocfs2_wq, &osb->dquot_drop_work);
 		goto out;
 	}
 	status = ocfs2_lock_global_qf(oinfo, 1);
@@ -867,6 +867,13 @@ static int ocfs2_get_next_id(struct super_block *sb, struct kqid *qid)
 	int status = 0;
 
 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
+<<<<<<< HEAD
+=======
+	if (!sb_has_quota_loaded(sb, type)) {
+		status = -ESRCH;
+		goto out;
+	}
+>>>>>>> upstream/master
 	status = ocfs2_lock_global_qf(info, 0);
 	if (status < 0)
 		goto out;
@@ -878,8 +885,16 @@ static int ocfs2_get_next_id(struct super_block *sb, struct kqid *qid)
 out_global:
 	ocfs2_unlock_global_qf(info, 0);
 out:
+<<<<<<< HEAD
 	/* Avoid logging ENOENT since it just means there isn't next ID */
 	if (status && status != -ENOENT)
+=======
+	/*
+	 * Avoid logging ENOENT since it just means there isn't next ID and
+	 * ESRCH which means quota isn't enabled for the filesystem.
+	 */
+	if (status && status != -ENOENT && status != -ESRCH)
+>>>>>>> upstream/master
 		mlog_errno(status);
 	return status;
 }

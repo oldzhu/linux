@@ -272,7 +272,11 @@ struct client_obd {
 	int		 cl_grant_shrink_interval; /* seconds */
 
 	/* A chunk is an optimal size used by osc_extent to determine
+<<<<<<< HEAD
 	 * the extent size. A chunk is max(PAGE_CACHE_SIZE, OST block size)
+=======
+	 * the extent size. A chunk is max(PAGE_SIZE, OST block size)
+>>>>>>> upstream/master
 	 */
 	int		  cl_chunkbits;
 	int		  cl_chunk;
@@ -1318,7 +1322,11 @@ bad_format:
 
 static inline int cli_brw_size(struct obd_device *obd)
 {
+<<<<<<< HEAD
 	return obd->u.cli.cl_max_pages_per_rpc << PAGE_CACHE_SHIFT;
+=======
+	return obd->u.cli.cl_max_pages_per_rpc << PAGE_SHIFT;
+>>>>>>> upstream/master
 }
 
 #endif /* __OBD_H */

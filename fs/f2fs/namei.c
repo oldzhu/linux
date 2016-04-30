@@ -1026,12 +1026,15 @@ static const char *f2fs_encrypted_get_link(struct dentry *dentry,
 		res = -ENOENT;
 		goto errout;
 	}
+<<<<<<< HEAD
 
 	/* this is broken symlink case */
 	if (unlikely(cstr.name[0] == 0)) {
 		res = -ENOENT;
 		goto errout;
 	}
+=======
+>>>>>>> upstream/master
 
 	if ((cstr.len + sizeof(struct fscrypt_symlink_data) - 1) > max_size) {
 		/* Symlink data on the disk is corrupted */
@@ -1046,17 +1049,30 @@ static const char *f2fs_encrypted_get_link(struct dentry *dentry,
 	if (res < 0)
 		goto errout;
 
+<<<<<<< HEAD
+=======
+	/* this is broken symlink case */
+	if (unlikely(pstr.name[0] == 0)) {
+		res = -ENOENT;
+		goto errout;
+	}
+
+>>>>>>> upstream/master
 	paddr = pstr.name;
 
 	/* Null-terminate the name */
 	paddr[res] = '\0';
 
-	page_cache_release(cpage);
+	put_page(cpage);
 	set_delayed_call(done, kfree_link, paddr);
 	return paddr;
 errout:
 	fscrypt_fname_free_buffer(&pstr);
+<<<<<<< HEAD
 	page_cache_release(cpage);
+=======
+	put_page(cpage);
+>>>>>>> upstream/master
 	return ERR_PTR(res);
 }
 

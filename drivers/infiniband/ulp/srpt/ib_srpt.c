@@ -1874,6 +1874,7 @@ static void srpt_destroy_ch_ib(struct srpt_rdma_ch *ch)
 static bool srpt_close_ch(struct srpt_rdma_ch *ch)
 {
 	int ret;
+<<<<<<< HEAD
 
 	if (!srpt_set_ch_state(ch, CH_DRAINING)) {
 		pr_debug("%s-%d: already closed\n", ch->sess_name,
@@ -1888,6 +1889,22 @@ static bool srpt_close_ch(struct srpt_rdma_ch *ch)
 		pr_err("%s-%d: changing queue pair into error state failed: %d\n",
 		       ch->sess_name, ch->qp->qp_num, ret);
 
+=======
+
+	if (!srpt_set_ch_state(ch, CH_DRAINING)) {
+		pr_debug("%s-%d: already closed\n", ch->sess_name,
+			 ch->qp->qp_num);
+		return false;
+	}
+
+	kref_get(&ch->kref);
+
+	ret = srpt_ch_qp_err(ch);
+	if (ret < 0)
+		pr_err("%s-%d: changing queue pair into error state failed: %d\n",
+		       ch->sess_name, ch->qp->qp_num, ret);
+
+>>>>>>> upstream/master
 	pr_debug("%s-%d: queued zerolength write\n", ch->sess_name,
 		 ch->qp->qp_num);
 	ret = srpt_zerolength_write(ch);
@@ -2173,8 +2190,12 @@ static int srpt_cm_req_recv(struct ib_cm_id *cm_id,
 	p = &ch->sess_name[0];
 
 try_again:
+<<<<<<< HEAD
 	ch->sess = target_alloc_session(&sport->port_tpg_1, ch->rq_size,
 					sizeof(struct srpt_send_ioctx),
+=======
+	ch->sess = target_alloc_session(&sport->port_tpg_1, 0, 0,
+>>>>>>> upstream/master
 					TARGET_PROT_NORMAL, p, ch, NULL);
 	if (IS_ERR(ch->sess)) {
 		pr_info("Rejected login because no ACL has been"
@@ -2918,10 +2939,17 @@ static void srpt_close_session(struct se_session *se_sess)
 	wait = !list_empty(&ch->list);
 	srpt_disconnect_ch(ch);
 	mutex_unlock(&sdev->mutex);
+<<<<<<< HEAD
 
 	if (!wait)
 		return;
 
+=======
+
+	if (!wait)
+		return;
+
+>>>>>>> upstream/master
 	while (wait_for_completion_timeout(&release_done, 180 * HZ) == 0)
 		pr_info("%s(%s-%d state %d): still waiting ...\n", __func__,
 			ch->sess_name, ch->qp->qp_num, ch->state);
@@ -3152,6 +3180,7 @@ static ssize_t srpt_tpg_enable_store(struct config_item *item,
 	sport->enabled = tmp;
 	if (sport->enabled)
 		goto out;
+<<<<<<< HEAD
 
 	mutex_lock(&sdev->mutex);
 	list_for_each_entry(ch, &sdev->rch_list, list) {
@@ -3164,6 +3193,20 @@ static ssize_t srpt_tpg_enable_store(struct config_item *item,
 	}
 	mutex_unlock(&sdev->mutex);
 
+=======
+
+	mutex_lock(&sdev->mutex);
+	list_for_each_entry(ch, &sdev->rch_list, list) {
+		if (ch->sport == sport) {
+			pr_debug("%s: ch %p %s-%d\n", __func__, ch,
+				 ch->sess_name, ch->qp->qp_num);
+			srpt_disconnect_ch(ch);
+			srpt_close_ch(ch);
+		}
+	}
+	mutex_unlock(&sdev->mutex);
+
+>>>>>>> upstream/master
 out:
 	return count;
 }

@@ -623,7 +623,7 @@ void do_set_pte(struct vm_area_struct *vma, unsigned long address,
  *
  * A page may belong to an inode's memory mapping. In this case, page->mapping
  * is the pointer to the inode, and page->index is the file offset of the page,
- * in units of PAGE_CACHE_SIZE.
+ * in units of PAGE_SIZE.
  *
  * If pagecache pages are not associated with an inode, they are said to be
  * anonymous pages. These may become associated with the swapcache, and in that
@@ -1031,6 +1031,8 @@ static inline bool page_mapped(struct page *page)
 	page = compound_head(page);
 	if (atomic_read(compound_mapcount_ptr(page)) >= 0)
 		return true;
+	if (PageHuge(page))
+		return false;
 	for (i = 0; i < hpage_nr_pages(page); i++) {
 		if (atomic_read(&page[i]._mapcount) >= 0)
 			return true;
@@ -1132,10 +1134,14 @@ struct zap_details {
 	struct address_space *check_mapping;	/* Check page->mapping if set */
 	pgoff_t	first_index;			/* Lowest page->index to unmap */
 	pgoff_t last_index;			/* Highest page->index to unmap */
+	bool ignore_dirty;			/* Ignore dirty pages */
+	bool check_swap_entries;		/* Check also swap entries */
 };
 
 struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
 		pte_t pte);
+struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+				pmd_t pmd);
 
 int zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
 		unsigned long size);
@@ -1248,16 +1254,27 @@ long get_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
 			    unsigned long start, unsigned long nr_pages,
 			    int write, int force, struct page **pages,
 			    struct vm_area_struct **vmas);
+<<<<<<< HEAD
 long get_user_pages6(unsigned long start, unsigned long nr_pages,
 			    int write, int force, struct page **pages,
 			    struct vm_area_struct **vmas);
 long get_user_pages_locked6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+			    int write, int force, struct page **pages,
+			    struct vm_area_struct **vmas);
+long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 		    int write, int force, struct page **pages, int *locked);
 long __get_user_pages_unlocked(struct task_struct *tsk, struct mm_struct *mm,
 			       unsigned long start, unsigned long nr_pages,
 			       int write, int force, struct page **pages,
 			       unsigned int gup_flags);
+<<<<<<< HEAD
 long get_user_pages_unlocked5(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 		    int write, int force, struct page **pages);
 int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 			struct page **pages);

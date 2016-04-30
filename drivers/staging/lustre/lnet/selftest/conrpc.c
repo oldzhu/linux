@@ -786,8 +786,13 @@ lstcon_bulkrpc_v0_prep(lst_test_bulk_param_t *param, srpc_test_reqst_t *req)
 	test_bulk_req_t *brq = &req->tsr_u.bulk_v0;
 
 	brq->blk_opc = param->blk_opc;
+<<<<<<< HEAD
 	brq->blk_npg = (param->blk_size + PAGE_CACHE_SIZE - 1) /
 			PAGE_CACHE_SIZE;
+=======
+	brq->blk_npg = (param->blk_size + PAGE_SIZE - 1) /
+			PAGE_SIZE;
+>>>>>>> upstream/master
 	brq->blk_flags = param->blk_flags;
 
 	return 0;
@@ -822,7 +827,11 @@ lstcon_testrpc_prep(lstcon_node_t *nd, int transop, unsigned feats,
 	if (transop == LST_TRANS_TSBCLIADD) {
 		npg = sfw_id_pages(test->tes_span);
 		nob = !(feats & LST_FEAT_BULK_LEN) ?
+<<<<<<< HEAD
 		      npg * PAGE_CACHE_SIZE :
+=======
+		      npg * PAGE_SIZE :
+>>>>>>> upstream/master
 		      sizeof(lnet_process_id_packed_t) * test->tes_span;
 	}
 
@@ -851,8 +860,13 @@ lstcon_testrpc_prep(lstcon_node_t *nd, int transop, unsigned feats,
 			LASSERT(nob > 0);
 
 			len = !(feats & LST_FEAT_BULK_LEN) ?
+<<<<<<< HEAD
 			      PAGE_CACHE_SIZE :
 			      min_t(int, nob, PAGE_CACHE_SIZE);
+=======
+			      PAGE_SIZE :
+			      min_t(int, nob, PAGE_SIZE);
+>>>>>>> upstream/master
 			nob -= len;
 
 			bulk->bk_iovs[i].kiov_offset = 0;

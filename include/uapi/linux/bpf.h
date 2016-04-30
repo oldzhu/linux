@@ -375,6 +375,10 @@ struct bpf_tunnel_key {
 	};
 	__u8 tunnel_tos;
 	__u8 tunnel_ttl;
+<<<<<<< HEAD
+=======
+	__u16 tunnel_ext;
+>>>>>>> upstream/master
 	__u32 tunnel_label;
 };
 

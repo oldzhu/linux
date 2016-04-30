@@ -688,7 +688,7 @@ static int netlink_release(struct socket *sock)
 
 	skb_queue_purge(&sk->sk_write_queue);
 
-	if (nlk->portid) {
+	if (nlk->portid && nlk->bound) {
 		struct netlink_notify n = {
 						.net = sock_net(sk),
 						.protocol = sk->sk_protocol,
@@ -2505,7 +2505,11 @@ static const struct proto_ops netlink_ops = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	.ioctl =	sock_no_ioctl,
+=======
+	.ioctl =	netlink_ioctl,
+>>>>>>> upstream/master
 =======
 	.ioctl =	netlink_ioctl,
 >>>>>>> upstream/master

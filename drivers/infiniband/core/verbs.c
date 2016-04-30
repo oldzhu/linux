@@ -1860,6 +1860,11 @@ EXPORT_SYMBOL(ib_drain_rq);
 void ib_drain_qp(struct ib_qp *qp)
 {
 	ib_drain_sq(qp);
+<<<<<<< HEAD
 	ib_drain_rq(qp);
+=======
+	if (!qp->srq)
+		ib_drain_rq(qp);
+>>>>>>> upstream/master
 }
 EXPORT_SYMBOL(ib_drain_qp);

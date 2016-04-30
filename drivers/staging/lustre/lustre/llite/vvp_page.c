@@ -57,7 +57,11 @@ static void vvp_page_fini_common(struct ccc_page *cp)
 	struct page *vmpage = cp->cpg_page;
 
 	LASSERT(vmpage);
+<<<<<<< HEAD
 	page_cache_release(vmpage);
+=======
+	put_page(vmpage);
+>>>>>>> upstream/master
 }
 
 static void vvp_page_fini(const struct lu_env *env,
@@ -164,12 +168,12 @@ static int vvp_page_unmap(const struct lu_env *env,
 	LASSERT(vmpage);
 	LASSERT(PageLocked(vmpage));
 
-	offset = vmpage->index << PAGE_CACHE_SHIFT;
+	offset = vmpage->index << PAGE_SHIFT;
 
 	/*
 	 * XXX is it safe to call this with the page lock held?
 	 */
-	ll_teardown_mmaps(vmpage->mapping, offset, offset + PAGE_CACHE_SIZE);
+	ll_teardown_mmaps(vmpage->mapping, offset, offset + PAGE_SIZE);
 	return 0;
 }
 
@@ -537,7 +541,7 @@ int vvp_page_init(const struct lu_env *env, struct cl_object *obj,
 	CLOBINVRNT(env, obj, ccc_object_invariant(obj));
 
 	cpg->cpg_page = vmpage;
-	page_cache_get(vmpage);
+	get_page(vmpage);
 
 	INIT_LIST_HEAD(&cpg->cpg_pending_linkage);
 	if (page->cp_type == CPT_CACHEABLE) {

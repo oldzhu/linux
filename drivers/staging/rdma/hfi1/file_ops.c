@@ -49,6 +49,8 @@
 #include <linux/vmalloc.h>
 #include <linux/io.h>
 
+#include <rdma/ib.h>
+
 #include "hfi.h"
 #include "pio.h"
 #include "device.h"
@@ -189,6 +191,10 @@ static ssize_t hfi1_file_write(struct file *fp, const char __user *data,
 	__u64 user_val = 0;
 	int uctxt_required = 1;
 	int must_be_root = 0;
+
+	/* FIXME: This interface cannot continue out of staging */
+	if (WARN_ON_ONCE(!ib_safe_file_access(fp)))
+		return -EACCES;
 
 	if (count < sizeof(cmd)) {
 		ret = -EINVAL;
@@ -791,15 +797,22 @@ static int hfi1_file_close(struct inode *inode, struct file *fp)
 	spin_unlock_irqrestore(&dd->uctxt_lock, flags);
 
 	dd->rcd[uctxt->ctxt] = NULL;
+
+	hfi1_user_exp_rcv_free(fdata);
+	hfi1_clear_ctxt_pkey(dd, uctxt->ctxt);
+
 	uctxt->rcvwait_to = 0;
 	uctxt->piowait_to = 0;
 	uctxt->rcvnowait = 0;
 	uctxt->pionowait = 0;
 	uctxt->event_flags = 0;
 
+<<<<<<< HEAD
 	hfi1_user_exp_rcv_free(fdata);
 	hfi1_clear_ctxt_pkey(dd, uctxt->ctxt);
 
+=======
+>>>>>>> upstream/master
 	hfi1_stats.sps_ctxts--;
 	if (++dd->freectxts == dd->num_user_contexts)
 		aspm_enable_all(dd);
@@ -1127,12 +1140,12 @@ bail:
 
 static int user_init(struct file *fp)
 {
-	int ret;
 	unsigned int rcvctrl_ops = 0;
 	struct hfi1_filedata *fd = fp->private_data;
 	struct hfi1_ctxtdata *uctxt = fd->uctxt;
 
 	/* make sure that the context has already been setup */
+<<<<<<< HEAD
 	if (!test_bit(HFI1_CTXT_SETUP_DONE, &uctxt->event_flags)) {
 		ret = -EFAULT;
 		goto done;
@@ -1148,6 +1161,10 @@ static int user_init(struct file *fp)
 					       &uctxt->event_flags));
 		goto expected;
 	}
+=======
+	if (!test_bit(HFI1_CTXT_SETUP_DONE, &uctxt->event_flags))
+		return -EFAULT;
+>>>>>>> upstream/master
 
 	/* initialize poll variables... */
 	uctxt->urgent = 0;
@@ -1202,6 +1219,7 @@ static int user_init(struct file *fp)
 		wake_up(&uctxt->wait);
 	}
 
+<<<<<<< HEAD
 expected:
 	/*
 	 * Expected receive has to be setup for all processes (including
@@ -1215,6 +1233,9 @@ expected:
 	ret = hfi1_user_exp_rcv_init(fp);
 done:
 	return ret;
+=======
+	return 0;
+>>>>>>> upstream/master
 }
 
 static int get_ctxt_info(struct file *fp, void __user *ubase, __u32 len)
@@ -1261,7 +1282,7 @@ static int setup_ctxt(struct file *fp)
 	int ret = 0;
 
 	/*
-	 * Context should be set up only once (including allocation and
+	 * Context should be set up only once, including allocation and
 	 * programming of eager buffers. This is done if context sharing
 	 * is not requested or by the master process.
 	 */
@@ -1282,8 +1303,30 @@ static int setup_ctxt(struct file *fp)
 			if (ret)
 				goto done;
 		}
+<<<<<<< HEAD
+=======
+	} else {
+		ret = wait_event_interruptible(uctxt->wait, !test_bit(
+					       HFI1_CTXT_MASTER_UNINIT,
+					       &uctxt->event_flags));
+		if (ret)
+			goto done;
+>>>>>>> upstream/master
 	}
+
 	ret = hfi1_user_sdma_alloc_queues(uctxt, fp);
+	if (ret)
+		goto done;
+	/*
+	 * Expected receive has to be setup for all processes (including
+	 * shared contexts). However, it has to be done after the master
+	 * context has been fully configured as it depends on the
+	 * eager/expected split of the RcvArray entries.
+	 * Setting it up here ensures that the subcontexts will be waiting
+	 * (due to the above wait_event_interruptible() until the master
+	 * is setup.
+	 */
+	ret = hfi1_user_exp_rcv_init(fp);
 	if (ret)
 		goto done;
 
@@ -1565,29 +1608,8 @@ static loff_t ui_lseek(struct file *filp, loff_t offset, int whence)
 {
 	struct hfi1_devdata *dd = filp->private_data;
 
-	switch (whence) {
-	case SEEK_SET:
-		break;
-	case SEEK_CUR:
-		offset += filp->f_pos;
-		break;
-	case SEEK_END:
-		offset = ((dd->kregend - dd->kregbase) + DC8051_DATA_MEM_SIZE) -
-			offset;
-		break;
-	default:
-		return -EINVAL;
-	}
-
-	if (offset < 0)
-		return -EINVAL;
-
-	if (offset >= (dd->kregend - dd->kregbase) + DC8051_DATA_MEM_SIZE)
-		return -EINVAL;
-
-	filp->f_pos = offset;
-
-	return filp->f_pos;
+	return fixed_size_llseek(filp, offset, whence,
+		(dd->kregend - dd->kregbase) + DC8051_DATA_MEM_SIZE);
 }
 
 /* NOTE: assumes unsigned long is 8 bytes */

@@ -565,8 +565,11 @@ enum fw_flowc_mnem {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	FW_FLOWC_MNEM_SCHEDCLASS = 11,
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 =======
@@ -579,6 +582,9 @@ enum fw_flowc_mnem {
 	FW_FLOWC_MNEM_RCV_SCALE,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

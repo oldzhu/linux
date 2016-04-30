@@ -135,6 +135,10 @@ void tcf_hashinfo_destroy(const struct tc_action_ops *ops,
 static inline void tc_action_net_exit(struct tc_action_net *tn)
 {
 	tcf_hashinfo_destroy(tn->ops, tn->hinfo);
+<<<<<<< HEAD
+=======
+	kfree(tn->hinfo);
+>>>>>>> upstream/master
 }
 
 int tcf_generic_walker(struct tc_action_net *tn, struct sk_buff *skb,

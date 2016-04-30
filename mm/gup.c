@@ -839,7 +839,11 @@ static __always_inline long __get_user_pages_locked(struct task_struct *tsk,
  *      if (locked)
  *          up_read(&mm->mmap_sem);
  */
+<<<<<<< HEAD
 long get_user_pages_locked6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 			   int write, int force, struct page **pages,
 			   int *locked)
 {
@@ -892,7 +896,11 @@ EXPORT_SYMBOL(__get_user_pages_unlocked);
  * or if "force" shall be set to 1 (get_user_pages_fast misses the
  * "force" parameter).
  */
+<<<<<<< HEAD
 long get_user_pages_unlocked5(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 			     int write, int force, struct page **pages)
 {
 	return __get_user_pages_unlocked(current, current->mm, start, nr_pages,
@@ -972,7 +980,11 @@ EXPORT_SYMBOL(get_user_pages_remote);
  * and mm being operated on are the current task's.  We also
  * obviously don't pass FOLL_REMOTE in here.
  */
+<<<<<<< HEAD
 long get_user_pages6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 		int write, int force, struct page **pages,
 		struct vm_area_struct **vmas)
 {
@@ -1107,7 +1119,7 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
  * @addr: user address
  *
  * Returns struct page pointer of user page pinned for dump,
- * to be freed afterwards by page_cache_release() or put_page().
+ * to be freed afterwards by put_page().
  *
  * Returns NULL on any kind of failure - a hole must then be inserted into
  * the corefile, to preserve alignment with its headers; and also returns
@@ -1491,7 +1503,6 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
 int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 			struct page **pages)
 {
-	struct mm_struct *mm = current->mm;
 	int nr, ret;
 
 	start &= PAGE_MASK;
@@ -1503,8 +1514,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 		start += nr << PAGE_SHIFT;
 		pages += nr;
 
-		ret = get_user_pages_unlocked(current, mm, start,
-					      nr_pages - nr, write, 0, pages);
+		ret = get_user_pages_unlocked(start, nr_pages - nr, write, 0, pages);
 
 		/* Have to be a bit careful with return values */
 		if (nr > 0) {

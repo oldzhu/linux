@@ -14,6 +14,7 @@
 #include <linux/mutex.h>
 #include <linux/mm.h>
 #include <linux/uaccess.h>
+#include <linux/delay.h>
 #include <asm/synch.h>
 #include <misc/cxl-base.h>
 
@@ -797,6 +798,38 @@ static irqreturn_t native_irq_multiplexed(int irq, void *data)
 	return fail_psl_irq(afu, &irq_info);
 }
 
+<<<<<<< HEAD
+=======
+void native_irq_wait(struct cxl_context *ctx)
+{
+	u64 dsisr;
+	int timeout = 1000;
+	int ph;
+
+	/*
+	 * Wait until no further interrupts are presented by the PSL
+	 * for this context.
+	 */
+	while (timeout--) {
+		ph = cxl_p2n_read(ctx->afu, CXL_PSL_PEHandle_An) & 0xffff;
+		if (ph != ctx->pe)
+			return;
+		dsisr = cxl_p2n_read(ctx->afu, CXL_PSL_DSISR_An);
+		if ((dsisr & CXL_PSL_DSISR_PENDING) == 0)
+			return;
+		/*
+		 * We are waiting for the workqueue to process our
+		 * irq, so need to let that run here.
+		 */
+		msleep(1);
+	}
+
+	dev_warn(&ctx->afu->dev, "WARNING: waiting on DSI for PE %i"
+		 " DSISR %016llx!\n", ph, dsisr);
+	return;
+}
+
+>>>>>>> upstream/master
 static irqreturn_t native_slice_irq_err(int irq, void *data)
 {
 	struct cxl_afu *afu = data;
@@ -858,6 +891,7 @@ int cxl_native_register_psl_err_irq(struct cxl *adapter)
 	}
 
 	cxl_p1_write(adapter, CXL_PSL_ErrIVTE, adapter->native->err_hwirq & 0xffff);
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -894,10 +928,51 @@ int cxl_native_register_serr_irq(struct cxl_afu *afu)
 	serr = cxl_p1n_read(afu, CXL_PSL_SERR_An);
 	serr = (serr & 0x00ffffffffff0000ULL) | (afu->serr_hwirq & 0xffff);
 	cxl_p1n_write(afu, CXL_PSL_SERR_An, serr);
+=======
+>>>>>>> upstream/master
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+void cxl_native_release_psl_err_irq(struct cxl *adapter)
+{
+	if (adapter->native->err_virq != irq_find_mapping(NULL, adapter->native->err_hwirq))
+		return;
+
+	cxl_p1_write(adapter, CXL_PSL_ErrIVTE, 0x0000000000000000);
+	cxl_unmap_irq(adapter->native->err_virq, adapter);
+	cxl_ops->release_one_irq(adapter, adapter->native->err_hwirq);
+	kfree(adapter->irq_name);
+}
+
+int cxl_native_register_serr_irq(struct cxl_afu *afu)
+{
+	u64 serr;
+	int rc;
+
+	afu->err_irq_name = kasprintf(GFP_KERNEL, "cxl-%s-err",
+				      dev_name(&afu->dev));
+	if (!afu->err_irq_name)
+		return -ENOMEM;
+
+	if ((rc = cxl_register_one_irq(afu->adapter, native_slice_irq_err, afu,
+				       &afu->serr_hwirq,
+				       &afu->serr_virq, afu->err_irq_name))) {
+		kfree(afu->err_irq_name);
+		afu->err_irq_name = NULL;
+		return rc;
+	}
+
+	serr = cxl_p1n_read(afu, CXL_PSL_SERR_An);
+	serr = (serr & 0x00ffffffffff0000ULL) | (afu->serr_hwirq & 0xffff);
+	cxl_p1n_write(afu, CXL_PSL_SERR_An, serr);
+
+	return 0;
+}
+
+>>>>>>> upstream/master
 void cxl_native_release_serr_irq(struct cxl_afu *afu)
 {
 	if (afu->serr_virq != irq_find_mapping(NULL, afu->serr_hwirq))
@@ -1076,6 +1151,10 @@ const struct cxl_backend_ops cxl_native_ops = {
 	.handle_psl_slice_error = native_handle_psl_slice_error,
 	.psl_interrupt = NULL,
 	.ack_irq = native_ack_irq,
+<<<<<<< HEAD
+=======
+	.irq_wait = native_irq_wait,
+>>>>>>> upstream/master
 	.attach_process = native_attach_process,
 	.detach_process = native_detach_process,
 	.support_attributes = native_support_attributes,

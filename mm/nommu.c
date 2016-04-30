@@ -141,7 +141,7 @@ long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
 		if (pages) {
 			pages[i] = virt_to_page(start);
 			if (pages[i])
-				page_cache_get(pages[i]);
+				get_page(pages[i]);
 		}
 		if (vmas)
 			vmas[i] = vma;
@@ -161,7 +161,11 @@ finish_or_fault:
  *   slab page or a secondary page from a compound page
  * - don't permit access to VMAs that don't support it, such as I/O mappings
  */
+<<<<<<< HEAD
 long get_user_pages6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 		    int write, int force, struct page **pages,
 		    struct vm_area_struct **vmas)
 {
@@ -177,11 +181,19 @@ long get_user_pages6(unsigned long start, unsigned long nr_pages,
 }
 EXPORT_SYMBOL(get_user_pages6);
 
+<<<<<<< HEAD
 long get_user_pages_locked6(unsigned long start, unsigned long nr_pages,
 			    int write, int force, struct page **pages,
 			    int *locked)
 {
 	return get_user_pages6(start, nr_pages, write, force, pages, NULL);
+=======
+long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
+			    int write, int force, struct page **pages,
+			    int *locked)
+{
+	return get_user_pages(start, nr_pages, write, force, pages, NULL);
+>>>>>>> upstream/master
 }
 EXPORT_SYMBOL(get_user_pages_locked6);
 
@@ -199,7 +211,11 @@ long __get_user_pages_unlocked(struct task_struct *tsk, struct mm_struct *mm,
 }
 EXPORT_SYMBOL(__get_user_pages_unlocked);
 
+<<<<<<< HEAD
 long get_user_pages_unlocked5(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 			     int write, int force, struct page **pages)
 {
 	return __get_user_pages_unlocked(current, current->mm, start, nr_pages,

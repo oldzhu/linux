@@ -63,7 +63,10 @@ isert_rdma_accept(struct isert_conn *isert_conn);
 struct rdma_cm_id *isert_setup_id(struct isert_np *isert_np);
 
 static void isert_release_work(struct work_struct *work);
+<<<<<<< HEAD
 static void isert_wait4flush(struct isert_conn *isert_conn);
+=======
+>>>>>>> upstream/master
 static void isert_recv_done(struct ib_cq *cq, struct ib_wc *wc);
 static void isert_send_done(struct ib_cq *cq, struct ib_wc *wc);
 static void isert_login_recv_done(struct ib_cq *cq, struct ib_wc *wc);
@@ -141,7 +144,7 @@ isert_create_qp(struct isert_conn *isert_conn,
 	attr.qp_context = isert_conn;
 	attr.send_cq = comp->cq;
 	attr.recv_cq = comp->cq;
-	attr.cap.max_send_wr = ISERT_QP_MAX_REQ_DTOS;
+	attr.cap.max_send_wr = ISERT_QP_MAX_REQ_DTOS + 1;
 	attr.cap.max_recv_wr = ISERT_QP_MAX_RECV_DTOS + 1;
 	attr.cap.max_send_sge = device->ib_device->attrs.max_sge;
 	isert_conn->max_sge = min(device->ib_device->attrs.max_sge,
@@ -887,7 +890,11 @@ isert_disconnected_handler(struct rdma_cm_id *cma_id,
 		break;
 	case ISER_CONN_UP:
 		isert_conn_terminate(isert_conn);
+<<<<<<< HEAD
 		isert_wait4flush(isert_conn);
+=======
+		ib_drain_qp(isert_conn->qp);
+>>>>>>> upstream/master
 		isert_handle_unbound_conn(isert_conn);
 		break;
 	case ISER_CONN_BOUND:
@@ -1536,6 +1543,7 @@ isert_rx_opcode(struct isert_conn *isert_conn, struct iser_rx_desc *rx_desc,
 
 static void
 isert_print_wc(struct ib_wc *wc, const char *type)
+<<<<<<< HEAD
 {
 	if (wc->status != IB_WC_WR_FLUSH_ERR)
 		isert_err("%s failure: %s (%d) vend_err %x\n", type,
@@ -1549,6 +1557,21 @@ isert_print_wc(struct ib_wc *wc, const char *type)
 static void
 isert_recv_done(struct ib_cq *cq, struct ib_wc *wc)
 {
+=======
+{
+	if (wc->status != IB_WC_WR_FLUSH_ERR)
+		isert_err("%s failure: %s (%d) vend_err %x\n", type,
+			  ib_wc_status_msg(wc->status), wc->status,
+			  wc->vendor_err);
+	else
+		isert_dbg("%s failure: %s (%d)\n", type,
+			  ib_wc_status_msg(wc->status), wc->status);
+}
+
+static void
+isert_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+{
+>>>>>>> upstream/master
 	struct isert_conn *isert_conn = wc->qp->qp_context;
 	struct ib_device *ib_dev = isert_conn->cm_id->device;
 	struct iser_rx_desc *rx_desc = cqe_to_rx_desc(wc->wr_cqe);
@@ -3213,6 +3236,7 @@ isert_wait4cmds(struct iscsi_conn *conn)
 	}
 }
 
+<<<<<<< HEAD
 static void
 isert_beacon_done(struct ib_cq *cq, struct ib_wc *wc)
 {
@@ -3243,6 +3267,8 @@ isert_wait4flush(struct isert_conn *isert_conn)
 	wait_for_completion(&isert_conn->wait_comp_err);
 }
 
+=======
+>>>>>>> upstream/master
 /**
  * isert_put_unsol_pending_cmds() - Drop commands waiting for
  *     unsolicitate dataout
@@ -3288,7 +3314,7 @@ static void isert_wait_conn(struct iscsi_conn *conn)
 	isert_conn_terminate(isert_conn);
 	mutex_unlock(&isert_conn->mutex);
 
-	isert_wait4flush(isert_conn);
+	ib_drain_qp(isert_conn->qp);
 	isert_put_unsol_pending_cmds(conn);
 	isert_wait4cmds(conn);
 	isert_wait4logout(isert_conn);
@@ -3300,7 +3326,7 @@ static void isert_free_conn(struct iscsi_conn *conn)
 {
 	struct isert_conn *isert_conn = conn->context;
 
-	isert_wait4flush(isert_conn);
+	ib_drain_qp(isert_conn->qp);
 	isert_put_conn(isert_conn);
 }
 

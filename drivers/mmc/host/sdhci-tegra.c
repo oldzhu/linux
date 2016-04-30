@@ -380,6 +380,7 @@ static const struct sdhci_pltfm_data sdhci_tegra114_pdata = {
 
 static const struct sdhci_tegra_soc_data soc_data_tegra114 = {
 	.pdata = &sdhci_tegra114_pdata,
+<<<<<<< HEAD
 };
 
 static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
@@ -388,6 +389,8 @@ static const struct sdhci_tegra_soc_data soc_data_tegra124 = {
 		    NVQUIRK_ENABLE_DDR50 |
 		    NVQUIRK_ENABLE_SDR104 |
 		    NVQUIRK_HAS_PADCALIB,
+=======
+>>>>>>> upstream/master
 };
 
 static const struct sdhci_pltfm_data sdhci_tegra210_pdata = {

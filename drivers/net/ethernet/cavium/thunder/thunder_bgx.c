@@ -1011,7 +1011,12 @@ static int bgx_init_of_phy(struct bgx *bgx)
 		}
 
 		lmac++;
+<<<<<<< HEAD
 		if (lmac == MAX_LMAC_PER_BGX)
+=======
+		if (lmac == MAX_LMAC_PER_BGX) {
+			of_node_put(node);
+>>>>>>> upstream/master
 			break;
 	}
 	of_node_put(node);

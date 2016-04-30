@@ -8559,6 +8559,10 @@ static int i40e_sw_init(struct i40e_pf *pf)
 			     I40E_FLAG_OUTER_UDP_CSUM_CAPABLE |
 			     I40E_FLAG_WB_ON_ITR_CAPABLE |
 			     I40E_FLAG_MULTIPLE_TCP_UDP_RSS_PCTYPE |
+<<<<<<< HEAD
+=======
+			     I40E_FLAG_NO_PCI_LINK_CHECK |
+>>>>>>> upstream/master
 			     I40E_FLAG_100M_SGMII_CAPABLE |
 			     I40E_FLAG_USE_SET_LLDP_MIB |
 			     I40E_FLAG_GENEVE_OFFLOAD_CAPABLE;

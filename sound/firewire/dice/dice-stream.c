@@ -446,6 +446,7 @@ end:
 
 void snd_dice_stream_destroy_duplex(struct snd_dice *dice)
 {
+<<<<<<< HEAD
 	struct reg_params tx_params, rx_params;
 
 	snd_dice_transaction_clear_enable(dice);
@@ -456,8 +457,14 @@ void snd_dice_stream_destroy_duplex(struct snd_dice *dice)
 	}
 
 	release_resources(dice);
+=======
+	unsigned int i;
+>>>>>>> upstream/master
 
-	dice->substreams_counter = 0;
+	for (i = 0; i < MAX_STREAMS; i++) {
+		destroy_stream(dice, AMDTP_IN_STREAM, i);
+		destroy_stream(dice, AMDTP_OUT_STREAM, i);
+	}
 }
 
 void snd_dice_stream_update_duplex(struct snd_dice *dice)

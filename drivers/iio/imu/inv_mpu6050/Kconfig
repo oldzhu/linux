@@ -9,9 +9,14 @@ config INV_MPU6050_IIO
 
 config INV_MPU6050_I2C
 	tristate "Invensense MPU6050 devices (I2C)"
+<<<<<<< HEAD
 	depends on I2C
 	select INV_MPU6050_IIO
 	select I2C_MUX
+=======
+	depends on I2C_MUX
+	select INV_MPU6050_IIO
+>>>>>>> upstream/master
 	select REGMAP_I2C
 	help
 	  This driver supports the Invensense MPU6050 devices.

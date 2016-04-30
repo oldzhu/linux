@@ -441,7 +441,11 @@ static int ks8995_probe(struct spi_device *spi)
 		return -ENOMEM;
 
 	mutex_init(&ks->lock);
+<<<<<<< HEAD
 	ks->spi = spi_dev_get(spi);
+=======
+	ks->spi = spi;
+>>>>>>> upstream/master
 	ks->chip = &ks8995_chip[variant];
 
 	if (ks->spi->dev.of_node) {

@@ -519,10 +519,15 @@ static void iowait_sdma_drained(struct iowait *wait)
 	 * do the flush work until that QP's
 	 * sdma work has finished.
 	 */
+<<<<<<< HEAD
+=======
+	spin_lock(&qp->s_lock);
+>>>>>>> upstream/master
 	if (qp->s_flags & RVT_S_WAIT_DMA) {
 		qp->s_flags &= ~RVT_S_WAIT_DMA;
 		hfi1_schedule_send(qp);
 	}
+	spin_unlock(&qp->s_lock);
 }
 
 /**

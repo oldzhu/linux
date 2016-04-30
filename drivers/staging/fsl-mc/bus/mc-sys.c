@@ -331,7 +331,11 @@ static int mc_polling_wait_preemptible(struct fsl_mc_io *mc_io,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			dev_dbg(&mc_io->dev,
+=======
+			dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 			dev_dbg(mc_io->dev,
 >>>>>>> upstream/master
@@ -385,7 +389,11 @@ static int mc_polling_wait_atomic(struct fsl_mc_io *mc_io,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			dev_dbg(&mc_io->dev,
+=======
+			dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 			dev_dbg(mc_io->dev,
 >>>>>>> upstream/master
@@ -453,7 +461,11 @@ int mc_send_command(struct fsl_mc_io *mc_io, struct mc_command *cmd)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		dev_dbg(&mc_io->dev,
+=======
+		dev_dbg(mc_io->dev,
+>>>>>>> upstream/master
 =======
 		dev_dbg(mc_io->dev,
 >>>>>>> upstream/master

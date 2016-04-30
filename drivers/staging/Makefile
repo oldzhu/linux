@@ -4,6 +4,10 @@ obj-y				+= media/
 obj-$(CONFIG_SLICOSS)		+= slicoss/
 obj-$(CONFIG_PRISM2_USB)	+= wlan-ng/
 obj-$(CONFIG_COMEDI)		+= comedi/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_FB_OLPC_DCON)	+= olpc_dcon/
+>>>>>>> upstream/master
 obj-$(CONFIG_RTL8192U)		+= rtl8192u/
 obj-$(CONFIG_RTL8192E)		+= rtl8192e/
 obj-$(CONFIG_R8712U)		+= rtl8712/

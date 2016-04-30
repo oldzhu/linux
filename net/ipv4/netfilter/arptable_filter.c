@@ -79,6 +79,15 @@ static int __init arptable_filter_init(void)
 	if (ret < 0) {
 		kfree(arpfilter_ops);
 		return ret;
+<<<<<<< HEAD
+=======
+	}
+
+	ret = arptable_filter_table_init(&init_net);
+	if (ret) {
+		unregister_pernet_subsys(&arptable_filter_net_ops);
+		kfree(arpfilter_ops);
+>>>>>>> upstream/master
 	}
 
 	return ret;

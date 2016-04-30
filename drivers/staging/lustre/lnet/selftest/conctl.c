@@ -743,7 +743,11 @@ static int lst_test_add_ioctl(lstio_test_args_t *args)
 	if (args->lstio_tes_param &&
 	    (args->lstio_tes_param_len <= 0 ||
 	     args->lstio_tes_param_len >
+<<<<<<< HEAD
 	     PAGE_CACHE_SIZE - sizeof(lstcon_test_t)))
+=======
+	     PAGE_SIZE - sizeof(lstcon_test_t)))
+>>>>>>> upstream/master
 		return -EINVAL;
 
 	LIBCFS_ALLOC(batch_name, args->lstio_tes_bat_nmlen + 1);
@@ -819,7 +823,11 @@ lstcon_ioctl_entry(unsigned int cmd, struct libcfs_ioctl_hdr *hdr)
 
 	opc = data->ioc_u32[0];
 
+<<<<<<< HEAD
 	if (data->ioc_plen1 > PAGE_CACHE_SIZE)
+=======
+	if (data->ioc_plen1 > PAGE_SIZE)
+>>>>>>> upstream/master
 		return -EINVAL;
 
 	LIBCFS_ALLOC(buf, data->ioc_plen1);

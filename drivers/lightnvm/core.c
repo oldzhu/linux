@@ -466,7 +466,10 @@ static int nvm_core_init(struct nvm_dev *dev)
 	dev->total_secs = dev->nr_luns * dev->sec_per_lun;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	dev->lun_map = kcalloc(BITS_TO_LONGS(dev->nr_luns),
@@ -474,6 +477,9 @@ static int nvm_core_init(struct nvm_dev *dev)
 	if (!dev->lun_map)
 		return -ENOMEM;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

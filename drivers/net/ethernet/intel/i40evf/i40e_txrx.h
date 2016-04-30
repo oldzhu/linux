@@ -395,10 +395,22 @@ static inline int i40e_maybe_stop_tx(struct i40e_ring *tx_ring, int size)
  **/
 static inline bool i40e_chk_linearize(struct sk_buff *skb, int count)
 {
+<<<<<<< HEAD
 	/* we can only support up to 8 data buffers for a single send */
 	if (likely(count <= I40E_MAX_BUFFER_TXD))
 		return false;
 
 	return __i40evf_chk_linearize(skb);
+=======
+	/* Both TSO and single send will work if count is less than 8 */
+	if (likely(count < I40E_MAX_BUFFER_TXD))
+		return false;
+
+	if (skb_is_gso(skb))
+		return __i40evf_chk_linearize(skb);
+
+	/* we can support up to 8 data buffers for a single send */
+	return count != I40E_MAX_BUFFER_TXD;
+>>>>>>> upstream/master
 }
 #endif /* _I40E_TXRX_H_ */

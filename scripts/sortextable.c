@@ -317,6 +317,10 @@ do_file(char const *const fname)
 	case EM_AARCH64:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	case EM_PARISC:
+>>>>>>> upstream/master
 =======
 	case EM_PARISC:
 >>>>>>> upstream/master
