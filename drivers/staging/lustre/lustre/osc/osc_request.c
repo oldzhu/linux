@@ -930,8 +930,13 @@ int osc_shrink_grant_to_target(struct client_obd *cli, __u64 target_bytes)
 	 * impact block allocation and long-term performance.
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (target_bytes < cli->cl_max_pages_per_rpc << PAGE_CACHE_SHIFT)
 		target_bytes = cli->cl_max_pages_per_rpc << PAGE_CACHE_SHIFT;
+=======
+	if (target_bytes < cli->cl_max_pages_per_rpc << PAGE_SHIFT)
+		target_bytes = cli->cl_max_pages_per_rpc << PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 	if (target_bytes < cli->cl_max_pages_per_rpc << PAGE_SHIFT)
 		target_bytes = cli->cl_max_pages_per_rpc << PAGE_SHIFT;
@@ -984,7 +989,11 @@ static int osc_should_shrink_grant(struct client_obd *client)
 		 * Keep comment here so that it can be found by searching.
 		 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 		int brw_size = client->cl_max_pages_per_rpc << PAGE_CACHE_SHIFT;
+=======
+		int brw_size = client->cl_max_pages_per_rpc << PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 		int brw_size = client->cl_max_pages_per_rpc << PAGE_SHIFT;
 >>>>>>> upstream/master

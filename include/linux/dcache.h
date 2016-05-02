@@ -231,6 +231,10 @@ struct dentry_operations {
 
 #define DCACHE_ENCRYPTED_WITH_KEY	0x04000000 /* dir is encrypted with a valid key */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#define DCACHE_OP_REAL			0x08000000
+>>>>>>> upstream/master
 =======
 #define DCACHE_OP_REAL			0x08000000
 >>>>>>> upstream/master

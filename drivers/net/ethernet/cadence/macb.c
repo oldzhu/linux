@@ -2999,7 +2999,12 @@ static int macb_probe(struct platform_device *pdev)
 		if (gpio_is_valid(gpio)) {
 			bp->reset_gpio = gpio_to_desc(gpio);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		gpiod_direction_output(bp->reset_gpio, 1);
+=======
+			gpiod_direction_output(bp->reset_gpio, 1);
+		}
+>>>>>>> upstream/master
 =======
 			gpiod_direction_output(bp->reset_gpio, 1);
 		}
@@ -3074,7 +3079,12 @@ static int macb_remove(struct platform_device *pdev)
 
 		/* Shutdown the PHY if there is a GPIO reset */
 <<<<<<< HEAD
+<<<<<<< HEAD
 		gpiod_set_value(bp->reset_gpio, 0);
+=======
+		if (bp->reset_gpio)
+			gpiod_set_value(bp->reset_gpio, 0);
+>>>>>>> upstream/master
 =======
 		if (bp->reset_gpio)
 			gpiod_set_value(bp->reset_gpio, 0);

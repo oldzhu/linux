@@ -730,9 +730,15 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
 		unsigned int length_mask, offset_mask;
 		int i;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		host->flags |= SDHCI_REQ_USE_DMA;
 
+=======
+
+		host->flags |= SDHCI_REQ_USE_DMA;
+
+>>>>>>> upstream/master
 =======
 
 		host->flags |= SDHCI_REQ_USE_DMA;

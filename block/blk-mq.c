@@ -1798,11 +1798,12 @@ static void blk_mq_map_swqueue(struct request_queue *q,
 	/*
 	 * Map software to hardware queues
 	 */
-	queue_for_each_ctx(q, ctx, i) {
+	for_each_possible_cpu(i) {
 		/* If the cpu isn't online, the cpu is mapped to first hctx */
 		if (!cpumask_test_cpu(i, online_mask))
 			continue;
 
+		ctx = per_cpu_ptr(q->queue_ctx, i);
 		hctx = q->mq_ops->map_queue(q, i);
 
 		cpumask_set_cpu(i, hctx->cpumask);
@@ -1962,10 +1963,17 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
 	blk_mq_sysfs_unregister(q);
 	for (i = 0; i < set->nr_hw_queues; i++) {
 		int node;
+<<<<<<< HEAD
 
 		if (hctxs[i])
 			continue;
 
+=======
+
+		if (hctxs[i])
+			continue;
+
+>>>>>>> upstream/master
 		node = blk_mq_hw_queue_to_node(q->mq_map, i);
 		hctxs[i] = kzalloc_node(sizeof(struct blk_mq_hw_ctx),
 					GFP_KERNEL, node);
@@ -1990,6 +1998,7 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
 			break;
 		}
 		blk_mq_hctx_kobj_init(hctxs[i]);
+<<<<<<< HEAD
 	}
 	for (j = i; j < q->nr_hw_queues; j++) {
 		struct blk_mq_hw_ctx *hctx = hctxs[j];
@@ -2008,6 +2017,26 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
 
 		}
 	}
+=======
+	}
+	for (j = i; j < q->nr_hw_queues; j++) {
+		struct blk_mq_hw_ctx *hctx = hctxs[j];
+
+		if (hctx) {
+			if (hctx->tags) {
+				blk_mq_free_rq_map(set, hctx->tags, j);
+				set->tags[j] = NULL;
+			}
+			blk_mq_exit_hctx(q, set, hctx, j);
+			free_cpumask_var(hctx->cpumask);
+			kobject_put(&hctx->kobj);
+			kfree(hctx->ctxs);
+			kfree(hctx);
+			hctxs[j] = NULL;
+
+		}
+	}
+>>>>>>> upstream/master
 	q->nr_hw_queues = i;
 	blk_mq_sysfs_register(q);
 }

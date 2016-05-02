@@ -1507,7 +1507,11 @@ static noinline ssize_t __btrfs_buffered_write(struct file *file,
 
 	while (iov_iter_count(i) > 0) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		size_t offset = pos & (PAGE_CACHE_SIZE - 1);
+=======
+		size_t offset = pos & (PAGE_SIZE - 1);
+>>>>>>> upstream/master
 =======
 		size_t offset = pos & (PAGE_SIZE - 1);
 >>>>>>> upstream/master
@@ -1552,7 +1556,11 @@ static noinline ssize_t __btrfs_buffered_write(struct file *file,
 			 */
 			num_pages = DIV_ROUND_UP(write_bytes + offset,
 <<<<<<< HEAD
+<<<<<<< HEAD
 						 PAGE_CACHE_SIZE);
+=======
+						 PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 						 PAGE_SIZE);
 >>>>>>> upstream/master

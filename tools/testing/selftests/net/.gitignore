@@ -4,6 +4,10 @@ psock_tpacket
 reuseport_bpf
 reuseport_bpf_cpu
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+reuseport_dualstack
+>>>>>>> upstream/master
 =======
 reuseport_dualstack
 >>>>>>> upstream/master

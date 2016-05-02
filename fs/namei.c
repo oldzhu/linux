@@ -1741,10 +1741,14 @@ static int walk_component(struct nameidata *nd, int flags)
 		if (IS_ERR(path.dentry))
 			return PTR_ERR(path.dentry);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (unlikely(d_is_negative(path.dentry))) {
 			dput(path.dentry);
 			return -ENOENT;
 		}
+=======
+
+>>>>>>> upstream/master
 =======
 
 >>>>>>> upstream/master

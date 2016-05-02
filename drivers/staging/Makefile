@@ -7,6 +7,9 @@ obj-$(CONFIG_COMEDI)		+= comedi/
 <<<<<<< HEAD
 =======
 obj-$(CONFIG_FB_OLPC_DCON)	+= olpc_dcon/
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 obj-$(CONFIG_RTL8192U)		+= rtl8192u/
 obj-$(CONFIG_RTL8192E)		+= rtl8192e/

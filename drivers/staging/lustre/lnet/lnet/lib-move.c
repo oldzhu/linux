@@ -550,7 +550,11 @@ lnet_extract_kiov(int dst_niov, lnet_kiov_t *dst,
 			dst->kiov_len = len;
 			LASSERT(dst->kiov_offset + dst->kiov_len
 <<<<<<< HEAD
+<<<<<<< HEAD
 					<= PAGE_CACHE_SIZE);
+=======
+					<= PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 					<= PAGE_SIZE);
 >>>>>>> upstream/master

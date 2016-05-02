@@ -870,6 +870,7 @@ static int __do_huge_pmd_anonymous_page(struct mm_struct *mm,
  */
 static inline gfp_t alloc_hugepage_direct_gfpmask(struct vm_area_struct *vma)
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
 	gfp_t reclaim_flags = 0;
 
@@ -887,6 +888,25 @@ static inline gfp_t alloc_hugepage_direct_gfpmask(struct vm_area_struct *vma)
 /* Defrag for khugepaged will enter direct reclaim/compaction if necessary */
 static inline gfp_t alloc_hugepage_khugepaged_gfpmask(void)
 {
+=======
+{
+	gfp_t reclaim_flags = 0;
+
+	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags) &&
+	    (vma->vm_flags & VM_HUGEPAGE))
+		reclaim_flags = __GFP_DIRECT_RECLAIM;
+	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags))
+		reclaim_flags = __GFP_KSWAPD_RECLAIM;
+	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags))
+		reclaim_flags = __GFP_DIRECT_RECLAIM;
+
+	return GFP_TRANSHUGE | reclaim_flags;
+}
+
+/* Defrag for khugepaged will enter direct reclaim/compaction if necessary */
+static inline gfp_t alloc_hugepage_khugepaged_gfpmask(void)
+{
+>>>>>>> upstream/master
 =======
 {
 	gfp_t reclaim_flags = 0;

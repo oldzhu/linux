@@ -1170,6 +1170,10 @@ static void mt_release_contacts(struct hid_device *hid)
 							   false);
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+			input_mt_sync_frame(input_dev);
+>>>>>>> upstream/master
 =======
 			input_mt_sync_frame(input_dev);
 >>>>>>> upstream/master

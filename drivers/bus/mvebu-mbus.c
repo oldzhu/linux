@@ -972,7 +972,11 @@ int mvebu_mbus_get_dram_win_info(phys_addr_t phyaddr, u8 *target, u8 *attr)
 		}
 	}
 
+<<<<<<< HEAD
 	pr_err("invalid dram address 0x%x\n", phyaddr);
+=======
+	pr_err("invalid dram address %pa\n", &phyaddr);
+>>>>>>> upstream/master
 	return -EINVAL;
 }
 EXPORT_SYMBOL_GPL(mvebu_mbus_get_dram_win_info);

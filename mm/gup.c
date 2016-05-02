@@ -840,7 +840,11 @@ static __always_inline long __get_user_pages_locked(struct task_struct *tsk,
  *          up_read(&mm->mmap_sem);
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 long get_user_pages_locked6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 =======
 long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
 >>>>>>> upstream/master
@@ -897,7 +901,11 @@ EXPORT_SYMBOL(__get_user_pages_unlocked);
  * "force" parameter).
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 long get_user_pages_unlocked5(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 =======
 long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
 >>>>>>> upstream/master
@@ -971,6 +979,25 @@ long get_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
 	return __get_user_pages_locked(tsk, mm, start, nr_pages, write, force,
 				       pages, vmas, NULL, false,
 				       FOLL_TOUCH | FOLL_REMOTE);
+<<<<<<< HEAD
+=======
+}
+EXPORT_SYMBOL(get_user_pages_remote);
+
+/*
+ * This is the same as get_user_pages_remote(), just with a
+ * less-flexible calling convention where we assume that the task
+ * and mm being operated on are the current task's.  We also
+ * obviously don't pass FOLL_REMOTE in here.
+ */
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+		int write, int force, struct page **pages,
+		struct vm_area_struct **vmas)
+{
+	return __get_user_pages_locked(current, current->mm, start, nr_pages,
+				       write, force, pages, vmas, NULL, false,
+				       FOLL_TOUCH);
+>>>>>>> upstream/master
 }
 EXPORT_SYMBOL(get_user_pages_remote);
 

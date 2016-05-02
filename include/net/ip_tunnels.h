@@ -308,7 +308,10 @@ struct sk_buff *iptunnel_handle_offloads(struct sk_buff *skb, int gso_type_mask)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 =======
@@ -334,6 +337,9 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

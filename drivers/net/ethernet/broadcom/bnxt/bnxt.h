@@ -478,6 +478,10 @@ struct rx_tpa_end_cmp_ext {
 #define NEXT_CMP(idx)		RING_CMP(ADV_RAW_CMP(idx, 1))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#define BNXT_HWRM_MAX_REQ_LEN		(bp->hwrm_max_req_len)
+>>>>>>> upstream/master
 =======
 #define BNXT_HWRM_MAX_REQ_LEN		(bp->hwrm_max_req_len)
 >>>>>>> upstream/master
@@ -958,6 +962,10 @@ struct bnxt {
 	int			hw_port_stats_size;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	u16			hwrm_max_req_len;
+>>>>>>> upstream/master
 =======
 	u16			hwrm_max_req_len;
 >>>>>>> upstream/master

@@ -288,6 +288,9 @@ static void br_multicast_del_pg(struct net_bridge *br,
 =======
 		br_mdb_notify(br->dev, p->port, &pg->addr, RTM_DELMDB,
 			      p->flags);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		call_rcu_bh(&p->rcu, br_multicast_free_pg);
 
@@ -711,7 +714,11 @@ static int br_multicast_add_group(struct net_bridge *br,
 		goto err;
 	rcu_assign_pointer(*pp, p);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	br_mdb_notify(br->dev, p, RTM_NEWMDB);
+=======
+	br_mdb_notify(br->dev, port, group, RTM_NEWMDB, 0);
+>>>>>>> upstream/master
 =======
 	br_mdb_notify(br->dev, port, group, RTM_NEWMDB, 0);
 >>>>>>> upstream/master
@@ -1475,6 +1482,9 @@ br_multicast_leave_group(struct net_bridge *br,
 =======
 			br_mdb_notify(br->dev, port, group, RTM_DELMDB,
 				      p->flags);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 			if (!mp->ports && !mp->mglist &&

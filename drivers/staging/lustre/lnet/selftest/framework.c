@@ -1162,7 +1162,11 @@ sfw_add_test(struct srpc_server_rpc *rpc)
 
 		if (!(sn->sn_features & LST_FEAT_BULK_LEN)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			len = npg * PAGE_CACHE_SIZE;
+=======
+			len = npg * PAGE_SIZE;
+>>>>>>> upstream/master
 =======
 			len = npg * PAGE_SIZE;
 >>>>>>> upstream/master

@@ -8,7 +8,13 @@ config OPENVSWITCH
 	depends on !NF_CONNTRACK || \
 		   (NF_CONNTRACK && ((!NF_DEFRAG_IPV6 || NF_DEFRAG_IPV6) && \
 <<<<<<< HEAD
+<<<<<<< HEAD
 				     (!NF_NAT || NF_NAT)))
+=======
+				     (!NF_NAT || NF_NAT) && \
+				     (!NF_NAT_IPV4 || NF_NAT_IPV4) && \
+				     (!NF_NAT_IPV6 || NF_NAT_IPV6)))
+>>>>>>> upstream/master
 =======
 				     (!NF_NAT || NF_NAT) && \
 				     (!NF_NAT_IPV4 || NF_NAT_IPV4) && \

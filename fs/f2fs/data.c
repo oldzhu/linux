@@ -993,7 +993,11 @@ submit_and_realloc:
 					S_ISREG(inode->i_mode)) {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 				ctx = fscrypt_get_ctx(inode);
+=======
+				ctx = fscrypt_get_ctx(inode, GFP_NOFS);
+>>>>>>> upstream/master
 =======
 				ctx = fscrypt_get_ctx(inode, GFP_NOFS);
 >>>>>>> upstream/master
@@ -1102,8 +1106,14 @@ int do_write_data_page(struct f2fs_io_info *fio)
 		f2fs_wait_on_encrypted_page_writeback(F2FS_I_SB(inode),
 							fio->old_blkaddr);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		fio->encrypted_page = fscrypt_encrypt_page(inode, fio->page);
+=======
+retry_encrypt:
+		fio->encrypted_page = fscrypt_encrypt_page(inode, fio->page,
+								gfp_flags);
+>>>>>>> upstream/master
 =======
 retry_encrypt:
 		fio->encrypted_page = fscrypt_encrypt_page(inode, fio->page,
@@ -1468,7 +1478,11 @@ static int prepare_write_begin(struct f2fs_sb_info *sbi,
 	 */
 	if (!f2fs_has_inline_data(inode) && !f2fs_encrypted_inode(inode) &&
 <<<<<<< HEAD
+<<<<<<< HEAD
 					len == PAGE_CACHE_SIZE)
+=======
+					len == PAGE_SIZE)
+>>>>>>> upstream/master
 =======
 					len == PAGE_SIZE)
 >>>>>>> upstream/master

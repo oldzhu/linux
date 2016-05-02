@@ -1875,6 +1875,7 @@ static bool srpt_close_ch(struct srpt_rdma_ch *ch)
 {
 	int ret;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	if (!srpt_set_ch_state(ch, CH_DRAINING)) {
 		pr_debug("%s-%d: already closed\n", ch->sess_name,
@@ -1889,6 +1890,22 @@ static bool srpt_close_ch(struct srpt_rdma_ch *ch)
 		pr_err("%s-%d: changing queue pair into error state failed: %d\n",
 		       ch->sess_name, ch->qp->qp_num, ret);
 
+=======
+
+	if (!srpt_set_ch_state(ch, CH_DRAINING)) {
+		pr_debug("%s-%d: already closed\n", ch->sess_name,
+			 ch->qp->qp_num);
+		return false;
+	}
+
+	kref_get(&ch->kref);
+
+	ret = srpt_ch_qp_err(ch);
+	if (ret < 0)
+		pr_err("%s-%d: changing queue pair into error state failed: %d\n",
+		       ch->sess_name, ch->qp->qp_num, ret);
+
+>>>>>>> upstream/master
 =======
 
 	if (!srpt_set_ch_state(ch, CH_DRAINING)) {
@@ -2191,8 +2208,12 @@ static int srpt_cm_req_recv(struct ib_cm_id *cm_id,
 
 try_again:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	ch->sess = target_alloc_session(&sport->port_tpg_1, ch->rq_size,
 					sizeof(struct srpt_send_ioctx),
+=======
+	ch->sess = target_alloc_session(&sport->port_tpg_1, 0, 0,
+>>>>>>> upstream/master
 =======
 	ch->sess = target_alloc_session(&sport->port_tpg_1, 0, 0,
 >>>>>>> upstream/master
@@ -2940,10 +2961,17 @@ static void srpt_close_session(struct se_session *se_sess)
 	srpt_disconnect_ch(ch);
 	mutex_unlock(&sdev->mutex);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	if (!wait)
 		return;
 
+=======
+
+	if (!wait)
+		return;
+
+>>>>>>> upstream/master
 =======
 
 	if (!wait)
@@ -3181,6 +3209,7 @@ static ssize_t srpt_tpg_enable_store(struct config_item *item,
 	if (sport->enabled)
 		goto out;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	mutex_lock(&sdev->mutex);
 	list_for_each_entry(ch, &sdev->rch_list, list) {
@@ -3193,6 +3222,20 @@ static ssize_t srpt_tpg_enable_store(struct config_item *item,
 	}
 	mutex_unlock(&sdev->mutex);
 
+=======
+
+	mutex_lock(&sdev->mutex);
+	list_for_each_entry(ch, &sdev->rch_list, list) {
+		if (ch->sport == sport) {
+			pr_debug("%s: ch %p %s-%d\n", __func__, ch,
+				 ch->sess_name, ch->qp->qp_num);
+			srpt_disconnect_ch(ch);
+			srpt_close_ch(ch);
+		}
+	}
+	mutex_unlock(&sdev->mutex);
+
+>>>>>>> upstream/master
 =======
 
 	mutex_lock(&sdev->mutex);

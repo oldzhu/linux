@@ -775,7 +775,11 @@ static int dim2_probe(struct platform_device *pdev)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ret = PTR_ERR(dev->netinfo_task);
+=======
+		return PTR_ERR(dev->netinfo_task);
+>>>>>>> upstream/master
 =======
 		return PTR_ERR(dev->netinfo_task);
 >>>>>>> upstream/master

@@ -1900,9 +1900,12 @@ void c4iw_drain_sq(struct ib_qp *ibqp)
 {
 	struct c4iw_qp *qp = to_c4iw_qp(ibqp);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	wait_for_completion(&qp->sq_drained);
 =======
+=======
+>>>>>>> upstream/master
 	unsigned long flag;
 	bool need_to_wait;
 
@@ -1912,6 +1915,9 @@ void c4iw_drain_sq(struct ib_qp *ibqp)
 
 	if (need_to_wait)
 		wait_for_completion(&qp->sq_drained);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 }
 
@@ -1919,9 +1925,12 @@ void c4iw_drain_rq(struct ib_qp *ibqp)
 {
 	struct c4iw_qp *qp = to_c4iw_qp(ibqp);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	wait_for_completion(&qp->rq_drained);
 =======
+=======
+>>>>>>> upstream/master
 	unsigned long flag;
 	bool need_to_wait;
 
@@ -1931,5 +1940,8 @@ void c4iw_drain_rq(struct ib_qp *ibqp)
 
 	if (need_to_wait)
 		wait_for_completion(&qp->rq_drained);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 }

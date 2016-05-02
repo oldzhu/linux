@@ -671,8 +671,12 @@ static int btree_readpage_end_io_hook(struct btrfs_io_bio *io_bio,
 
 	ret = csum_tree_block(fs_info, eb, 1);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (ret) {
 		ret = -EIO;
+=======
+	if (ret)
+>>>>>>> upstream/master
 =======
 	if (ret)
 >>>>>>> upstream/master

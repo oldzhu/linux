@@ -127,7 +127,13 @@ out:
 				page_alloc[i].page_size, PCI_DMA_FROMDEVICE);
 			page = page_alloc[i].page;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			set_page_count(page, 1);
+=======
+			/* Revert changes done by mlx4_alloc_pages */
+			page_ref_sub(page, page_alloc[i].page_size /
+					   priv->frag_info[i].frag_stride - 1);
+>>>>>>> upstream/master
 =======
 			/* Revert changes done by mlx4_alloc_pages */
 			page_ref_sub(page, page_alloc[i].page_size /
@@ -183,7 +189,13 @@ out:
 			       page_alloc->page_size, PCI_DMA_FROMDEVICE);
 		page = page_alloc->page;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		set_page_count(page, 1);
+=======
+		/* Revert changes done by mlx4_alloc_pages */
+		page_ref_sub(page, page_alloc->page_size /
+				   priv->frag_info[i].frag_stride - 1);
+>>>>>>> upstream/master
 =======
 		/* Revert changes done by mlx4_alloc_pages */
 		page_ref_sub(page, page_alloc->page_size /

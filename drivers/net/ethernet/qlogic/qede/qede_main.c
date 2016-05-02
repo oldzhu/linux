@@ -751,13 +751,19 @@ static bool qede_has_tx_work(struct qede_fastpath *fp)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 static inline void qede_rx_bd_ring_consume(struct qede_rx_queue *rxq)
 {
 	qed_chain_consume(&rxq->rx_bd_ring);
 	rxq->sw_rx_cons++;
 }
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 /* This function reuses the buffer(from an offset) from
  * consumer index to producer index in the bd ring
@@ -783,7 +789,10 @@ static inline void qede_reuse_page(struct qede_dev *edev,
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 /* In case of allocation failures reuse buffers
  * from consumer index to produce buffers for firmware
  */
@@ -799,6 +808,9 @@ static void qede_recycle_rx_bd_ring(struct qede_rx_queue *rxq,
 	}
 }
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 static inline int qede_realloc_rx_buffer(struct qede_dev *edev,
 					 struct qede_rx_queue *rxq,
@@ -809,9 +821,12 @@ static inline int qede_realloc_rx_buffer(struct qede_dev *edev,
 
 	if (curr_cons->page_offset == PAGE_SIZE) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (unlikely(qede_alloc_rx_buffer(edev, rxq)))
 			return -ENOMEM;
 =======
+=======
+>>>>>>> upstream/master
 		if (unlikely(qede_alloc_rx_buffer(edev, rxq))) {
 			/* Since we failed to allocate new buffer
 			 * current buffer can be used again.
@@ -820,6 +835,9 @@ static inline int qede_realloc_rx_buffer(struct qede_dev *edev,
 
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 		dma_unmap_page(&edev->pdev->dev, curr_cons->mapping,
@@ -940,12 +958,18 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
 
 	if (unlikely(qede_realloc_rx_buffer(edev, rxq, current_bd))) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
 =======
+=======
+>>>>>>> upstream/master
 		/* Incr page ref count to reuse on allocation failure
 		 * so that it doesn't get freed while freeing SKB.
 		 */
 		atomic_inc(&current_bd->data->_count);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		goto out;
 	}
@@ -961,6 +985,11 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
 
 out:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
+	qede_recycle_rx_bd_ring(rxq, edev, 1);
+>>>>>>> upstream/master
 =======
 	tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
 	qede_recycle_rx_bd_ring(rxq, edev, 1);
@@ -1017,8 +1046,14 @@ static void qede_tpa_start(struct qede_dev *edev,
 					 le16_to_cpu(cqe->len_on_first_bd));
 	if (unlikely(!tpa_info->skb)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
 		return;
+=======
+		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
+		tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
+		goto cons_buf;
+>>>>>>> upstream/master
 =======
 		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
 		tpa_info->agg_state = QEDE_AGG_STATE_ERROR;
@@ -1047,6 +1082,10 @@ static void qede_tpa_start(struct qede_dev *edev,
 	qede_set_gro_params(edev, tpa_info->skb, cqe);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+cons_buf: /* We still need to handle bd_len_list to consume buffers */
+>>>>>>> upstream/master
 =======
 cons_buf: /* We still need to handle bd_len_list to consume buffers */
 >>>>>>> upstream/master
@@ -1068,7 +1107,10 @@ static void qede_gro_ip_csum(struct sk_buff *skb)
 	struct tcphdr *th;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	skb_set_network_header(skb, 0);
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	skb_set_transport_header(skb, sizeof(struct iphdr));
@@ -1086,7 +1128,10 @@ static void qede_gro_ipv6_csum(struct sk_buff *skb)
 	struct tcphdr *th;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	skb_set_network_header(skb, 0);
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
@@ -1104,9 +1149,12 @@ static void qede_gro_receive(struct qede_dev *edev,
 			     u16 vlan_tag)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 #ifdef CONFIG_INET
 	if (skb_shinfo(skb)->gso_size) {
 =======
+=======
+>>>>>>> upstream/master
 	/* FW can send a single MTU sized packet from gro flow
 	 * due to aggregation timeout/last segment etc. which
 	 * is not expected to be a gro packet. If a skb has zero
@@ -1122,6 +1170,9 @@ static void qede_gro_receive(struct qede_dev *edev,
 	if (skb_shinfo(skb)->gso_size) {
 		skb_set_network_header(skb, 0);
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		switch (skb->protocol) {
 		case htons(ETH_P_IP):
@@ -1138,6 +1189,11 @@ static void qede_gro_receive(struct qede_dev *edev,
 	}
 #endif
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+send_skb:
+>>>>>>> upstream/master
 =======
 
 send_skb:
@@ -1334,8 +1390,13 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 				  sw_comp_cons, parse_flag);
 			rxq->rx_hw_errors++;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			qede_reuse_page(edev, rxq, sw_rx_data);
 			goto next_rx;
+=======
+			qede_recycle_rx_bd_ring(rxq, edev, fp_cqe->bd_num);
+			goto next_cqe;
+>>>>>>> upstream/master
 =======
 			qede_recycle_rx_bd_ring(rxq, edev, fp_cqe->bd_num);
 			goto next_cqe;
@@ -1347,7 +1408,11 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 			DP_NOTICE(edev,
 				  "Build_skb failed, dropping incoming packet\n");
 <<<<<<< HEAD
+<<<<<<< HEAD
 			qede_reuse_page(edev, rxq, sw_rx_data);
+=======
+			qede_recycle_rx_bd_ring(rxq, edev, fp_cqe->bd_num);
+>>>>>>> upstream/master
 =======
 			qede_recycle_rx_bd_ring(rxq, edev, fp_cqe->bd_num);
 >>>>>>> upstream/master
@@ -1368,6 +1433,9 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 
 			frag = &skb_shinfo(skb)->frags[0];
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 
 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, data,
 					pad + sw_rx_data->page_offset,
@@ -1375,6 +1443,7 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 
 			va = skb_frag_address(frag);
 			pull_len = eth_get_headlen(va, QEDE_RX_HDR_SIZE);
+<<<<<<< HEAD
 
 =======
 
@@ -1389,6 +1458,12 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 			/* Align the pull_len to optimize memcpy */
 			memcpy(skb->data, va, ALIGN(pull_len, sizeof(long)));
 
+=======
+
+			/* Align the pull_len to optimize memcpy */
+			memcpy(skb->data, va, ALIGN(pull_len, sizeof(long)));
+
+>>>>>>> upstream/master
 			skb_frag_size_sub(frag, pull_len);
 			frag->page_offset += pull_len;
 			skb->data_len -= pull_len;
@@ -1398,8 +1473,11 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 							    sw_rx_data))) {
 				DP_ERR(edev, "Failed to allocate rx buffer\n");
 <<<<<<< HEAD
+<<<<<<< HEAD
 				rxq->rx_alloc_errors++;
 =======
+=======
+>>>>>>> upstream/master
 				/* Incr page ref count to reuse on allocation
 				 * failure so that it doesn't get freed while
 				 * freeing SKB.
@@ -1410,12 +1488,20 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 				qede_recycle_rx_bd_ring(rxq, edev,
 							fp_cqe->bd_num);
 				dev_kfree_skb_any(skb);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 				goto next_cqe;
 			}
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		qede_rx_bd_ring_consume(rxq);
+
+>>>>>>> upstream/master
 =======
 		qede_rx_bd_ring_consume(rxq);
 
@@ -1431,6 +1517,7 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 				u16 cur_size = pkt_len > rxq->rx_buf_size ?
 						rxq->rx_buf_size : pkt_len;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 				WARN_ONCE(!cur_size,
 					  "Still got %d BDs for mapping jumbo, but length became 0\n",
@@ -1444,6 +1531,8 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 				sw_rx_data = &rxq->sw_rx_ring[sw_rx_index];
 				qed_chain_consume(&rxq->rx_bd_ring);
 =======
+=======
+>>>>>>> upstream/master
 				if (unlikely(!cur_size)) {
 					DP_ERR(edev,
 					       "Still got %d BDs for mapping jumbo, but length became 0\n",
@@ -1465,6 +1554,9 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 				sw_rx_data = &rxq->sw_rx_ring[sw_rx_index];
 				qede_rx_bd_ring_consume(rxq);
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 				dma_unmap_page(&edev->pdev->dev,
 					       sw_rx_data->mapping,
@@ -1482,7 +1574,11 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (pkt_len)
+=======
+			if (unlikely(pkt_len))
+>>>>>>> upstream/master
 =======
 			if (unlikely(pkt_len))
 >>>>>>> upstream/master
@@ -1505,10 +1601,13 @@ static int qede_rx_int(struct qede_fastpath *fp, int budget)
 
 		qede_skb_receive(edev, fp, skb, le16_to_cpu(fp_cqe->vlan_tag));
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		qed_chain_consume(&rxq->rx_bd_ring);
 next_rx:
 		rxq->sw_rx_cons++;
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 next_rx_only:
@@ -2416,7 +2515,11 @@ static void qede_free_sge_mem(struct qede_dev *edev,
 		struct sw_rx_data *replace_buf = &tpa_info->replace_buf;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (replace_buf) {
+=======
+		if (replace_buf->data) {
+>>>>>>> upstream/master
 =======
 		if (replace_buf->data) {
 >>>>>>> upstream/master
@@ -2592,10 +2695,14 @@ static int qede_alloc_mem_rxq(struct qede_dev *edev,
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	qede_alloc_sge_mem(edev, rxq);
 
 	return 0;
 
+=======
+	rc = qede_alloc_sge_mem(edev, rxq);
+>>>>>>> upstream/master
 =======
 	rc = qede_alloc_sge_mem(edev, rxq);
 >>>>>>> upstream/master

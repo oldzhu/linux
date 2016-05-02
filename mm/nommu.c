@@ -162,7 +162,11 @@ finish_or_fault:
  * - don't permit access to VMAs that don't support it, such as I/O mappings
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 long get_user_pages6(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 =======
 long get_user_pages(unsigned long start, unsigned long nr_pages,
 >>>>>>> upstream/master
@@ -182,17 +186,23 @@ long get_user_pages(unsigned long start, unsigned long nr_pages,
 EXPORT_SYMBOL(get_user_pages6);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 long get_user_pages_locked6(unsigned long start, unsigned long nr_pages,
 			    int write, int force, struct page **pages,
 			    int *locked)
 {
 	return get_user_pages6(start, nr_pages, write, force, pages, NULL);
 =======
+=======
+>>>>>>> upstream/master
 long get_user_pages_locked(unsigned long start, unsigned long nr_pages,
 			    int write, int force, struct page **pages,
 			    int *locked)
 {
 	return get_user_pages(start, nr_pages, write, force, pages, NULL);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 }
 EXPORT_SYMBOL(get_user_pages_locked6);
@@ -212,7 +222,11 @@ long __get_user_pages_unlocked(struct task_struct *tsk, struct mm_struct *mm,
 EXPORT_SYMBOL(__get_user_pages_unlocked);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 long get_user_pages_unlocked5(unsigned long start, unsigned long nr_pages,
+=======
+long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
+>>>>>>> upstream/master
 =======
 long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
 >>>>>>> upstream/master

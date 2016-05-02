@@ -358,7 +358,11 @@ static ssize_t ll_direct_IO_26_seg(const struct lu_env *env, struct cl_io *io,
  */
 #define MAX_DIO_SIZE ((KMALLOC_MAX_SIZE / sizeof(struct brw_page) *	  \
 <<<<<<< HEAD
+<<<<<<< HEAD
 		       PAGE_CACHE_SIZE) & ~(DT_MAX_BRW_SIZE - 1))
+=======
+		       PAGE_SIZE) & ~(DT_MAX_BRW_SIZE - 1))
+>>>>>>> upstream/master
 =======
 		       PAGE_SIZE) & ~(DT_MAX_BRW_SIZE - 1))
 >>>>>>> upstream/master

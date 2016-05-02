@@ -566,6 +566,9 @@ void br_mdb_notify(struct net_device *dev, struct net_bridge_port_group *pg,
 =======
 void br_mdb_notify(struct net_device *dev, struct net_bridge_port *port,
 		   struct br_ip *group, int type, u8 flags);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 void br_rtr_notify(struct net_device *dev, struct net_bridge_port *port,
 		   int type);

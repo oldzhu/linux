@@ -1797,7 +1797,11 @@ static void i40e_create_tx_ctx(struct i40e_ring *tx_ring,
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
  * __i40evf_chk_linearize - Check if there are more than 8 fragments per packet
+=======
+ * __i40evf_chk_linearize - Check if there are more than 8 buffers per packet
+>>>>>>> upstream/master
 =======
  * __i40evf_chk_linearize - Check if there are more than 8 buffers per packet
 >>>>>>> upstream/master
@@ -1815,6 +1819,7 @@ static void i40e_create_tx_ctx(struct i40e_ring *tx_ring,
 bool __i40evf_chk_linearize(struct sk_buff *skb)
 {
 	const struct skb_frag_struct *frag, *stale;
+<<<<<<< HEAD
 <<<<<<< HEAD
 	int gso_size, nr_frags, sum;
 
@@ -1875,12 +1880,40 @@ bool __i40evf_chk_linearize(struct sk_buff *skb)
 	 */
 	sum = 1 - skb_shinfo(skb)->gso_size;
 
+=======
+	int nr_frags, sum;
+
+	/* no need to check if number of frags is less than 7 */
+	nr_frags = skb_shinfo(skb)->nr_frags;
+	if (nr_frags < (I40E_MAX_BUFFER_TXD - 1))
+		return false;
+
+	/* We need to walk through the list and validate that each group
+	 * of 6 fragments totals at least gso_size.  However we don't need
+	 * to perform such validation on the last 6 since the last 6 cannot
+	 * inherit any data from a descriptor after them.
+	 */
+	nr_frags -= I40E_MAX_BUFFER_TXD - 2;
+	frag = &skb_shinfo(skb)->frags[0];
+
+	/* Initialize size to the negative value of gso_size minus 1.  We
+	 * use this as the worst case scenerio in which the frag ahead
+	 * of us only provides one byte which is why we are limited to 6
+	 * descriptors for a single transmit as the header and previous
+	 * fragment are already consuming 2 descriptors.
+	 */
+	sum = 1 - skb_shinfo(skb)->gso_size;
+
+>>>>>>> upstream/master
 	/* Add size of frags 0 through 4 to create our initial sum */
 	sum += skb_frag_size(frag++);
 	sum += skb_frag_size(frag++);
 	sum += skb_frag_size(frag++);
 	sum += skb_frag_size(frag++);
 	sum += skb_frag_size(frag++);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 	/* Walk through fragments adding latest fragment, testing it, and
@@ -1889,7 +1922,11 @@ bool __i40evf_chk_linearize(struct sk_buff *skb)
 	stale = &skb_shinfo(skb)->frags[0];
 	for (;;) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		sum += skb_frag_size(++frag);
+=======
+		sum += skb_frag_size(frag++);
+>>>>>>> upstream/master
 =======
 		sum += skb_frag_size(frag++);
 >>>>>>> upstream/master
@@ -1903,7 +1940,11 @@ bool __i40evf_chk_linearize(struct sk_buff *skb)
 			break;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		sum -= skb_frag_size(++stale);
+=======
+		sum -= skb_frag_size(stale++);
+>>>>>>> upstream/master
 =======
 		sum -= skb_frag_size(stale++);
 >>>>>>> upstream/master

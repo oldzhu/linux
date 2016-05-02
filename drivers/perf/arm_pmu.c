@@ -738,9 +738,12 @@ static void cpu_pm_pmu_setup(struct arm_pmu *armpmu, unsigned long cmd)
 		case CPU_PM_EXIT:
 		case CPU_PM_ENTER_FAILED:
 <<<<<<< HEAD
+<<<<<<< HEAD
 			 /* Restore and enable the counter */
 			armpmu_start(event, PERF_EF_RELOAD);
 =======
+=======
+>>>>>>> upstream/master
 			 /*
 			  * Restore and enable the counter.
 			  * armpmu_start() indirectly calls
@@ -754,6 +757,9 @@ static void cpu_pm_pmu_setup(struct arm_pmu *armpmu, unsigned long cmd)
 			  * duration.
 			  */
 			RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 			break;
 		default:

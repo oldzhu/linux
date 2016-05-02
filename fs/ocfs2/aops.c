@@ -500,6 +500,7 @@ bail:
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
  * TODO: Make this into a generic get_blocks function.
  *
@@ -652,6 +653,8 @@ static int ocfs2_dio_end_io(struct kiocb *iocb,
 	return 0;
 }
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 static int ocfs2_releasepage(struct page *page, gfp_t wait)
@@ -964,6 +967,8 @@ static void ocfs2_unlock_pages(struct ocfs2_write_ctxt *wc)
 		}
 		mark_page_accessed(wc->w_target_page);
 		put_page(wc->w_target_page);
+<<<<<<< HEAD
+=======
 	}
 	ocfs2_unlock_and_free_pages(wc->w_pages, wc->w_num_pages);
 }
@@ -980,9 +985,28 @@ static void ocfs2_free_unwritten_list(struct inode *inode,
 		list_del(&ue->ue_ip_node);
 		spin_unlock(&oi->ip_lock);
 		kfree(ue);
+>>>>>>> upstream/master
 	}
 }
 
+<<<<<<< HEAD
+static void ocfs2_free_unwritten_list(struct inode *inode,
+				 struct list_head *head)
+{
+	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+	struct ocfs2_unwritten_extent *ue = NULL, *tmp = NULL;
+
+	list_for_each_entry_safe(ue, tmp, head, ue_node) {
+		list_del(&ue->ue_node);
+		spin_lock(&oi->ip_lock);
+		list_del(&ue->ue_ip_node);
+		spin_unlock(&oi->ip_lock);
+		kfree(ue);
+	}
+}
+
+=======
+>>>>>>> upstream/master
 static void ocfs2_free_write_ctxt(struct inode *inode,
 				  struct ocfs2_write_ctxt *wc)
 {
@@ -1465,7 +1489,70 @@ static void ocfs2_set_target_boundaries(struct ocfs2_super *osb,
 	} else {
 		wc->w_target_from = 0;
 		wc->w_target_to = PAGE_SIZE;
+<<<<<<< HEAD
+=======
 	}
+}
+
+/*
+ * Check if this extent is marked UNWRITTEN by direct io. If so, we need not to
+ * do the zero work. And should not to clear UNWRITTEN since it will be cleared
+ * by the direct io procedure.
+ * If this is a new extent that allocated by direct io, we should mark it in
+ * the ip_unwritten_list.
+ */
+static int ocfs2_unwritten_check(struct inode *inode,
+				 struct ocfs2_write_ctxt *wc,
+				 struct ocfs2_write_cluster_desc *desc)
+{
+	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+	struct ocfs2_unwritten_extent *ue = NULL, *new = NULL;
+	int ret = 0;
+
+	if (!desc->c_needs_zero)
+		return 0;
+
+retry:
+	spin_lock(&oi->ip_lock);
+	/* Needs not to zero no metter buffer or direct. The one who is zero
+	 * the cluster is doing zero. And he will clear unwritten after all
+	 * cluster io finished. */
+	list_for_each_entry(ue, &oi->ip_unwritten_list, ue_ip_node) {
+		if (desc->c_cpos == ue->ue_cpos) {
+			BUG_ON(desc->c_new);
+			desc->c_needs_zero = 0;
+			desc->c_clear_unwritten = 0;
+			goto unlock;
+		}
+>>>>>>> upstream/master
+	}
+
+	if (wc->w_type != OCFS2_WRITE_DIRECT)
+		goto unlock;
+
+	if (new == NULL) {
+		spin_unlock(&oi->ip_lock);
+		new = kmalloc(sizeof(struct ocfs2_unwritten_extent),
+			     GFP_NOFS);
+		if (new == NULL) {
+			ret = -ENOMEM;
+			goto out;
+		}
+		goto retry;
+	}
+	/* This direct write will doing zero. */
+	new->ue_cpos = desc->c_cpos;
+	new->ue_phys = desc->c_phys;
+	desc->c_clear_unwritten = 0;
+	list_add_tail(&new->ue_ip_node, &oi->ip_unwritten_list);
+	list_add_tail(&new->ue_node, &wc->w_unwritten_list);
+	new = NULL;
+unlock:
+	spin_unlock(&oi->ip_lock);
+out:
+	if (new)
+		kfree(new);
+	return ret;
 }
 
 /*

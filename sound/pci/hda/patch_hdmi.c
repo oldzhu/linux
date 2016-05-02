@@ -1523,11 +1523,19 @@ static bool hdmi_present_sense(struct hdmi_spec_per_pin *per_pin, int repoll)
 	struct hdmi_spec *spec = codec->spec;
 	int ret;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	/* no temporary power up/down needed for component notifier */
 	if (!codec_has_acomp(codec))
 		snd_hda_power_up_pm(codec);
 
+=======
+
+	/* no temporary power up/down needed for component notifier */
+	if (!codec_has_acomp(codec))
+		snd_hda_power_up_pm(codec);
+
+>>>>>>> upstream/master
 =======
 
 	/* no temporary power up/down needed for component notifier */
@@ -1867,6 +1875,11 @@ static void hdmi_set_chmap(struct hdac_device *hdac, int pcm_idx,
 	struct hdmi_spec_per_pin *per_pin = pcm_idx_to_pin(spec, pcm_idx);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	if (!per_pin)
+		return;
+>>>>>>> upstream/master
 =======
 	if (!per_pin)
 		return;

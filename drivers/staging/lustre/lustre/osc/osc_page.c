@@ -488,7 +488,11 @@ static atomic_t osc_lru_waiters = ATOMIC_INIT(0);
  * number of pages to avoid running out of LRU budget, and..
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 static const int lru_shrink_min = 2 << (20 - PAGE_CACHE_SHIFT);  /* 2M */
+=======
+static const int lru_shrink_min = 2 << (20 - PAGE_SHIFT);  /* 2M */
+>>>>>>> upstream/master
 =======
 static const int lru_shrink_min = 2 << (20 - PAGE_SHIFT);  /* 2M */
 >>>>>>> upstream/master

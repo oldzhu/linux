@@ -322,7 +322,11 @@ static int ll_fault0(struct vm_area_struct *vma, struct vm_fault *vmf)
 		vmpage = vio->u.fault.ft_vmpage;
 		if (result != 0 && vmpage) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			page_cache_release(vmpage);
+=======
+			put_page(vmpage);
+>>>>>>> upstream/master
 =======
 			put_page(vmpage);
 >>>>>>> upstream/master

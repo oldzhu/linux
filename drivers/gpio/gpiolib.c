@@ -68,6 +68,7 @@ LIST_HEAD(gpio_devices);
 static void gpiochip_free_hogs(struct gpio_chip *chip);
 static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip);
 
+static bool gpiolib_initialized;
 
 static inline void desc_set_label(struct gpio_desc *d, const char *label)
 {
@@ -397,6 +398,7 @@ static int gpio_chrdev_open(struct inode *inode, struct file *filp)
 {
 	struct gpio_device *gdev = container_of(inode->i_cdev,
 					      struct gpio_device, chrdev);
+<<<<<<< HEAD
 
 	/* Fail on open if the backing gpiochip is gone */
 	if (!gdev || !gdev->chip)
@@ -404,6 +406,51 @@ static int gpio_chrdev_open(struct inode *inode, struct file *filp)
 	get_device(&gdev->dev);
 	filp->private_data = gdev;
 	return 0;
+}
+
+/**
+ * gpio_chrdev_release() - close chardev after ioctl operations
+ * @inode: inode for this chardev
+ * @filp: file struct for storing private data
+ * Returns 0 on success
+ */
+static int gpio_chrdev_release(struct inode *inode, struct file *filp)
+{
+	struct gpio_device *gdev = container_of(inode->i_cdev,
+					      struct gpio_device, chrdev);
+
+	if (!gdev)
+		return -ENODEV;
+	put_device(&gdev->dev);
+=======
+
+	/* Fail on open if the backing gpiochip is gone */
+	if (!gdev || !gdev->chip)
+		return -ENODEV;
+	get_device(&gdev->dev);
+	filp->private_data = gdev;
+>>>>>>> upstream/master
+	return 0;
+}
+
+
+static const struct file_operations gpio_fileops = {
+	.release = gpio_chrdev_release,
+	.open = gpio_chrdev_open,
+	.owner = THIS_MODULE,
+	.llseek = noop_llseek,
+	.unlocked_ioctl = gpio_ioctl,
+	.compat_ioctl = gpio_ioctl,
+};
+
+static void gpiodevice_release(struct device *dev)
+{
+	struct gpio_device *gdev = dev_get_drvdata(dev);
+
+	cdev_del(&gdev->chrdev);
+	list_del(&gdev->list);
+	ida_simple_remove(&gpio_ida, gdev->id);
+	kfree(gdev);
 }
 
 /**
@@ -440,7 +487,61 @@ static void gpiodevice_release(struct device *dev)
 	cdev_del(&gdev->chrdev);
 	list_del(&gdev->list);
 	ida_simple_remove(&gpio_ida, gdev->id);
+	kfree(gdev->label);
+	kfree(gdev->descs);
 	kfree(gdev);
+}
+
+static int gpiochip_setup_dev(struct gpio_device *gdev)
+{
+	int status;
+
+	cdev_init(&gdev->chrdev, &gpio_fileops);
+	gdev->chrdev.owner = THIS_MODULE;
+	gdev->chrdev.kobj.parent = &gdev->dev.kobj;
+	gdev->dev.devt = MKDEV(MAJOR(gpio_devt), gdev->id);
+	status = cdev_add(&gdev->chrdev, gdev->dev.devt, 1);
+	if (status < 0)
+		chip_warn(gdev->chip, "failed to add char device %d:%d\n",
+			  MAJOR(gpio_devt), gdev->id);
+	else
+		chip_dbg(gdev->chip, "added GPIO chardev (%d:%d)\n",
+			 MAJOR(gpio_devt), gdev->id);
+	status = device_add(&gdev->dev);
+	if (status)
+		goto err_remove_chardev;
+
+	status = gpiochip_sysfs_register(gdev);
+	if (status)
+		goto err_remove_device;
+
+	/* From this point, the .release() function cleans up gpio_device */
+	gdev->dev.release = gpiodevice_release;
+	get_device(&gdev->dev);
+	pr_debug("%s: registered GPIOs %d to %d on device: %s (%s)\n",
+		 __func__, gdev->base, gdev->base + gdev->ngpio - 1,
+		 dev_name(&gdev->dev), gdev->chip->label ? : "generic");
+
+	return 0;
+
+err_remove_device:
+	device_del(&gdev->dev);
+err_remove_chardev:
+	cdev_del(&gdev->chrdev);
+	return status;
+}
+
+static void gpiochip_setup_devs(void)
+{
+	struct gpio_device *gdev;
+	int err;
+
+	list_for_each_entry(gdev, &gpio_devices, list) {
+		err = gpiochip_setup_dev(gdev);
+		if (err)
+			pr_err("%s: Failed to initialize gpio device (%d)\n",
+			       dev_name(&gdev->dev), err);
+	}
 }
 
 /**
@@ -456,6 +557,9 @@ static void gpiodevice_release(struct device *dev)
  * can be freely used, the chip->parent device must be registered before
  * the gpio framework's arch_initcall().  Otherwise sysfs initialization
  * for GPIOs will fail rudely.
+ *
+ * gpiochip_add_data() must only be called after gpiolib initialization,
+ * ie after core_initcall().
  *
  * If chip->base is negative, this requests dynamic assignment of
  * a range of valid GPIOs.
@@ -504,8 +608,12 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 	else
 		gdev->owner = THIS_MODULE;
 
+<<<<<<< HEAD
 	gdev->descs = devm_kcalloc(&gdev->dev, chip->ngpio,
 				   sizeof(gdev->descs[0]), GFP_KERNEL);
+=======
+	gdev->descs = kcalloc(chip->ngpio, sizeof(gdev->descs[0]), GFP_KERNEL);
+>>>>>>> upstream/master
 	if (!gdev->descs) {
 		status = -ENOMEM;
 		goto err_free_gdev;
@@ -514,6 +622,7 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 	if (chip->ngpio == 0) {
 		chip_err(chip, "tried to insert a GPIO chip with zero lines\n");
 		status = -EINVAL;
+<<<<<<< HEAD
 		goto err_free_gdev;
 	}
 
@@ -526,6 +635,20 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 		goto err_free_gdev;
 	}
 
+=======
+		goto err_free_descs;
+	}
+
+	if (chip->label)
+		gdev->label = kstrdup(chip->label, GFP_KERNEL);
+	else
+		gdev->label = kstrdup("unknown", GFP_KERNEL);
+	if (!gdev->label) {
+		status = -ENOMEM;
+		goto err_free_descs;
+	}
+
+>>>>>>> upstream/master
 	gdev->ngpio = chip->ngpio;
 	gdev->data = data;
 
@@ -543,7 +666,11 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 		if (base < 0) {
 			status = base;
 			spin_unlock_irqrestore(&gpio_lock, flags);
+<<<<<<< HEAD
 			goto err_free_gdev;
+=======
+			goto err_free_label;
+>>>>>>> upstream/master
 		}
 		/*
 		 * TODO: it should not be necessary to reflect the assigned
@@ -558,7 +685,11 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 	status = gpiodev_add_to_list(gdev);
 	if (status) {
 		spin_unlock_irqrestore(&gpio_lock, flags);
+<<<<<<< HEAD
 		goto err_free_gdev;
+=======
+		goto err_free_label;
+>>>>>>> upstream/master
 	}
 
 	for (i = 0; i < chip->ngpio; i++) {
@@ -596,6 +727,7 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 	 * we get a device node entry in sysfs under
 	 * /sys/bus/gpio/devices/gpiochipN/dev that can be used for
 	 * coldplug of device nodes and other udev business.
+<<<<<<< HEAD
 	 */
 	cdev_init(&gdev->chrdev, &gpio_fileops);
 	gdev->chrdev.owner = THIS_MODULE;
@@ -623,6 +755,16 @@ int gpiochip_add_data(struct gpio_chip *chip, void *data)
 		 __func__, gdev->base, gdev->base + gdev->ngpio - 1,
 		 dev_name(&gdev->dev), chip->label ? : "generic");
 
+=======
+	 * We can do this only if gpiolib has been initialized.
+	 * Otherwise, defer until later.
+	 */
+	if (gpiolib_initialized) {
+		status = gpiochip_setup_dev(gdev);
+		if (status)
+			goto err_remove_chip;
+	}
+>>>>>>> upstream/master
 	return 0;
 
 err_remove_device:
@@ -637,6 +779,13 @@ err_remove_from_list:
 	spin_lock_irqsave(&gpio_lock, flags);
 	list_del(&gdev->list);
 	spin_unlock_irqrestore(&gpio_lock, flags);
+<<<<<<< HEAD
+=======
+err_free_label:
+	kfree(gdev->label);
+err_free_descs:
+	kfree(gdev->descs);
+>>>>>>> upstream/master
 err_free_gdev:
 	ida_simple_remove(&gpio_ida, gdev->id);
 	/* failures here can mean systems won't boot... */
@@ -1330,10 +1479,17 @@ int gpiod_request(struct gpio_desc *desc, const char *label)
 {
 	int status = -EPROBE_DEFER;
 	struct gpio_device *gdev;
+<<<<<<< HEAD
 
 	VALIDATE_DESC(desc);
 	gdev = desc->gdev;
 
+=======
+
+	VALIDATE_DESC(desc);
+	gdev = desc->gdev;
+
+>>>>>>> upstream/master
 	if (try_module_get(gdev->owner)) {
 		status = __gpiod_request(desc, label);
 		if (status < 0)
@@ -2231,9 +2387,11 @@ static struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 	return desc;
 }
 
-static struct gpio_desc *acpi_find_gpio(struct device *dev, const char *con_id,
+static struct gpio_desc *acpi_find_gpio(struct device *dev,
+					const char *con_id,
 					unsigned int idx,
-					enum gpio_lookup_flags *flags)
+					enum gpiod_flags flags,
+					enum gpio_lookup_flags *lookupflags)
 {
 	struct acpi_device *adev = ACPI_COMPANION(dev);
 	struct acpi_gpio_info info;
@@ -2264,10 +2422,16 @@ static struct gpio_desc *acpi_find_gpio(struct device *dev, const char *con_id,
 		desc = acpi_get_gpiod_by_index(adev, NULL, idx, &info);
 		if (IS_ERR(desc))
 			return desc;
+
+		if ((flags == GPIOD_OUT_LOW || flags == GPIOD_OUT_HIGH) &&
+		    info.gpioint) {
+			dev_dbg(dev, "refusing GpioInt() entry when doing GPIOD_OUT_* lookup\n");
+			return ERR_PTR(-ENOENT);
+		}
 	}
 
 	if (info.polarity == GPIO_ACTIVE_LOW)
-		*flags |= GPIO_ACTIVE_LOW;
+		*lookupflags |= GPIO_ACTIVE_LOW;
 
 	return desc;
 }
@@ -2530,7 +2694,7 @@ struct gpio_desc *__must_check gpiod_get_index(struct device *dev,
 			desc = of_find_gpio(dev, con_id, idx, &lookupflags);
 		} else if (ACPI_COMPANION(dev)) {
 			dev_dbg(dev, "using ACPI for GPIO lookup\n");
-			desc = acpi_find_gpio(dev, con_id, idx, &lookupflags);
+			desc = acpi_find_gpio(dev, con_id, idx, flags, &lookupflags);
 		}
 	}
 
@@ -2829,6 +2993,12 @@ static int __init gpiolib_dev_init(void)
 	if (ret < 0) {
 		pr_err("gpiolib: failed to allocate char dev region\n");
 		bus_unregister(&gpio_bus_type);
+<<<<<<< HEAD
+=======
+	} else {
+		gpiolib_initialized = true;
+		gpiochip_setup_devs();
+>>>>>>> upstream/master
 	}
 	return ret;
 }

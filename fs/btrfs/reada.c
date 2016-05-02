@@ -136,6 +136,7 @@ static void __readahead_hook(struct btrfs_fs_info *fs_info,
 	 */
 	if (err)
 		goto cleanup;
+<<<<<<< HEAD
 
 	/*
 	 * FIXME: currently we just set nritems to 0 if this is a leaf,
@@ -146,6 +147,18 @@ static void __readahead_hook(struct btrfs_fs_info *fs_info,
 	if (!level)
 		goto cleanup;
 
+=======
+
+	/*
+	 * FIXME: currently we just set nritems to 0 if this is a leaf,
+	 * effectively ignoring the content. In a next step we could
+	 * trigger more readahead depending from the content, e.g.
+	 * fetch the checksums for the extents in the leaf.
+	 */
+	if (!level)
+		goto cleanup;
+
+>>>>>>> upstream/master
 	nritems = btrfs_header_nritems(eb);
 	generation = btrfs_header_generation(eb);
 	for (i = 0; i < nritems; i++) {
@@ -227,7 +240,11 @@ int btree_readahead_hook(struct btrfs_fs_info *fs_info,
 	spin_lock(&fs_info->reada_lock);
 	re = radix_tree_lookup(&fs_info->reada_tree,
 <<<<<<< HEAD
+<<<<<<< HEAD
 			       start >> PAGE_CACHE_SHIFT);
+=======
+			       start >> PAGE_SHIFT);
+>>>>>>> upstream/master
 =======
 			       start >> PAGE_SHIFT);
 >>>>>>> upstream/master
@@ -262,7 +279,11 @@ static struct reada_zone *reada_find_zone(struct btrfs_fs_info *fs_info,
 	spin_lock(&fs_info->reada_lock);
 	ret = radix_tree_gang_lookup(&dev->reada_zones, (void **)&zone,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				     logical >> PAGE_CACHE_SHIFT, 1);
+=======
+				     logical >> PAGE_SHIFT, 1);
+>>>>>>> upstream/master
 =======
 				     logical >> PAGE_SHIFT, 1);
 >>>>>>> upstream/master
@@ -309,7 +330,11 @@ static struct reada_zone *reada_find_zone(struct btrfs_fs_info *fs_info,
 		kfree(zone);
 		ret = radix_tree_gang_lookup(&dev->reada_zones, (void **)&zone,
 <<<<<<< HEAD
+<<<<<<< HEAD
 					     logical >> PAGE_CACHE_SHIFT, 1);
+=======
+					     logical >> PAGE_SHIFT, 1);
+>>>>>>> upstream/master
 =======
 					     logical >> PAGE_SHIFT, 1);
 >>>>>>> upstream/master
@@ -339,7 +364,11 @@ static struct reada_extent *reada_find_extent(struct btrfs_root *root,
 	int real_stripes;
 	int nzones = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	unsigned long index = logical >> PAGE_CACHE_SHIFT;
+=======
+	unsigned long index = logical >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 	unsigned long index = logical >> PAGE_SHIFT;
 >>>>>>> upstream/master
@@ -690,7 +719,11 @@ static int reada_start_machine_dev(struct btrfs_fs_info *fs_info,
 	 */
 	ret = radix_tree_gang_lookup(&dev->reada_extents, (void **)&re,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				     dev->reada_next >> PAGE_CACHE_SHIFT, 1);
+=======
+				     dev->reada_next >> PAGE_SHIFT, 1);
+>>>>>>> upstream/master
 =======
 				     dev->reada_next >> PAGE_SHIFT, 1);
 >>>>>>> upstream/master
@@ -901,7 +934,11 @@ static void dump_devs(struct btrfs_fs_info *fs_info, int all)
 			break;
 		if (!re->scheduled) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			index = (re->logical >> PAGE_CACHE_SHIFT) + 1;
+=======
+			index = (re->logical >> PAGE_SHIFT) + 1;
+>>>>>>> upstream/master
 =======
 			index = (re->logical >> PAGE_SHIFT) + 1;
 >>>>>>> upstream/master

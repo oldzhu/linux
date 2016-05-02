@@ -64,7 +64,10 @@ struct rdma_cm_id *isert_setup_id(struct isert_np *isert_np);
 
 static void isert_release_work(struct work_struct *work);
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void isert_wait4flush(struct isert_conn *isert_conn);
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 static void isert_recv_done(struct ib_cq *cq, struct ib_wc *wc);
@@ -891,7 +894,11 @@ isert_disconnected_handler(struct rdma_cm_id *cma_id,
 	case ISER_CONN_UP:
 		isert_conn_terminate(isert_conn);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		isert_wait4flush(isert_conn);
+=======
+		ib_drain_qp(isert_conn->qp);
+>>>>>>> upstream/master
 =======
 		ib_drain_qp(isert_conn->qp);
 >>>>>>> upstream/master
@@ -1544,6 +1551,7 @@ isert_rx_opcode(struct isert_conn *isert_conn, struct iser_rx_desc *rx_desc,
 static void
 isert_print_wc(struct ib_wc *wc, const char *type)
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
 	if (wc->status != IB_WC_WR_FLUSH_ERR)
 		isert_err("%s failure: %s (%d) vend_err %x\n", type,
@@ -1559,6 +1567,9 @@ isert_recv_done(struct ib_cq *cq, struct ib_wc *wc)
 {
 =======
 {
+=======
+{
+>>>>>>> upstream/master
 	if (wc->status != IB_WC_WR_FLUSH_ERR)
 		isert_err("%s failure: %s (%d) vend_err %x\n", type,
 			  ib_wc_status_msg(wc->status), wc->status,
@@ -1571,6 +1582,9 @@ isert_recv_done(struct ib_cq *cq, struct ib_wc *wc)
 static void
 isert_recv_done(struct ib_cq *cq, struct ib_wc *wc)
 {
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	struct isert_conn *isert_conn = wc->qp->qp_context;
 	struct ib_device *ib_dev = isert_conn->cm_id->device;
@@ -3237,6 +3251,7 @@ isert_wait4cmds(struct iscsi_conn *conn)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void
 isert_beacon_done(struct ib_cq *cq, struct ib_wc *wc)
 {
@@ -3267,6 +3282,8 @@ isert_wait4flush(struct isert_conn *isert_conn)
 	wait_for_completion(&isert_conn->wait_comp_err);
 }
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 /**

@@ -2004,7 +2004,11 @@ again:
 
 	ordered = btrfs_lookup_ordered_range(inode, page_start,
 <<<<<<< HEAD
+<<<<<<< HEAD
 					PAGE_CACHE_SIZE);
+=======
+					PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 					PAGE_SIZE);
 >>>>>>> upstream/master
@@ -4638,7 +4642,11 @@ int btrfs_truncate_block(struct inode *inode, loff_t from, loff_t len,
 	char *kaddr;
 	u32 blocksize = root->sectorsize;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	pgoff_t index = from >> PAGE_CACHE_SHIFT;
+=======
+	pgoff_t index = from >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 	pgoff_t index = from >> PAGE_SHIFT;
 >>>>>>> upstream/master
@@ -8748,7 +8756,11 @@ static void btrfs_invalidatepage(struct page *page, unsigned int offset,
 	struct extent_state *cached_state = NULL;
 	u64 page_start = page_offset(page);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	u64 page_end = page_start + PAGE_CACHE_SIZE - 1;
+=======
+	u64 page_end = page_start + PAGE_SIZE - 1;
+>>>>>>> upstream/master
 =======
 	u64 page_end = page_start + PAGE_SIZE - 1;
 >>>>>>> upstream/master
@@ -8887,11 +8899,19 @@ int btrfs_page_mkwrite(struct vm_area_struct *vma, struct vm_fault *vmf)
 	u64 end;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	reserved_space = PAGE_CACHE_SIZE;
 
 	sb_start_pagefault(inode->i_sb);
 	page_start = page_offset(page);
 	page_end = page_start + PAGE_CACHE_SIZE - 1;
+=======
+	reserved_space = PAGE_SIZE;
+
+	sb_start_pagefault(inode->i_sb);
+	page_start = page_offset(page);
+	page_end = page_start + PAGE_SIZE - 1;
+>>>>>>> upstream/master
 =======
 	reserved_space = PAGE_SIZE;
 
@@ -8955,9 +8975,15 @@ again:
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (page->index == ((size - 1) >> PAGE_CACHE_SHIFT)) {
 		reserved_space = round_up(size - page_start, root->sectorsize);
 		if (reserved_space < PAGE_CACHE_SIZE) {
+=======
+	if (page->index == ((size - 1) >> PAGE_SHIFT)) {
+		reserved_space = round_up(size - page_start, root->sectorsize);
+		if (reserved_space < PAGE_SIZE) {
+>>>>>>> upstream/master
 =======
 	if (page->index == ((size - 1) >> PAGE_SHIFT)) {
 		reserved_space = round_up(size - page_start, root->sectorsize);
@@ -8969,7 +8995,11 @@ again:
 			spin_unlock(&BTRFS_I(inode)->lock);
 			btrfs_delalloc_release_space(inode, page_start,
 <<<<<<< HEAD
+<<<<<<< HEAD
 						PAGE_CACHE_SIZE - reserved_space);
+=======
+						PAGE_SIZE - reserved_space);
+>>>>>>> upstream/master
 =======
 						PAGE_SIZE - reserved_space);
 >>>>>>> upstream/master

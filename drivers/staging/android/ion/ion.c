@@ -1142,8 +1142,13 @@ static int ion_dma_buf_begin_cpu_access(struct dma_buf *dmabuf,
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf,
 				       enum dma_data_direction direction)
+=======
+static int ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf,
+				      enum dma_data_direction direction)
+>>>>>>> upstream/master
 =======
 static int ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf,
 				      enum dma_data_direction direction)

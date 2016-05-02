@@ -3857,6 +3857,12 @@ static int bnxt_hwrm_ver_get(struct bnxt *bp)
 		bp->hwrm_cmd_timeout = DFLT_HWRM_CMD_TIMEOUT;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	if (resp->hwrm_intf_maj >= 1)
+		bp->hwrm_max_req_len = le16_to_cpu(resp->max_req_win_len);
+
+>>>>>>> upstream/master
 =======
 	if (resp->hwrm_intf_maj >= 1)
 		bp->hwrm_max_req_len = le16_to_cpu(resp->max_req_win_len);

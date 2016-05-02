@@ -4482,7 +4482,11 @@ static ssize_t fill_read_buf(struct send_ctx *sctx, u64 offset, u32 len)
 	while (index <= last_index) {
 		unsigned cur_len = min_t(unsigned, len,
 <<<<<<< HEAD
+<<<<<<< HEAD
 					 PAGE_CACHE_SIZE - pg_offset);
+=======
+					 PAGE_SIZE - pg_offset);
+>>>>>>> upstream/master
 =======
 					 PAGE_SIZE - pg_offset);
 >>>>>>> upstream/master

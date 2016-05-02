@@ -847,8 +847,13 @@ static struct dst_entry *geneve_get_v6_dst(struct sk_buff *skb,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		fl6->flowi6_tos = RT_TOS(info->key.tos);
 		fl6->flowlabel = info->key.label;
+=======
+		fl6->flowlabel = ip6_make_flowinfo(RT_TOS(info->key.tos),
+						   info->key.label);
+>>>>>>> upstream/master
 =======
 		fl6->flowlabel = ip6_make_flowinfo(RT_TOS(info->key.tos),
 						   info->key.label);
@@ -879,8 +884,13 @@ static struct dst_entry *geneve_get_v6_dst(struct sk_buff *skb,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		fl6->flowi6_tos = RT_TOS(prio);
 		fl6->flowlabel = geneve->label;
+=======
+		fl6->flowlabel = ip6_make_flowinfo(RT_TOS(prio),
+						   geneve->label);
+>>>>>>> upstream/master
 =======
 		fl6->flowlabel = ip6_make_flowinfo(RT_TOS(prio),
 						   geneve->label);

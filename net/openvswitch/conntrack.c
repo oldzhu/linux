@@ -537,7 +537,12 @@ static int ovs_ct_nat_execute(struct sk_buff *skb, struct nf_conn *ct,
 	case IP_CT_RELATED:
 	case IP_CT_RELATED_REPLY:
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (skb->protocol == htons(ETH_P_IP) &&
+=======
+		if (IS_ENABLED(CONFIG_NF_NAT_IPV4) &&
+		    skb->protocol == htons(ETH_P_IP) &&
+>>>>>>> upstream/master
 =======
 		if (IS_ENABLED(CONFIG_NF_NAT_IPV4) &&
 		    skb->protocol == htons(ETH_P_IP) &&
@@ -548,8 +553,13 @@ static int ovs_ct_nat_execute(struct sk_buff *skb, struct nf_conn *ct,
 				err = NF_DROP;
 			goto push;
 <<<<<<< HEAD
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NF_NAT_IPV6)
 		} else if (skb->protocol == htons(ETH_P_IPV6)) {
+=======
+		} else if (IS_ENABLED(CONFIG_NF_NAT_IPV6) &&
+			   skb->protocol == htons(ETH_P_IPV6)) {
+>>>>>>> upstream/master
 =======
 		} else if (IS_ENABLED(CONFIG_NF_NAT_IPV6) &&
 			   skb->protocol == htons(ETH_P_IPV6)) {
@@ -569,7 +579,10 @@ static int ovs_ct_nat_execute(struct sk_buff *skb, struct nf_conn *ct,
 				goto push;
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 		}
@@ -679,18 +692,24 @@ static int ovs_ct_nat(struct net *net, struct sw_flow_key *key,
 	/* Determine NAT type.
 	 * Check if the NAT type can be deduced from the tracked connection.
 <<<<<<< HEAD
+<<<<<<< HEAD
 	 * Make sure expected traffic is NATted only when committing.
 	 */
 	if (info->nat & OVS_CT_NAT && ctinfo != IP_CT_NEW &&
 	    ct->status & IPS_NAT_MASK &&
 	    (!(ct->status & IPS_EXPECTED_BIT) || info->commit)) {
 =======
+=======
+>>>>>>> upstream/master
 	 * Make sure new expected connections (IP_CT_RELATED) are NATted only
 	 * when committing.
 	 */
 	if (info->nat & OVS_CT_NAT && ctinfo != IP_CT_NEW &&
 	    ct->status & IPS_NAT_MASK &&
 	    (ctinfo != IP_CT_RELATED || info->commit)) {
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		/* NAT an established or related connection like before. */
 		if (CTINFO2DIR(ctinfo) == IP_CT_DIR_REPLY)
@@ -794,9 +813,24 @@ static int __ovs_ct_lookup(struct net *net, struct sw_flow_key *key,
 		if (info->nat && !(key->ct.state & OVS_CS_F_NAT_MASK) &&
 		    (nf_ct_is_confirmed(ct) || info->commit) &&
 		    ovs_ct_nat(net, key, info, skb, ct, ctinfo) != NF_ACCEPT) {
+<<<<<<< HEAD
 			return -EINVAL;
 		}
 
+		/* Call the helper only if:
+		 * - nf_conntrack_in() was executed above ("!cached") for a
+		 *   confirmed connection, or
+		 * - When committing an unconfirmed connection.
+		 */
+		if ((nf_ct_is_confirmed(ct) ? !cached : info->commit) &&
+		    ovs_ct_helper(skb, info->family) != NF_ACCEPT) {
+=======
+>>>>>>> upstream/master
+			return -EINVAL;
+		}
+
+<<<<<<< HEAD
+=======
 		/* Call the helper only if:
 		 * - nf_conntrack_in() was executed above ("!cached") for a
 		 *   confirmed connection, or
@@ -808,6 +842,7 @@ static int __ovs_ct_lookup(struct net *net, struct sw_flow_key *key,
 		}
 	}
 
+>>>>>>> upstream/master
 	return 0;
 }
 
@@ -992,7 +1027,12 @@ static int parse_nat(const struct nlattr *attr,
 
 		case OVS_NAT_ATTR_IP_MIN:
 <<<<<<< HEAD
+<<<<<<< HEAD
 			nla_memcpy(&info->range.min_addr, a, nla_len(a));
+=======
+			nla_memcpy(&info->range.min_addr, a,
+				   sizeof(info->range.min_addr));
+>>>>>>> upstream/master
 =======
 			nla_memcpy(&info->range.min_addr, a,
 				   sizeof(info->range.min_addr));
@@ -1267,7 +1307,12 @@ static bool ovs_ct_nat_to_attr(const struct ovs_conntrack_info *info,
 
 	if (info->range.flags & NF_NAT_RANGE_MAP_IPS) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (info->family == NFPROTO_IPV4) {
+=======
+		if (IS_ENABLED(CONFIG_NF_NAT_IPV4) &&
+		    info->family == NFPROTO_IPV4) {
+>>>>>>> upstream/master
 =======
 		if (IS_ENABLED(CONFIG_NF_NAT_IPV4) &&
 		    info->family == NFPROTO_IPV4) {
@@ -1280,8 +1325,13 @@ static bool ovs_ct_nat_to_attr(const struct ovs_conntrack_info *info,
 					      info->range.max_addr.ip))))
 				return false;
 <<<<<<< HEAD
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NF_NAT_IPV6)
 		} else if (info->family == NFPROTO_IPV6) {
+=======
+		} else if (IS_ENABLED(CONFIG_NF_NAT_IPV6) &&
+			   info->family == NFPROTO_IPV6) {
+>>>>>>> upstream/master
 =======
 		} else if (IS_ENABLED(CONFIG_NF_NAT_IPV6) &&
 			   info->family == NFPROTO_IPV6) {
@@ -1295,7 +1345,10 @@ static bool ovs_ct_nat_to_attr(const struct ovs_conntrack_info *info,
 					       &info->range.max_addr.in6))))
 				return false;
 <<<<<<< HEAD
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 		} else {

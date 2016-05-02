@@ -342,7 +342,12 @@ s32 wilc_parse_network_info(u8 *msg_buffer,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (!network_info->ies)
+=======
+			if (!network_info->ies) {
+				kfree(network_info);
+>>>>>>> upstream/master
 =======
 			if (!network_info->ies) {
 				kfree(network_info);
@@ -383,6 +388,7 @@ s32 wilc_parse_assoc_resp_info(u8 *buffer, u32 buffer_len,
 		return -ENOMEM;
 
 	assoc_resp_len = (u16)buffer_len;
+<<<<<<< HEAD
 
 	connect_resp_info->status = get_asoc_status(buffer);
 	if (connect_resp_info->status == SUCCESSFUL_STATUSCODE) {
@@ -406,6 +412,19 @@ s32 wilc_parse_assoc_resp_info(u8 *buffer, u32 buffer_len,
 =======
 >>>>>>> upstream/master
 =======
+>>>>>>> upstream/master
+=======
+
+	connect_resp_info->status = get_asoc_status(buffer);
+	if (connect_resp_info->status == SUCCESSFUL_STATUSCODE) {
+		connect_resp_info->capability = get_assoc_resp_cap_info(buffer);
+		connect_resp_info->assoc_id = get_asoc_id(buffer);
+
+		ies = &buffer[CAP_INFO_LEN + STATUS_CODE_LEN + AID_LEN];
+		ies_len = assoc_resp_len - (CAP_INFO_LEN + STATUS_CODE_LEN +
+					    AID_LEN);
+
+		connect_resp_info->ies = kmemdup(ies, ies_len, GFP_KERNEL);
 >>>>>>> upstream/master
 		if (!connect_resp_info->ies) {
 			kfree(connect_resp_info);

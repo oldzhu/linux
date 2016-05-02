@@ -841,11 +841,11 @@ static int logical_ring_prepare(struct drm_i915_gem_request *req, int bytes)
 		if (unlikely(total_bytes > remain_usable)) {
 			/*
 			 * The base request will fit but the reserved space
-			 * falls off the end. So only need to to wait for the
-			 * reserved size after flushing out the remainder.
+			 * falls off the end. So don't need an immediate wrap
+			 * and only need to effectively wait for the reserved
+			 * size space from the start of ringbuffer.
 			 */
 			wait_bytes = remain_actual + ringbuf->reserved_size;
-			need_wrap = true;
 		} else if (total_bytes > ringbuf->space) {
 			/* No wrapping required, just waiting. */
 			wait_bytes = total_bytes;
@@ -1913,15 +1913,29 @@ static int gen8_emit_request_render(struct drm_i915_gem_request *request)
 	struct intel_ringbuffer *ringbuf = request->ringbuf;
 	int ret;
 
+<<<<<<< HEAD
 	ret = intel_logical_ring_begin(request, 6 + WA_TAIL_DWORDS);
 	if (ret)
 		return ret;
 
+=======
+	ret = intel_logical_ring_begin(request, 8 + WA_TAIL_DWORDS);
+	if (ret)
+		return ret;
+
+	/* We're using qword write, seqno should be aligned to 8 bytes. */
+	BUILD_BUG_ON(I915_GEM_HWS_INDEX & 1);
+
+>>>>>>> upstream/master
 	/* w/a for post sync ops following a GPGPU operation we
 	 * need a prior CS_STALL, which is emitted by the flush
 	 * following the batch.
 	 */
+<<<<<<< HEAD
 	intel_logical_ring_emit(ringbuf, GFX_OP_PIPE_CONTROL(5));
+=======
+	intel_logical_ring_emit(ringbuf, GFX_OP_PIPE_CONTROL(6));
+>>>>>>> upstream/master
 	intel_logical_ring_emit(ringbuf,
 				(PIPE_CONTROL_GLOBAL_GTT_IVB |
 				 PIPE_CONTROL_CS_STALL |
@@ -1929,7 +1943,14 @@ static int gen8_emit_request_render(struct drm_i915_gem_request *request)
 	intel_logical_ring_emit(ringbuf, hws_seqno_address(request->ring));
 	intel_logical_ring_emit(ringbuf, 0);
 	intel_logical_ring_emit(ringbuf, i915_gem_request_get_seqno(request));
+<<<<<<< HEAD
 	intel_logical_ring_emit(ringbuf, MI_USER_INTERRUPT);
+=======
+	/* We're thrashing one dword of HWS. */
+	intel_logical_ring_emit(ringbuf, 0);
+	intel_logical_ring_emit(ringbuf, MI_USER_INTERRUPT);
+	intel_logical_ring_emit(ringbuf, MI_NOOP);
+>>>>>>> upstream/master
 	return intel_logical_ring_advance_and_submit(request);
 }
 
@@ -2023,6 +2044,7 @@ void intel_logical_ring_cleanup(struct intel_engine_cs *ring)
 static void
 logical_ring_default_vfuncs(struct drm_device *dev,
 			    struct intel_engine_cs *ring)
+<<<<<<< HEAD
 {
 	/* Default vfuncs which can be overriden by each engine. */
 	ring->init_hw = gen8_init_common_ring;
@@ -2050,6 +2072,35 @@ logical_ring_default_irqs(struct intel_engine_cs *ring, unsigned shift)
 static int
 logical_ring_init(struct drm_device *dev, struct intel_engine_cs *ring)
 {
+=======
+{
+	/* Default vfuncs which can be overriden by each engine. */
+	ring->init_hw = gen8_init_common_ring;
+	ring->emit_request = gen8_emit_request;
+	ring->emit_flush = gen8_emit_flush;
+	ring->irq_get = gen8_logical_ring_get_irq;
+	ring->irq_put = gen8_logical_ring_put_irq;
+	ring->emit_bb_start = gen8_emit_bb_start;
+	if (IS_BXT_REVID(dev, 0, BXT_REVID_A1)) {
+		ring->get_seqno = bxt_a_get_seqno;
+		ring->set_seqno = bxt_a_set_seqno;
+	} else {
+		ring->get_seqno = gen8_get_seqno;
+		ring->set_seqno = gen8_set_seqno;
+	}
+}
+
+static inline void
+logical_ring_default_irqs(struct intel_engine_cs *ring, unsigned shift)
+{
+	ring->irq_enable_mask = GT_RENDER_USER_INTERRUPT << shift;
+	ring->irq_keep_mask = GT_CONTEXT_SWITCH_INTERRUPT << shift;
+}
+
+static int
+logical_ring_init(struct drm_device *dev, struct intel_engine_cs *ring)
+{
+>>>>>>> upstream/master
 	struct intel_context *dctx = to_i915(dev)->kernel_context;
 	int ret;
 

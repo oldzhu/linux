@@ -5,6 +5,11 @@
 #include <string.h>
 #include <linux/stringify.h>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#include "header.h"
+#include "util.h"
+>>>>>>> upstream/master
 =======
 #include "header.h"
 #include "util.h"

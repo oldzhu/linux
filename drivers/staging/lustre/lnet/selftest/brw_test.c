@@ -91,7 +91,11 @@ brw_client_init(sfw_test_instance_t *tsi)
 		 * but we have to keep it for compatibility
 		 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 		len = npg * PAGE_CACHE_SIZE;
+=======
+		len = npg * PAGE_SIZE;
+>>>>>>> upstream/master
 =======
 		len = npg * PAGE_SIZE;
 >>>>>>> upstream/master
@@ -109,7 +113,11 @@ brw_client_init(sfw_test_instance_t *tsi)
 		flags = breq->blk_flags;
 		len = breq->blk_len;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		npg = (len + PAGE_CACHE_SIZE - 1) >> PAGE_CACHE_SHIFT;
+=======
+		npg = (len + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 		npg = (len + PAGE_SIZE - 1) >> PAGE_SHIFT;
 >>>>>>> upstream/master
@@ -207,7 +215,11 @@ brw_check_page(struct page *pg, int pattern, __u64 magic)
 			goto bad_data;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		addr += PAGE_CACHE_SIZE - BRW_MSIZE;
+=======
+		addr += PAGE_SIZE - BRW_MSIZE;
+>>>>>>> upstream/master
 =======
 		addr += PAGE_SIZE - BRW_MSIZE;
 >>>>>>> upstream/master
@@ -220,7 +232,11 @@ brw_check_page(struct page *pg, int pattern, __u64 magic)
 
 	if (pattern == LST_BRW_CHECK_FULL) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		for (i = 0; i < PAGE_CACHE_SIZE / BRW_MSIZE; i++) {
+=======
+		for (i = 0; i < PAGE_SIZE / BRW_MSIZE; i++) {
+>>>>>>> upstream/master
 =======
 		for (i = 0; i < PAGE_SIZE / BRW_MSIZE; i++) {
 >>>>>>> upstream/master
@@ -295,7 +311,11 @@ brw_client_prep_rpc(sfw_test_unit_t *tsu,
 		flags = breq->blk_flags;
 		npg = breq->blk_npg;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		len = npg * PAGE_CACHE_SIZE;
+=======
+		len = npg * PAGE_SIZE;
+>>>>>>> upstream/master
 =======
 		len = npg * PAGE_SIZE;
 >>>>>>> upstream/master
@@ -313,7 +333,11 @@ brw_client_prep_rpc(sfw_test_unit_t *tsu,
 		flags = breq->blk_flags;
 		len = breq->blk_len;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		npg = (len + PAGE_CACHE_SIZE - 1) >> PAGE_CACHE_SHIFT;
+=======
+		npg = (len + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 		npg = (len + PAGE_SIZE - 1) >> PAGE_SHIFT;
 >>>>>>> upstream/master

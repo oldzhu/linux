@@ -376,7 +376,11 @@ static int f2fs_convert_inline_dir(struct inode *dir, struct page *ipage,
 
 	f2fs_wait_on_page_writeback(page, DATA, true);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	zero_user_segment(page, MAX_INLINE_DATA, PAGE_CACHE_SIZE);
+=======
+	zero_user_segment(page, MAX_INLINE_DATA, PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 	zero_user_segment(page, MAX_INLINE_DATA, PAGE_SIZE);
 >>>>>>> upstream/master

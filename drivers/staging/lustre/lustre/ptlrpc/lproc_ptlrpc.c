@@ -309,7 +309,11 @@ ptlrpc_lprocfs_req_history_max_seq_write(struct file *file,
 	 * far.
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	bufpages = (svc->srv_buf_size + PAGE_CACHE_SIZE - 1) >> PAGE_CACHE_SHIFT;
+=======
+	bufpages = (svc->srv_buf_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 	bufpages = (svc->srv_buf_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
 >>>>>>> upstream/master

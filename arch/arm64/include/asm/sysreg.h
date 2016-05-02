@@ -141,6 +141,12 @@
 #define ID_AA64MMFR1_VMIDBITS_SHIFT	4
 #define ID_AA64MMFR1_HADBS_SHIFT	0
 
+<<<<<<< HEAD
+=======
+#define ID_AA64MMFR1_VMIDBITS_8		0
+#define ID_AA64MMFR1_VMIDBITS_16	2
+
+>>>>>>> upstream/master
 /* id_aa64mmfr2 */
 #define ID_AA64MMFR2_UAO_SHIFT		4
 

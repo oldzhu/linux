@@ -1503,8 +1503,11 @@ retry_lookup:
 
 		if (d_really_is_negative(dn)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			struct dentry *realdn = splice_dentry(dn, in);
 =======
+=======
+>>>>>>> upstream/master
 			struct dentry *realdn;
 
 			if (ceph_security_xattr_deadlock(in)) {
@@ -1516,6 +1519,9 @@ retry_lookup:
 			}
 
 			realdn = splice_dentry(dn, in);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 			if (IS_ERR(realdn)) {
 				err = PTR_ERR(realdn);

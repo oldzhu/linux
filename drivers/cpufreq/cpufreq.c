@@ -1491,6 +1491,12 @@ static unsigned int cpufreq_update_current_freq(struct cpufreq_policy *policy)
 {
 	unsigned int new_freq;
 
+<<<<<<< HEAD
+=======
+	if (cpufreq_suspended)
+		return 0;
+
+>>>>>>> upstream/master
 	new_freq = cpufreq_driver->get(policy->cpu);
 	if (!new_freq)
 		return 0;

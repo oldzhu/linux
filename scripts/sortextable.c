@@ -318,6 +318,10 @@ do_file(char const *const fname)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	case EM_PARISC:
+>>>>>>> upstream/master
 =======
 	case EM_PARISC:
 >>>>>>> upstream/master

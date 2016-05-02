@@ -787,8 +787,13 @@ lstcon_bulkrpc_v0_prep(lst_test_bulk_param_t *param, srpc_test_reqst_t *req)
 
 	brq->blk_opc = param->blk_opc;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	brq->blk_npg = (param->blk_size + PAGE_CACHE_SIZE - 1) /
 			PAGE_CACHE_SIZE;
+=======
+	brq->blk_npg = (param->blk_size + PAGE_SIZE - 1) /
+			PAGE_SIZE;
+>>>>>>> upstream/master
 =======
 	brq->blk_npg = (param->blk_size + PAGE_SIZE - 1) /
 			PAGE_SIZE;
@@ -828,7 +833,11 @@ lstcon_testrpc_prep(lstcon_node_t *nd, int transop, unsigned feats,
 		npg = sfw_id_pages(test->tes_span);
 		nob = !(feats & LST_FEAT_BULK_LEN) ?
 <<<<<<< HEAD
+<<<<<<< HEAD
 		      npg * PAGE_CACHE_SIZE :
+=======
+		      npg * PAGE_SIZE :
+>>>>>>> upstream/master
 =======
 		      npg * PAGE_SIZE :
 >>>>>>> upstream/master
@@ -861,8 +870,13 @@ lstcon_testrpc_prep(lstcon_node_t *nd, int transop, unsigned feats,
 
 			len = !(feats & LST_FEAT_BULK_LEN) ?
 <<<<<<< HEAD
+<<<<<<< HEAD
 			      PAGE_CACHE_SIZE :
 			      min_t(int, nob, PAGE_CACHE_SIZE);
+=======
+			      PAGE_SIZE :
+			      min_t(int, nob, PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 			      PAGE_SIZE :
 			      min_t(int, nob, PAGE_SIZE);

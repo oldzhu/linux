@@ -442,7 +442,11 @@ static int f2fs_file_open(struct inode *inode, struct file *filp)
 {
 	int ret = generic_file_open(inode, filp);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct inode *dir = filp->f_path.dentry->d_parent->d_inode;
+=======
+	struct dentry *dir;
+>>>>>>> upstream/master
 =======
 	struct dentry *dir;
 >>>>>>> upstream/master
@@ -454,10 +458,21 @@ static int f2fs_file_open(struct inode *inode, struct file *filp)
 		if (!fscrypt_has_encryption_key(inode))
 			return -ENOKEY;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	}
 	if (f2fs_encrypted_inode(dir) &&
 			!fscrypt_has_permitted_context(dir, inode))
 		return -EPERM;
+=======
+	}
+	dir = dget_parent(file_dentry(filp));
+	if (f2fs_encrypted_inode(d_inode(dir)) &&
+			!fscrypt_has_permitted_context(d_inode(dir), inode)) {
+		dput(dir);
+		return -EPERM;
+	}
+	dput(dir);
+>>>>>>> upstream/master
 =======
 	}
 	dir = dget_parent(file_dentry(filp));
@@ -545,7 +560,11 @@ static int truncate_partial_data_page(struct inode *inode, u64 from,
 truncate_out:
 	f2fs_wait_on_page_writeback(page, DATA, true);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	zero_user(page, offset, PAGE_CACHE_SIZE - offset);
+=======
+	zero_user(page, offset, PAGE_SIZE - offset);
+>>>>>>> upstream/master
 =======
 	zero_user(page, offset, PAGE_SIZE - offset);
 >>>>>>> upstream/master

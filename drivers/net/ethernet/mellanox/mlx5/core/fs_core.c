@@ -1115,6 +1115,7 @@ unlock:
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 static struct mlx5_flow_rule *
 _mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 		    u8 match_criteria_enable,
@@ -1124,6 +1125,8 @@ _mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 		    u32 flow_tag,
 		    struct mlx5_flow_destination *dest)
 =======
+=======
+>>>>>>> upstream/master
 static bool fwd_next_prio_supported(struct mlx5_flow_table *ft)
 {
 	return ((ft->type == FS_FT_NIC_RX) &&
@@ -1146,6 +1149,7 @@ mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 	struct mlx5_flow_rule *rule = NULL;
 	u32 sw_action = action;
 	struct fs_prio *prio;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 	if ((action & MLX5_FLOW_CONTEXT_ACTION_FWD_DEST) && !dest)
@@ -1162,6 +1166,9 @@ mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 			if (!IS_ERR(rule) || PTR_ERR(rule) != -ENOSPC)
 				goto unlock;
 =======
+=======
+
+>>>>>>> upstream/master
 	fs_get_obj(prio, ft->node.parent);
 	if (action == MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_PRIO) {
 		if (!fwd_next_prio_supported(ft))
@@ -1178,6 +1185,9 @@ mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 		} else {
 			mutex_unlock(&root->chain_lock);
 			return ERR_PTR(-EOPNOTSUPP);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		}
 	}
@@ -1195,6 +1205,7 @@ mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 		}
 		mutex_unlock(&root->chain_lock);
 	}
+<<<<<<< HEAD
 	return rule;
 }
 
@@ -1252,6 +1263,8 @@ mlx5_add_flow_rule(struct mlx5_flow_table *ft,
 		}
 		mutex_unlock(&root->chain_lock);
 	}
+=======
+>>>>>>> upstream/master
 	return rule;
 }
 EXPORT_SYMBOL(mlx5_add_flow_rule);

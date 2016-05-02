@@ -926,7 +926,11 @@ xfs_do_writepage(
 	 */
 	offset = i_size_read(inode);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	end_index = offset >> PAGE_CACHE_SHIFT;
+=======
+	end_index = offset >> PAGE_SHIFT;
+>>>>>>> upstream/master
 =======
 	end_index = offset >> PAGE_SHIFT;
 >>>>>>> upstream/master

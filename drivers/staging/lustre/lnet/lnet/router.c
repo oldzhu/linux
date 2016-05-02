@@ -28,8 +28,13 @@
 #define LNET_NRB_LARGE_MIN	256	/* min value for each CPT */
 #define LNET_NRB_LARGE		(LNET_NRB_LARGE_MIN * 4)
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define LNET_NRB_LARGE_PAGES   ((LNET_MTU + PAGE_CACHE_SIZE - 1) >> \
 				 PAGE_CACHE_SHIFT)
+=======
+#define LNET_NRB_LARGE_PAGES   ((LNET_MTU + PAGE_SIZE - 1) >> \
+				 PAGE_SHIFT)
+>>>>>>> upstream/master
 =======
 #define LNET_NRB_LARGE_PAGES   ((LNET_MTU + PAGE_SIZE - 1) >> \
 				 PAGE_SHIFT)

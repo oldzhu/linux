@@ -3174,7 +3174,11 @@ static int __extent_read_full_page(struct extent_io_tree *tree,
 		lock_extent(tree, start, end);
 		ordered = btrfs_lookup_ordered_range(inode, start,
 <<<<<<< HEAD
+<<<<<<< HEAD
 						PAGE_CACHE_SIZE);
+=======
+						PAGE_SIZE);
+>>>>>>> upstream/master
 =======
 						PAGE_SIZE);
 >>>>>>> upstream/master

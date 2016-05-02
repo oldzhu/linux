@@ -3319,7 +3319,10 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int order,
 	if (prepare_kswapd_sleep(pgdat, order, remaining,
 						balanced_classzone_idx)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 		/*
 		 * Compaction records what page blocks it recently failed to
 		 * isolate pages from and skips them in the future scanning.
@@ -3334,6 +3337,9 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int order,
 		 */
 		wakeup_kcompactd(pgdat, order, classzone_idx);
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		remaining = schedule_timeout(HZ/10);
 		finish_wait(&pgdat->kswapd_wait, &wait);
@@ -3359,6 +3365,7 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int order,
 		set_pgdat_percpu_threshold(pgdat, calculate_normal_threshold);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		/*
 		 * Compaction records what page blocks it recently failed to
 		 * isolate pages from and skips them in the future scanning.
@@ -3373,6 +3380,8 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int order,
 		 */
 		wakeup_kcompactd(pgdat, order, classzone_idx);
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 		if (!kthread_should_stop())

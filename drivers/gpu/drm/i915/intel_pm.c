@@ -2876,25 +2876,28 @@ skl_plane_relative_data_rate(const struct intel_crtc_state *cstate,
 			     const struct drm_plane_state *pstate,
 			     int y)
 {
-	struct intel_crtc *intel_crtc = to_intel_crtc(cstate->base.crtc);
+	struct intel_plane_state *intel_pstate = to_intel_plane_state(pstate);
 	struct drm_framebuffer *fb = pstate->fb;
+	uint32_t width = 0, height = 0;
+
+	width = drm_rect_width(&intel_pstate->src) >> 16;
+	height = drm_rect_height(&intel_pstate->src) >> 16;
+
+	if (intel_rotation_90_or_270(pstate->rotation))
+		swap(width, height);
 
 	/* for planar format */
 	if (fb->pixel_format == DRM_FORMAT_NV12) {
 		if (y)  /* y-plane data rate */
-			return intel_crtc->config->pipe_src_w *
-				intel_crtc->config->pipe_src_h *
+			return width * height *
 				drm_format_plane_cpp(fb->pixel_format, 0);
 		else    /* uv-plane data rate */
-			return (intel_crtc->config->pipe_src_w/2) *
-				(intel_crtc->config->pipe_src_h/2) *
+			return (width / 2) * (height / 2) *
 				drm_format_plane_cpp(fb->pixel_format, 1);
 	}
 
 	/* for packed formats */
-	return intel_crtc->config->pipe_src_w *
-		intel_crtc->config->pipe_src_h *
-		drm_format_plane_cpp(fb->pixel_format, 0);
+	return width * height * drm_format_plane_cpp(fb->pixel_format, 0);
 }
 
 /*
@@ -2973,8 +2976,9 @@ skl_allocate_pipe_ddb(struct intel_crtc_state *cstate,
 		struct drm_framebuffer *fb = plane->state->fb;
 		int id = skl_wm_plane_id(intel_plane);
 
-		if (fb == NULL)
+		if (!to_intel_plane_state(plane->state)->visible)
 			continue;
+
 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
 			continue;
 
@@ -3000,7 +3004,7 @@ skl_allocate_pipe_ddb(struct intel_crtc_state *cstate,
 		uint16_t plane_blocks, y_plane_blocks = 0;
 		int id = skl_wm_plane_id(intel_plane);
 
-		if (pstate->fb == NULL)
+		if (!to_intel_plane_state(pstate)->visible)
 			continue;
 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
 			continue;
@@ -3123,26 +3127,50 @@ static bool skl_compute_plane_wm(const struct drm_i915_private *dev_priv,
 {
 	struct drm_plane *plane = &intel_plane->base;
 	struct drm_framebuffer *fb = plane->state->fb;
+	struct intel_plane_state *intel_pstate =
+					to_intel_plane_state(plane->state);
 	uint32_t latency = dev_priv->wm.skl_latency[level];
 	uint32_t method1, method2;
 	uint32_t plane_bytes_per_line, plane_blocks_per_line;
 	uint32_t res_blocks, res_lines;
 	uint32_t selected_result;
 	uint8_t cpp;
+<<<<<<< HEAD
+=======
+	uint32_t width = 0, height = 0;
+>>>>>>> upstream/master
 
-	if (latency == 0 || !cstate->base.active || !fb)
+	if (latency == 0 || !cstate->base.active || !intel_pstate->visible)
 		return false;
 
+<<<<<<< HEAD
+=======
+	width = drm_rect_width(&intel_pstate->src) >> 16;
+	height = drm_rect_height(&intel_pstate->src) >> 16;
+
+	if (intel_rotation_90_or_270(plane->state->rotation))
+		swap(width, height);
+
+>>>>>>> upstream/master
 	cpp = drm_format_plane_cpp(fb->pixel_format, 0);
 	method1 = skl_wm_method1(skl_pipe_pixel_rate(cstate),
 				 cpp, latency);
 	method2 = skl_wm_method2(skl_pipe_pixel_rate(cstate),
 				 cstate->base.adjusted_mode.crtc_htotal,
+<<<<<<< HEAD
 				 cstate->pipe_src_w,
 				 cpp, fb->modifier[0],
 				 latency);
 
 	plane_bytes_per_line = cstate->pipe_src_w * cpp;
+=======
+				 width,
+				 cpp,
+				 fb->modifier[0],
+				 latency);
+
+	plane_bytes_per_line = width * cpp;
+>>>>>>> upstream/master
 	plane_blocks_per_line = DIV_ROUND_UP(plane_bytes_per_line, 512);
 
 	if (fb->modifier[0] == I915_FORMAT_MOD_Y_TILED ||
@@ -4567,6 +4595,7 @@ static void intel_print_rc6_info(struct drm_device *dev, u32 mode)
 	else
 		DRM_DEBUG_KMS("Enabling RC6 states: RC6 %s\n",
 			      onoff(mode & GEN6_RC_CTL_RC6_ENABLE));
+<<<<<<< HEAD
 }
 
 static bool bxt_check_bios_rc6_setup(const struct drm_device *dev)
@@ -4611,6 +4640,52 @@ static bool bxt_check_bios_rc6_setup(const struct drm_device *dev)
 	return enable_rc6;
 }
 
+=======
+}
+
+static bool bxt_check_bios_rc6_setup(const struct drm_device *dev)
+{
+	struct drm_i915_private *dev_priv = dev->dev_private;
+	bool enable_rc6 = true;
+	unsigned long rc6_ctx_base;
+
+	if (!(I915_READ(RC6_LOCATION) & RC6_CTX_IN_DRAM)) {
+		DRM_DEBUG_KMS("RC6 Base location not set properly.\n");
+		enable_rc6 = false;
+	}
+
+	/*
+	 * The exact context size is not known for BXT, so assume a page size
+	 * for this check.
+	 */
+	rc6_ctx_base = I915_READ(RC6_CTX_BASE) & RC6_CTX_BASE_MASK;
+	if (!((rc6_ctx_base >= dev_priv->gtt.stolen_reserved_base) &&
+	      (rc6_ctx_base + PAGE_SIZE <= dev_priv->gtt.stolen_reserved_base +
+					dev_priv->gtt.stolen_reserved_size))) {
+		DRM_DEBUG_KMS("RC6 Base address not as expected.\n");
+		enable_rc6 = false;
+	}
+
+	if (!(((I915_READ(PWRCTX_MAXCNT_RCSUNIT) & IDLE_TIME_MASK) > 1) &&
+	      ((I915_READ(PWRCTX_MAXCNT_VCSUNIT0) & IDLE_TIME_MASK) > 1) &&
+	      ((I915_READ(PWRCTX_MAXCNT_BCSUNIT) & IDLE_TIME_MASK) > 1) &&
+	      ((I915_READ(PWRCTX_MAXCNT_VECSUNIT) & IDLE_TIME_MASK) > 1))) {
+		DRM_DEBUG_KMS("Engine Idle wait time not set properly.\n");
+		enable_rc6 = false;
+	}
+
+	if (!(I915_READ(GEN6_RC_CONTROL) & (GEN6_RC_CTL_RC6_ENABLE |
+					    GEN6_RC_CTL_HW_ENABLE)) &&
+	    ((I915_READ(GEN6_RC_CONTROL) & GEN6_RC_CTL_HW_ENABLE) ||
+	     !(I915_READ(GEN6_RC_STATE) & RC6_STATE))) {
+		DRM_DEBUG_KMS("HW/SW RC6 is not enabled by BIOS.\n");
+		enable_rc6 = false;
+	}
+
+	return enable_rc6;
+}
+
+>>>>>>> upstream/master
 int sanitize_rc6_option(const struct drm_device *dev, int enable_rc6)
 {
 	/* No RC6 before Ironlake and code is gone for ilk. */

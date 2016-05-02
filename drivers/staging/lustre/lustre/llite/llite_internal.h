@@ -311,7 +311,11 @@ static inline struct ll_inode_info *ll_i2info(struct inode *inode)
  * up in 512k readahead requests serviced at 40ms each is about 1GB/s.
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define SBI_DEFAULT_READAHEAD_MAX (40UL << (20 - PAGE_CACHE_SHIFT))
+=======
+#define SBI_DEFAULT_READAHEAD_MAX (40UL << (20 - PAGE_SHIFT))
+>>>>>>> upstream/master
 =======
 #define SBI_DEFAULT_READAHEAD_MAX (40UL << (20 - PAGE_SHIFT))
 >>>>>>> upstream/master

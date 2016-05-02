@@ -1795,10 +1795,13 @@ static int smc911x_probe(struct net_device *dev)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct dma_slave_config	config;
 	dma_cap_mask_t mask;
 	struct pxad_param param;
 =======
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 =======
@@ -1813,6 +1816,9 @@ static int smc911x_probe(struct net_device *dev)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 =======
 >>>>>>> upstream/master

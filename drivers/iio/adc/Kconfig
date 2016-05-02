@@ -135,6 +135,10 @@ config AT91_SAMA5D2_ADC
 	tristate "Atmel AT91 SAMA5D2 ADC"
 	depends on ARCH_AT91 || COMPILE_TEST
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	depends on HAS_IOMEM
+>>>>>>> upstream/master
 =======
 	depends on HAS_IOMEM
 >>>>>>> upstream/master

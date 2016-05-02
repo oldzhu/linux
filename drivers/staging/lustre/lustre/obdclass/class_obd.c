@@ -510,7 +510,11 @@ static int __init obdclass_init(void)
 	 * for other purposes (mostly for BGL).
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (totalram_pages <= 512 << (20 - PAGE_CACHE_SHIFT))
+=======
+	if (totalram_pages <= 512 << (20 - PAGE_SHIFT))
+>>>>>>> upstream/master
 =======
 	if (totalram_pages <= 512 << (20 - PAGE_SHIFT))
 >>>>>>> upstream/master

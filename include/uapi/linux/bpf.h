@@ -376,6 +376,10 @@ struct bpf_tunnel_key {
 	__u8 tunnel_tos;
 	__u8 tunnel_ttl;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	__u16 tunnel_ext;
+>>>>>>> upstream/master
 =======
 	__u16 tunnel_ext;
 >>>>>>> upstream/master

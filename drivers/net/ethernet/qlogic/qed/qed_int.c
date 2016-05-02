@@ -2043,6 +2043,9 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
 				qed_int_deassertion_parity(p_hwfn, p_bit,
 							   bit_idx);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 
 			bit_idx += ATTENTION_LENGTH(p_bit->flags);
 		}
@@ -2090,6 +2093,7 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
 					bit++;
 					bit_len--;
 				}
+<<<<<<< HEAD
 
 =======
 
@@ -2139,6 +2143,9 @@ static int qed_int_deassertion(struct qed_hwfn  *p_hwfn,
 					bit++;
 					bit_len--;
 				}
+
+>>>>>>> upstream/master
+=======
 
 >>>>>>> upstream/master
 				bitmask = bits & (((1 << bit_len) - 1) << bit);
@@ -2759,15 +2766,21 @@ int qed_int_unregister_cb(struct qed_hwfn *p_hwfn, u8 pi)
 	if (p_sp_sb->pi_info_arr[pi].comp_cb == NULL)
 		return -ENOMEM;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	p_sp_sb->pi_info_arr[pi].comp_cb = NULL;
 	p_sp_sb->pi_info_arr[pi].cookie = NULL;
 
 =======
+=======
+>>>>>>> upstream/master
 
 	p_sp_sb->pi_info_arr[pi].comp_cb = NULL;
 	p_sp_sb->pi_info_arr[pi].cookie = NULL;
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	return 0;
 }
@@ -2809,7 +2822,11 @@ int qed_int_igu_enable(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
 		       enum qed_int_mode int_mode)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	int rc;
+=======
+	int rc = 0;
+>>>>>>> upstream/master
 =======
 	int rc = 0;
 >>>>>>> upstream/master

@@ -4440,6 +4440,10 @@ static enum gro_result dev_gro_receive(struct napi_struct *napi, struct sk_buff 
 		NAPI_GRO_CB(skb)->free = 0;
 		NAPI_GRO_CB(skb)->encap_mark = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		NAPI_GRO_CB(skb)->is_fou = 0;
+>>>>>>> upstream/master
 =======
 		NAPI_GRO_CB(skb)->is_fou = 0;
 >>>>>>> upstream/master
