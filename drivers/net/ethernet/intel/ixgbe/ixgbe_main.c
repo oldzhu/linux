@@ -8193,11 +8193,14 @@ static int ixgbe_delete_clsu32(struct ixgbe_adapter *adapter,
 			       struct tc_cls_u32_offload *cls)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	int err;
 
 	spin_lock(&adapter->fdir_perfect_lock);
 	err = ixgbe_update_ethtool_fdir_entry(adapter, NULL, cls->knode.handle);
 =======
+=======
+>>>>>>> upstream/master
 	u32 uhtid = TC_U32_USERHTID(cls->knode.handle);
 	u32 loc;
 	int err;
@@ -8209,6 +8212,9 @@ static int ixgbe_delete_clsu32(struct ixgbe_adapter *adapter,
 
 	spin_lock(&adapter->fdir_perfect_lock);
 	err = ixgbe_update_ethtool_fdir_entry(adapter, NULL, loc);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	spin_unlock(&adapter->fdir_perfect_lock);
 	return err;
@@ -8219,12 +8225,18 @@ static int ixgbe_configure_clsu32_add_hnode(struct ixgbe_adapter *adapter,
 					    struct tc_cls_u32_offload *cls)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 	u32 uhtid = TC_U32_USERHTID(cls->hnode.handle);
 
 	if (uhtid >= IXGBE_MAX_LINK_HANDLE)
 		return -EINVAL;
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	/* This ixgbe devices do not support hash tables at the moment
 	 * so abort when given hash tables.
@@ -8233,7 +8245,11 @@ static int ixgbe_configure_clsu32_add_hnode(struct ixgbe_adapter *adapter,
 		return -EINVAL;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	set_bit(TC_U32_USERHTID(cls->hnode.handle), &adapter->tables);
+=======
+	set_bit(uhtid - 1, &adapter->tables);
+>>>>>>> upstream/master
 =======
 	set_bit(uhtid - 1, &adapter->tables);
 >>>>>>> upstream/master
@@ -8244,14 +8260,20 @@ static int ixgbe_configure_clsu32_del_hnode(struct ixgbe_adapter *adapter,
 					    struct tc_cls_u32_offload *cls)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	clear_bit(TC_U32_USERHTID(cls->hnode.handle), &adapter->tables);
 =======
+=======
+>>>>>>> upstream/master
 	u32 uhtid = TC_U32_USERHTID(cls->hnode.handle);
 
 	if (uhtid >= IXGBE_MAX_LINK_HANDLE)
 		return -EINVAL;
 
 	clear_bit(uhtid - 1, &adapter->tables);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	return 0;
 }
@@ -8271,6 +8293,7 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 	int i, err = 0;
 	u8 queue;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	u32 handle;
 
 	memset(&mask, 0, sizeof(union ixgbe_atr_input));
@@ -8282,6 +8305,8 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 	 * just broken because there is no way to "know" what sort of hdr
 	 * is in front of the transport layer. Fix cls_u32 to support L2
 =======
+=======
+>>>>>>> upstream/master
 	u32 uhtid, link_uhtid;
 
 	memset(&mask, 0, sizeof(union ixgbe_atr_input));
@@ -8293,12 +8318,16 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 	 * negative values. However this is error prone at best but really
 	 * just broken because there is no way to "know" what sort of hdr
 	 * is in front of the network layer. Fix cls_u32 to support L2
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	 * headers when needed.
 	 */
 	if (protocol != htons(ETH_P_IP))
 		return -EINVAL;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	if (cls->knode.link_handle ||
 	    cls->knode.link_handle >= IXGBE_MAX_LINK_HANDLE) {
@@ -8307,6 +8336,8 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 
 		if (!test_bit(uhtid, &adapter->tables))
 =======
+=======
+>>>>>>> upstream/master
 	if (link_uhtid) {
 		struct ixgbe_nexthdr *nexthdr = ixgbe_ipv4_jumps;
 
@@ -8314,6 +8345,9 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 			return -EINVAL;
 
 		if (!test_bit(link_uhtid - 1, &adapter->tables))
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 			return -EINVAL;
 
@@ -8331,10 +8365,14 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 				return -EINVAL;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (uhtid >= IXGBE_MAX_LINK_HANDLE)
 				return -EINVAL;
 
 			adapter->jump_tables[uhtid] = nexthdr->jump;
+=======
+			adapter->jump_tables[link_uhtid] = nexthdr->jump;
+>>>>>>> upstream/master
 =======
 			adapter->jump_tables[link_uhtid] = nexthdr->jump;
 >>>>>>> upstream/master
@@ -8355,6 +8393,7 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 	 * this function _should_ be generic try not to hardcode values here.
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (TC_U32_USERHTID(handle) == 0x800) {
 		field_ptr = adapter->jump_tables[0];
 	} else {
@@ -8363,6 +8402,8 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 
 		field_ptr = adapter->jump_tables[TC_U32_USERHTID(handle)];
 =======
+=======
+>>>>>>> upstream/master
 	if (uhtid == 0x800) {
 		field_ptr = adapter->jump_tables[0];
 	} else {
@@ -8370,6 +8411,9 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 			return -EINVAL;
 
 		field_ptr = adapter->jump_tables[uhtid];
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	}
 
@@ -8389,8 +8433,12 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 
 		for (j = 0; field_ptr[j].val; j++) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (field_ptr[j].off == off &&
 			    field_ptr[j].mask == m) {
+=======
+			if (field_ptr[j].off == off) {
+>>>>>>> upstream/master
 =======
 			if (field_ptr[j].off == off) {
 >>>>>>> upstream/master
@@ -8454,8 +8502,13 @@ err_out:
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 int __ixgbe_setup_tc(struct net_device *dev, u32 handle, __be16 proto,
 		     struct tc_to_netdev *tc)
+=======
+static int __ixgbe_setup_tc(struct net_device *dev, u32 handle, __be16 proto,
+			    struct tc_to_netdev *tc)
+>>>>>>> upstream/master
 =======
 static int __ixgbe_setup_tc(struct net_device *dev, u32 handle, __be16 proto,
 			    struct tc_to_netdev *tc)

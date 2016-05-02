@@ -1131,7 +1131,11 @@ static const struct dquot_operations ext4_quota_operations = {
 	.destroy_dquot	= dquot_destroy,
 	.get_projid	= ext4_get_projid,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	.get_next_id	= dquot_get_next_id,
+=======
+	.get_next_id	= ext4_get_next_id,
+>>>>>>> upstream/master
 =======
 	.get_next_id	= ext4_get_next_id,
 >>>>>>> upstream/master

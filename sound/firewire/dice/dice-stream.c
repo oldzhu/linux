@@ -447,6 +447,7 @@ end:
 void snd_dice_stream_destroy_duplex(struct snd_dice *dice)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct reg_params tx_params, rx_params;
 
 	snd_dice_transaction_clear_enable(dice);
@@ -457,6 +458,9 @@ void snd_dice_stream_destroy_duplex(struct snd_dice *dice)
 	}
 
 	release_resources(dice);
+=======
+	unsigned int i;
+>>>>>>> upstream/master
 =======
 	unsigned int i;
 >>>>>>> upstream/master

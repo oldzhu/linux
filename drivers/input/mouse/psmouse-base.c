@@ -847,7 +847,11 @@ static const struct psmouse_protocol psmouse_protocols[] = {
 	{
 		.type		= PSMOUSE_BYD,
 <<<<<<< HEAD
+<<<<<<< HEAD
 		.name		= "BydPS/2",
+=======
+		.name		= "BYDPS/2",
+>>>>>>> upstream/master
 =======
 		.name		= "BYDPS/2",
 >>>>>>> upstream/master

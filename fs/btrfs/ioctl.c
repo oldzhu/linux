@@ -3892,8 +3892,13 @@ static noinline int btrfs_clone_files(struct file *file, struct file *file_src,
 	 */
 	truncate_inode_pages_range(&inode->i_data,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				round_down(destoff, PAGE_CACHE_SIZE),
 				round_up(destoff + len, PAGE_CACHE_SIZE) - 1);
+=======
+				round_down(destoff, PAGE_SIZE),
+				round_up(destoff + len, PAGE_SIZE) - 1);
+>>>>>>> upstream/master
 =======
 				round_down(destoff, PAGE_SIZE),
 				round_up(destoff + len, PAGE_SIZE) - 1);

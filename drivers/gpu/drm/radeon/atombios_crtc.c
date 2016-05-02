@@ -276,7 +276,12 @@ void atombios_crtc_dpms(struct drm_crtc *crtc, int mode)
 			atombios_enable_crtc_memreq(crtc, ATOM_ENABLE);
 		atombios_blank_crtc(crtc, ATOM_DISABLE);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		drm_vblank_on(dev, radeon_crtc->crtc_id);
+=======
+		if (dev->num_crtcs > radeon_crtc->crtc_id)
+			drm_vblank_on(dev, radeon_crtc->crtc_id);
+>>>>>>> upstream/master
 =======
 		if (dev->num_crtcs > radeon_crtc->crtc_id)
 			drm_vblank_on(dev, radeon_crtc->crtc_id);
@@ -287,7 +292,12 @@ void atombios_crtc_dpms(struct drm_crtc *crtc, int mode)
 	case DRM_MODE_DPMS_SUSPEND:
 	case DRM_MODE_DPMS_OFF:
 <<<<<<< HEAD
+<<<<<<< HEAD
 		drm_vblank_off(dev, radeon_crtc->crtc_id);
+=======
+		if (dev->num_crtcs > radeon_crtc->crtc_id)
+			drm_vblank_off(dev, radeon_crtc->crtc_id);
+>>>>>>> upstream/master
 =======
 		if (dev->num_crtcs > radeon_crtc->crtc_id)
 			drm_vblank_off(dev, radeon_crtc->crtc_id);

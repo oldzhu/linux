@@ -377,6 +377,11 @@ config MTK_THERMAL
 	depends on ARCH_MEDIATEK || COMPILE_TEST
 	depends on HAS_IOMEM
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	depends on NVMEM || NVMEM=n
+	depends on RESET_CONTROLLER
+>>>>>>> upstream/master
 =======
 	depends on NVMEM || NVMEM=n
 	depends on RESET_CONTROLLER

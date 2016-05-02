@@ -228,6 +228,7 @@ static int i915_gem_begin_cpu_access(struct dma_buf *dma_buf, enum dma_data_dire
 	return ret;
 }
 
+<<<<<<< HEAD
 static void i915_gem_end_cpu_access(struct dma_buf *dma_buf, enum dma_data_direction direction)
 {
 	struct drm_i915_gem_object *obj = dma_buf_to_obj(dma_buf);
@@ -247,6 +248,22 @@ static void i915_gem_end_cpu_access(struct dma_buf *dma_buf, enum dma_data_direc
 
 	if (unlikely(ret))
 		DRM_ERROR("unable to flush buffer following CPU access; rendering may be corrupt\n");
+=======
+static int i915_gem_end_cpu_access(struct dma_buf *dma_buf, enum dma_data_direction direction)
+{
+	struct drm_i915_gem_object *obj = dma_buf_to_obj(dma_buf);
+	struct drm_device *dev = obj->base.dev;
+	int ret;
+
+	ret = i915_mutex_lock_interruptible(dev);
+	if (ret)
+		return ret;
+
+	ret = i915_gem_object_set_to_gtt_domain(obj, false);
+	mutex_unlock(&dev->struct_mutex);
+
+	return ret;
+>>>>>>> upstream/master
 }
 
 static const struct dma_buf_ops i915_dmabuf_ops =  {

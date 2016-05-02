@@ -196,7 +196,11 @@ int ptlrpc_resend(struct obd_import *imp)
 
 	list_for_each_entry_safe(req, next, &imp->imp_sending_list, rq_list) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		LASSERTF((long)req > PAGE_CACHE_SIZE && req != LP_POISON,
+=======
+		LASSERTF((long)req > PAGE_SIZE && req != LP_POISON,
+>>>>>>> upstream/master
 =======
 		LASSERTF((long)req > PAGE_SIZE && req != LP_POISON,
 >>>>>>> upstream/master

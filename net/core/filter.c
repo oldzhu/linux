@@ -1770,6 +1770,10 @@ static u64 bpf_skb_get_tunnel_key(u64 r1, u64 r2, u64 size, u64 flags, u64 r5)
 		switch (size) {
 		case offsetof(struct bpf_tunnel_key, tunnel_label):
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		case offsetof(struct bpf_tunnel_key, tunnel_ext):
+>>>>>>> upstream/master
 =======
 		case offsetof(struct bpf_tunnel_key, tunnel_ext):
 >>>>>>> upstream/master
@@ -1859,6 +1863,10 @@ static u64 bpf_skb_set_tunnel_key(u64 r1, u64 r2, u64 size, u64 flags, u64 r5)
 		switch (size) {
 		case offsetof(struct bpf_tunnel_key, tunnel_label):
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		case offsetof(struct bpf_tunnel_key, tunnel_ext):
+>>>>>>> upstream/master
 =======
 		case offsetof(struct bpf_tunnel_key, tunnel_ext):
 >>>>>>> upstream/master
@@ -1875,7 +1883,12 @@ static u64 bpf_skb_set_tunnel_key(u64 r1, u64 r2, u64 size, u64 flags, u64 r5)
 		}
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (unlikely(!(flags & BPF_F_TUNINFO_IPV6) && from->tunnel_label))
+=======
+	if (unlikely((!(flags & BPF_F_TUNINFO_IPV6) && from->tunnel_label) ||
+		     from->tunnel_ext))
+>>>>>>> upstream/master
 =======
 	if (unlikely((!(flags & BPF_F_TUNINFO_IPV6) && from->tunnel_label) ||
 		     from->tunnel_ext))

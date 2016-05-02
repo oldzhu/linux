@@ -3,6 +3,10 @@ config INFINIBAND_HFI1
 	depends on X86_64 && INFINIBAND_RDMAVT
 	select MMU_NOTIFIER
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	select CRC32
+>>>>>>> upstream/master
 =======
 	select CRC32
 >>>>>>> upstream/master

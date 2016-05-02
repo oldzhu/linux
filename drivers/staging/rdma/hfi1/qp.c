@@ -520,6 +520,10 @@ static void iowait_sdma_drained(struct iowait *wait)
 	 * sdma work has finished.
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	spin_lock(&qp->s_lock);
+>>>>>>> upstream/master
 =======
 	spin_lock(&qp->s_lock);
 >>>>>>> upstream/master

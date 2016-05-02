@@ -1980,6 +1980,9 @@ static int _mv88e6xxx_port_fdb_load(struct dsa_switch *ds, int port,
 	struct mv88e6xxx_vtu_stu_entry vlan;
 	int err;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 
 	/* Null VLAN ID corresponds to the port private database */
 	if (vid == 0)
@@ -1988,6 +1991,7 @@ static int _mv88e6xxx_port_fdb_load(struct dsa_switch *ds, int port,
 		err = _mv88e6xxx_vtu_get(ds, vid, &vlan, false);
 	if (err)
 		return err;
+<<<<<<< HEAD
 
 =======
 
@@ -1998,6 +2002,9 @@ static int _mv88e6xxx_port_fdb_load(struct dsa_switch *ds, int port,
 		err = _mv88e6xxx_vtu_get(ds, vid, &vlan, false);
 	if (err)
 		return err;
+
+>>>>>>> upstream/master
+=======
 
 >>>>>>> upstream/master
 	entry.fid = vlan.fid;
@@ -2183,6 +2190,7 @@ int mv88e6xxx_port_fdb_dump(struct dsa_switch *ds, int port,
 			break;
 	} while (vlan.vid < GLOBAL_VTU_VID_MASK);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 unlock:
 	mutex_unlock(&ps->smi_mutex);
@@ -2227,6 +2235,8 @@ int mv88e6xxx_port_bridge_join(struct dsa_switch *ds, int port,
 	}
 =======
 >>>>>>> upstream/master
+=======
+>>>>>>> upstream/master
 
 unlock:
 	mutex_unlock(&ps->smi_mutex);
@@ -2235,7 +2245,10 @@ unlock:
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 int mv88e6xxx_port_bridge_join(struct dsa_switch *ds, int port,
 			       struct net_device *bridge)
 {
@@ -2260,13 +2273,19 @@ int mv88e6xxx_port_bridge_join(struct dsa_switch *ds, int port,
 	return err;
 }
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 void mv88e6xxx_port_bridge_leave(struct dsa_switch *ds, int port)
 {
 	struct mv88e6xxx_priv_state *ps = ds_to_priv(ds);
 	struct net_device *bridge = ps->ports[port].bridge_dev;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	u16 fid;
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	int i;
@@ -2274,11 +2293,14 @@ void mv88e6xxx_port_bridge_leave(struct dsa_switch *ds, int port)
 	mutex_lock(&ps->smi_mutex);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	/* Give the port a fresh Filtering Information Database */
 	if (_mv88e6xxx_fid_new(ds, &fid) ||
 	    _mv88e6xxx_port_fid_set(ds, port, fid))
 		netdev_warn(ds->ports[port], "failed to assign a new FID\n");
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	/* Unassign the bridge and remap each port's VLANTable */
@@ -2311,7 +2333,10 @@ static void mv88e6xxx_bridge_work(struct work_struct *work)
 
 	mutex_unlock(&ps->smi_mutex);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 }
 
 static int _mv88e6xxx_phy_page_write(struct dsa_switch *ds, int port, int page,
@@ -2363,6 +2388,9 @@ static int mv88e6xxx_power_on_serdes(struct dsa_switch *ds)
 	}
 
 	return ret;
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 }
 
@@ -2610,11 +2638,19 @@ static int mv88e6xxx_setup_port(struct dsa_switch *ds, int port)
 		goto abort;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	/* Port based VLAN map: give each port its own address
 	 * database, and allow bidirectional communication between the
 	 * CPU and DSA port(s), and the other ports.
 	 */
 	ret = _mv88e6xxx_port_fid_set(ds, port, port + 1);
+=======
+	/* Port based VLAN map: give each port the same default address
+	 * database, and allow bidirectional communication between the
+	 * CPU and DSA port(s), and the other ports.
+	 */
+	ret = _mv88e6xxx_port_fid_set(ds, port, 0);
+>>>>>>> upstream/master
 =======
 	/* Port based VLAN map: give each port the same default address
 	 * database, and allow bidirectional communication between the

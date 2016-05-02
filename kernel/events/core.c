@@ -413,7 +413,12 @@ int perf_cpu_time_max_percent_handler(struct ctl_table *table, int write,
 		return ret;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (sysctl_perf_cpu_time_max_percent == 100) {
+=======
+	if (sysctl_perf_cpu_time_max_percent == 100 ||
+	    sysctl_perf_cpu_time_max_percent == 0) {
+>>>>>>> upstream/master
 =======
 	if (sysctl_perf_cpu_time_max_percent == 100 ||
 	    sysctl_perf_cpu_time_max_percent == 0) {

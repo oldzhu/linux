@@ -2048,12 +2048,15 @@ int dquot_get_next_id(struct super_block *sb, struct kqid *qid)
 	int err;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (!dqopt->ops[qid->type]->get_next_id)
 		return -ENOSYS;
 	mutex_lock(&dqopt->dqio_mutex);
 	err = dqopt->ops[qid->type]->get_next_id(sb, qid);
 	mutex_unlock(&dqopt->dqio_mutex);
 =======
+=======
+>>>>>>> upstream/master
 	mutex_lock(&dqopt->dqonoff_mutex);
 	if (!sb_has_quota_active(sb, qid->type)) {
 		err = -ESRCH;
@@ -2068,6 +2071,9 @@ int dquot_get_next_id(struct super_block *sb, struct kqid *qid)
 	mutex_unlock(&dqopt->dqio_mutex);
 out:
 	mutex_unlock(&dqopt->dqonoff_mutex);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 
 	return err;

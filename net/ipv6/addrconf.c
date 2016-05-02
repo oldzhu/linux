@@ -3177,6 +3177,7 @@ static void addrconf_gre_config(struct net_device *dev)
 #endif
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_NET_L3_MASTER_DEV)
 /* If the host route is cached on the addr struct make sure it is associated
  * with the proper table. e.g., enslavement can change and if so the cached
@@ -3206,6 +3207,11 @@ static int fixup_permanent_addr(struct inet6_dev *idev,
 {
 	l3mdev_check_host_rt(idev, ifp);
 
+=======
+static int fixup_permanent_addr(struct inet6_dev *idev,
+				struct inet6_ifaddr *ifp)
+{
+>>>>>>> upstream/master
 =======
 static int fixup_permanent_addr(struct inet6_dev *idev,
 				struct inet6_ifaddr *ifp)
@@ -3521,7 +3527,12 @@ restart:
 				 */
 				if (!keep_addr ||
 <<<<<<< HEAD
+<<<<<<< HEAD
 				    !(ifa->flags & IFA_F_PERMANENT)) {
+=======
+				    !(ifa->flags & IFA_F_PERMANENT) ||
+				    addr_is_local(&ifa->addr)) {
+>>>>>>> upstream/master
 =======
 				    !(ifa->flags & IFA_F_PERMANENT) ||
 				    addr_is_local(&ifa->addr)) {
@@ -3570,6 +3581,7 @@ restart:
 	INIT_LIST_HEAD(&del_list);
 	list_for_each_entry_safe(ifa, tmp, &idev->addr_list, if_list) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		addrconf_del_dad_work(ifa);
 
 		write_unlock_bh(&idev->lock);
@@ -3579,6 +3591,10 @@ restart:
 =======
 		struct rt6_info *rt = NULL;
 
+=======
+		struct rt6_info *rt = NULL;
+
+>>>>>>> upstream/master
 		addrconf_del_dad_work(ifa);
 
 		write_unlock_bh(&idev->lock);
@@ -3586,6 +3602,9 @@ restart:
 
 		if (keep_addr && (ifa->flags & IFA_F_PERMANENT) &&
 		    !addr_is_local(&ifa->addr)) {
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 			/* set state to skip the notifier below */
 			state = INET6_IFADDR_STATE_DEAD;
@@ -3593,6 +3612,12 @@ restart:
 			if (!(ifa->flags & IFA_F_NODAD))
 				ifa->flags |= IFA_F_TENTATIVE;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+			rt = ifa->rt;
+			ifa->rt = NULL;
+>>>>>>> upstream/master
 =======
 
 			rt = ifa->rt;

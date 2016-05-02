@@ -1829,7 +1829,7 @@ static irqreturn_t cherryview_irq_handler(int irq, void *arg)
 	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
 	disable_rpm_wakeref_asserts(dev_priv);
 
-	for (;;) {
+	do {
 		master_ctl = I915_READ(GEN8_MASTER_IRQ) & ~GEN8_MASTER_IRQ_CONTROL;
 		iir = I915_READ(VLV_IIR);
 
@@ -1857,7 +1857,7 @@ static irqreturn_t cherryview_irq_handler(int irq, void *arg)
 
 		I915_WRITE(GEN8_MASTER_IRQ, DE_MASTER_IRQ_CONTROL);
 		POSTING_READ(GEN8_MASTER_IRQ);
-	}
+	} while (0);
 
 	enable_rpm_wakeref_asserts(dev_priv);
 
@@ -2973,6 +2973,7 @@ static bool subunits_stuck(struct intel_engine_cs *ring)
 		return true;
 
 	i915_get_extra_instdone(ring->dev, instdone);
+<<<<<<< HEAD
 
 	/* There might be unstable subunit states even when
 	 * actual head is not moving. Filter out the unstable ones by
@@ -2986,6 +2987,21 @@ static bool subunits_stuck(struct intel_engine_cs *ring)
 		if (tmp != ring->hangcheck.instdone[i])
 			stuck = false;
 
+=======
+
+	/* There might be unstable subunit states even when
+	 * actual head is not moving. Filter out the unstable ones by
+	 * accumulating the undone -> done transitions and only
+	 * consider those as progress.
+	 */
+	stuck = true;
+	for (i = 0; i < I915_NUM_INSTDONE_REG; i++) {
+		const u32 tmp = instdone[i] | ring->hangcheck.instdone[i];
+
+		if (tmp != ring->hangcheck.instdone[i])
+			stuck = false;
+
+>>>>>>> upstream/master
 		ring->hangcheck.instdone[i] |= tmp;
 	}
 
@@ -3350,6 +3366,7 @@ void gen8_irq_power_well_post_enable(struct drm_i915_private *dev_priv,
 {
 	uint32_t extra_ier = GEN8_PIPE_VBLANK | GEN8_PIPE_FIFO_UNDERRUN;
 	enum pipe pipe;
+<<<<<<< HEAD
 
 	spin_lock_irq(&dev_priv->irq_lock);
 	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
@@ -3357,6 +3374,28 @@ void gen8_irq_power_well_post_enable(struct drm_i915_private *dev_priv,
 				  dev_priv->de_irq_mask[pipe],
 				  ~dev_priv->de_irq_mask[pipe] | extra_ier);
 	spin_unlock_irq(&dev_priv->irq_lock);
+}
+
+void gen8_irq_power_well_pre_disable(struct drm_i915_private *dev_priv,
+				     unsigned int pipe_mask)
+{
+	enum pipe pipe;
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
+		GEN8_IRQ_RESET_NDX(DE_PIPE, pipe);
+=======
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
+		GEN8_IRQ_INIT_NDX(DE_PIPE, pipe,
+				  dev_priv->de_irq_mask[pipe],
+				  ~dev_priv->de_irq_mask[pipe] | extra_ier);
+>>>>>>> upstream/master
+	spin_unlock_irq(&dev_priv->irq_lock);
+
+	/* make sure we're done processing display irqs */
+	synchronize_irq(dev_priv->dev->irq);
 }
 
 void gen8_irq_power_well_pre_disable(struct drm_i915_private *dev_priv,

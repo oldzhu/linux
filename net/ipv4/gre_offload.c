@@ -53,6 +53,10 @@ static struct sk_buff *gre_gso_segment(struct sk_buff *skb,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	SKB_GSO_CB(skb)->encap_level = 0;
+>>>>>>> upstream/master
 =======
 	SKB_GSO_CB(skb)->encap_level = 0;
 >>>>>>> upstream/master

@@ -588,6 +588,15 @@ set_hcr:
 	msr	vpidr_el2, x0
 	msr	vmpidr_el2, x1
 
+	/*
+	 * When VHE is not in use, early init of EL2 and EL1 needs to be
+	 * done here.
+	 * When VHE _is_ in use, EL1 will not be used in the host and
+	 * requires no configuration, and all non-hyp-specific EL2 setup
+	 * will be done via the _EL1 system register aliases in __cpu_setup.
+	 */
+	cbnz	x2, 1f
+
 	/* sctlr_el1 */
 	mov	x0, #0x0800			// Set/clear RES{1,0} bits
 CPU_BE(	movk	x0, #0x33d0, lsl #16	)	// Set EE and E0E on BE systems
@@ -597,6 +606,7 @@ CPU_LE(	movk	x0, #0x30d0, lsl #16	)	// Clear EE and E0E on LE systems
 	/* Coprocessor traps. */
 	mov	x0, #0x33ff
 	msr	cptr_el2, x0			// Disable copro. traps to EL2
+1:
 
 #ifdef CONFIG_COMPAT
 	msr	hstr_el2, xzr			// Disable CP15 traps to EL2
@@ -734,7 +744,12 @@ ENDPROC(__secondary_switched)
 
 	.macro	update_early_cpu_boot_status status, tmp1, tmp2
 	mov	\tmp2, #\status
+<<<<<<< HEAD
 	str_l	\tmp2, __early_cpu_boot_status, \tmp1
+=======
+	adr_l	\tmp1, __early_cpu_boot_status
+	str	\tmp2, [\tmp1]
+>>>>>>> upstream/master
 	dmb	sy
 	dc	ivac, \tmp1			// Invalidate potentially stale cache line
 	.endm
@@ -758,7 +773,11 @@ ENTRY(__early_cpu_boot_status)
  */
 	.section	".idmap.text", "ax"
 __enable_mmu:
+<<<<<<< HEAD
 	mrs	x18, sctlr_el1			// preserve old SCTLR_EL1 value
+=======
+	mrs	x22, sctlr_el1			// preserve old SCTLR_EL1 value
+>>>>>>> upstream/master
 	mrs	x1, ID_AA64MMFR0_EL1
 	ubfx	x2, x1, #ID_AA64MMFR0_TGRAN_SHIFT, 4
 	cmp	x2, #ID_AA64MMFR0_TGRAN_SUPPORTED
@@ -786,14 +805,24 @@ __enable_mmu:
 	 * to take into account by discarding the current kernel mapping and
 	 * creating a new one.
 	 */
+<<<<<<< HEAD
 	msr	sctlr_el1, x18			// disable the MMU
+=======
+	msr	sctlr_el1, x22			// disable the MMU
+>>>>>>> upstream/master
 	isb
 	bl	__create_page_tables		// recreate kernel mapping
 
 	msr	sctlr_el1, x19			// re-enable the MMU
 	isb
+<<<<<<< HEAD
 	ic	ialluis				// flush instructions fetched
 	isb					// via old mapping
+=======
+	ic	iallu				// flush instructions fetched
+	dsb	nsh				// via old mapping
+	isb
+>>>>>>> upstream/master
 	add	x27, x27, x23			// relocated __mmap_switched
 #endif
 	br	x27

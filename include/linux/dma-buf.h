@@ -95,7 +95,11 @@ struct dma_buf_ops {
 
 	int (*begin_cpu_access)(struct dma_buf *, enum dma_data_direction);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void (*end_cpu_access)(struct dma_buf *, enum dma_data_direction);
+=======
+	int (*end_cpu_access)(struct dma_buf *, enum dma_data_direction);
+>>>>>>> upstream/master
 =======
 	int (*end_cpu_access)(struct dma_buf *, enum dma_data_direction);
 >>>>>>> upstream/master
@@ -229,8 +233,13 @@ void dma_buf_unmap_attachment(struct dma_buf_attachment *, struct sg_table *,
 int dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
 			     enum dma_data_direction dir);
 <<<<<<< HEAD
+<<<<<<< HEAD
 void dma_buf_end_cpu_access(struct dma_buf *dma_buf,
 			    enum dma_data_direction dir);
+=======
+int dma_buf_end_cpu_access(struct dma_buf *dma_buf,
+			   enum dma_data_direction dir);
+>>>>>>> upstream/master
 =======
 int dma_buf_end_cpu_access(struct dma_buf *dma_buf,
 			   enum dma_data_direction dir);

@@ -98,8 +98,13 @@ static int omap_gem_dmabuf_begin_cpu_access(struct dma_buf *buffer,
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void omap_gem_dmabuf_end_cpu_access(struct dma_buf *buffer,
 		enum dma_data_direction dir)
+=======
+static int omap_gem_dmabuf_end_cpu_access(struct dma_buf *buffer,
+					  enum dma_data_direction dir)
+>>>>>>> upstream/master
 =======
 static int omap_gem_dmabuf_end_cpu_access(struct dma_buf *buffer,
 					  enum dma_data_direction dir)

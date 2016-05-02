@@ -1262,11 +1262,16 @@ static int read_raw_super_block(struct super_block *sb,
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		buf = (struct f2fs_super_block *)
 				(bh->b_data + F2FS_SUPER_OFFSET);
 
 		/* sanity checking of raw super */
 		if (sanity_check_raw_super(sb, buf)) {
+=======
+		/* sanity checking of raw super */
+		if (sanity_check_raw_super(sb, bh)) {
+>>>>>>> upstream/master
 			f2fs_msg(sb, KERN_ERR,
 				"Can't find valid F2FS filesystem in %dth superblock",
 				block + 1);
@@ -1276,13 +1281,19 @@ static int read_raw_super_block(struct super_block *sb,
 		}
 
 		if (!*raw_super) {
+<<<<<<< HEAD
 			memcpy(super, buf, sizeof(*super));
+=======
+			memcpy(super, bh->b_data + F2FS_SUPER_OFFSET,
+							sizeof(*super));
+>>>>>>> upstream/master
 			*valid_super_block = block;
 			*raw_super = super;
 		}
 		brelse(bh);
 	}
 
+<<<<<<< HEAD
 =======
 		/* sanity checking of raw super */
 		if (sanity_check_raw_super(sb, bh)) {
@@ -1302,6 +1313,11 @@ static int read_raw_super_block(struct super_block *sb,
 		}
 		brelse(bh);
 	}
+=======
+	/* Fail to read any one of the superblocks*/
+	if (err < 0)
+		*recovery = 1;
+>>>>>>> upstream/master
 
 >>>>>>> upstream/master
 	/* Fail to read any one of the superblocks*/
@@ -1495,7 +1511,11 @@ try_onemore:
 	if (__exist_node_summaries(sbi))
 		sbi->kbytes_written =
 <<<<<<< HEAD
+<<<<<<< HEAD
 			le64_to_cpu(seg_i->sum_blk->journal.info.kbytes_written);
+=======
+			le64_to_cpu(seg_i->journal->info.kbytes_written);
+>>>>>>> upstream/master
 =======
 			le64_to_cpu(seg_i->journal->info.kbytes_written);
 >>>>>>> upstream/master

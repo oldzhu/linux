@@ -744,7 +744,11 @@ static int lst_test_add_ioctl(lstio_test_args_t *args)
 	    (args->lstio_tes_param_len <= 0 ||
 	     args->lstio_tes_param_len >
 <<<<<<< HEAD
+<<<<<<< HEAD
 	     PAGE_CACHE_SIZE - sizeof(lstcon_test_t)))
+=======
+	     PAGE_SIZE - sizeof(lstcon_test_t)))
+>>>>>>> upstream/master
 =======
 	     PAGE_SIZE - sizeof(lstcon_test_t)))
 >>>>>>> upstream/master
@@ -824,7 +828,11 @@ lstcon_ioctl_entry(unsigned int cmd, struct libcfs_ioctl_hdr *hdr)
 	opc = data->ioc_u32[0];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (data->ioc_plen1 > PAGE_CACHE_SIZE)
+=======
+	if (data->ioc_plen1 > PAGE_SIZE)
+>>>>>>> upstream/master
 =======
 	if (data->ioc_plen1 > PAGE_SIZE)
 >>>>>>> upstream/master

@@ -133,7 +133,10 @@ static struct stmmac_axi *stmmac_axi_setup(struct platform_device *pdev)
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
  * stmmac_dt_phy - parse device-tree driver parameters to allocate PHY resources
  * @plat: driver data platform structure
  * @np: device tree node
@@ -197,6 +200,9 @@ static int stmmac_dt_phy(struct plat_stmmacenet_data *plat,
 }
 
 /**
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
  * stmmac_probe_config_dt - parse device-tree driver parameters
  * @pdev: platform_device structure

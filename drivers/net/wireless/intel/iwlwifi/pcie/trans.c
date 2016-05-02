@@ -627,6 +627,7 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans, u32 dst_addr,
 	iwl_write32(trans, FH_TCSR_CHNL_TX_CONFIG_REG(FH_SRVC_CHNL),
 		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CHNL_PAUSE);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	iwl_write32(trans, FH_SRVC_CHNL_SRAM_ADDR_REG(FH_SRVC_CHNL),
 		    dst_addr);
@@ -649,6 +650,8 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans, u32 dst_addr,
 		    FH_TCSR_TX_CONFIG_REG_VAL_CIRQ_HOST_ENDTFD);
 
 =======
+=======
+>>>>>>> upstream/master
 
 	iwl_write32(trans, FH_SRVC_CHNL_SRAM_ADDR_REG(FH_SRVC_CHNL),
 		    dst_addr);
@@ -670,6 +673,9 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans, u32 dst_addr,
 		    FH_TCSR_TX_CONFIG_REG_VAL_DMA_CREDIT_DISABLE |
 		    FH_TCSR_TX_CONFIG_REG_VAL_CIRQ_HOST_ENDTFD);
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	iwl_trans_release_nic_access(trans, &flags);
 
@@ -1694,6 +1700,9 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
 			free_irq(trans_pcie->msix_entries[i].vector,
 				 &trans_pcie->msix_entries[i]);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 
 		pci_disable_msix(trans_pcie->pci_dev);
 		trans_pcie->msix_enabled = false;
@@ -1702,6 +1711,7 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
 
 		iwl_pcie_free_ict(trans);
 
+<<<<<<< HEAD
 =======
 
 		pci_disable_msix(trans_pcie->pci_dev);
@@ -1711,6 +1721,8 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
 
 		iwl_pcie_free_ict(trans);
 
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		pci_disable_msi(trans_pcie->pci_dev);
 	}

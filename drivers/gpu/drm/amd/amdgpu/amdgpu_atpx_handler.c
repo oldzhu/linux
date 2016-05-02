@@ -146,6 +146,16 @@ static void amdgpu_atpx_parse_functions(struct amdgpu_atpx_functions *f, u32 mas
  */
 static int amdgpu_atpx_validate(struct amdgpu_atpx *atpx)
 {
+<<<<<<< HEAD
+=======
+	/* make sure required functions are enabled */
+	/* dGPU power control is required */
+	if (atpx->functions.power_cntl == false) {
+		printk("ATPX dGPU power cntl not present, forcing\n");
+		atpx->functions.power_cntl = true;
+	}
+
+>>>>>>> upstream/master
 	if (atpx->functions.px_params) {
 		union acpi_object *info;
 		struct atpx_px_params output;

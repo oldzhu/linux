@@ -195,6 +195,10 @@ static int create_fixed_stream_quirk(struct snd_usb_audio *chip,
 
  error:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	list_del(&fp->list); /* unlink for avoiding double-free */
+>>>>>>> upstream/master
 =======
 	list_del(&fp->list); /* unlink for avoiding double-free */
 >>>>>>> upstream/master

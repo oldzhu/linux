@@ -1027,12 +1027,15 @@ static const char *f2fs_encrypted_get_link(struct dentry *dentry,
 		goto errout;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	/* this is broken symlink case */
 	if (unlikely(cstr.name[0] == 0)) {
 		res = -ENOENT;
 		goto errout;
 	}
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 
@@ -1050,7 +1053,10 @@ static const char *f2fs_encrypted_get_link(struct dentry *dentry,
 		goto errout;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 	/* this is broken symlink case */
 	if (unlikely(pstr.name[0] == 0)) {
 		res = -ENOENT;
@@ -1069,7 +1075,11 @@ static const char *f2fs_encrypted_get_link(struct dentry *dentry,
 errout:
 	fscrypt_fname_free_buffer(&pstr);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	page_cache_release(cpage);
+=======
+	put_page(cpage);
+>>>>>>> upstream/master
 =======
 	put_page(cpage);
 >>>>>>> upstream/master

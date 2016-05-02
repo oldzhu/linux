@@ -572,6 +572,24 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
 		goto fail;
 	}
 
+	/*
+	 * Set the GPU linear window to be at the end of the DMA window, where
+	 * the CMA area is likely to reside. This ensures that we are able to
+	 * map the command buffers while having the linear window overlap as
+	 * much RAM as possible, so we can optimize mappings for other buffers.
+	 *
+	 * For 3D cores only do this if MC2.0 is present, as with MC1.0 it leads
+	 * to different views of the memory on the individual engines.
+	 */
+	if (!(gpu->identity.features & chipFeatures_PIPE_3D) ||
+	    (gpu->identity.minor_features0 & chipMinorFeatures0_MC20)) {
+		u32 dma_mask = (u32)dma_get_required_mask(gpu->dev);
+		if (dma_mask < PHYS_OFFSET + SZ_2G)
+			gpu->memory_base = PHYS_OFFSET;
+		else
+			gpu->memory_base = dma_mask - SZ_2G + 1;
+	}
+
 	ret = etnaviv_hw_reset(gpu);
 	if (ret)
 		goto fail;
@@ -1576,6 +1594,7 @@ static int etnaviv_gpu_platform_probe(struct platform_device *pdev)
 	gpu->dev = &pdev->dev;
 	mutex_init(&gpu->lock);
 
+<<<<<<< HEAD
 	/*
 	 * Set the GPU linear window to be at the end of the DMA window, where
 	 * the CMA area is likely to reside. This ensures that we are able to
@@ -1588,6 +1607,8 @@ static int etnaviv_gpu_platform_probe(struct platform_device *pdev)
 	else
 		gpu->memory_base = dma_mask - SZ_2G + 1;
 
+=======
+>>>>>>> upstream/master
 	/* Map registers: */
 	gpu->mmio = etnaviv_ioremap(pdev, NULL, dev_name(gpu->dev));
 	if (IS_ERR(gpu->mmio))

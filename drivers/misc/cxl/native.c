@@ -799,7 +799,10 @@ static irqreturn_t native_irq_multiplexed(int irq, void *data)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 void native_irq_wait(struct cxl_context *ctx)
 {
 	u64 dsisr;
@@ -829,6 +832,9 @@ void native_irq_wait(struct cxl_context *ctx)
 	return;
 }
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 static irqreturn_t native_slice_irq_err(int irq, void *data)
 {
@@ -892,6 +898,9 @@ int cxl_native_register_psl_err_irq(struct cxl *adapter)
 
 	cxl_p1_write(adapter, CXL_PSL_ErrIVTE, adapter->native->err_hwirq & 0xffff);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 
 	return 0;
 }
@@ -928,12 +937,16 @@ int cxl_native_register_serr_irq(struct cxl_afu *afu)
 	serr = cxl_p1n_read(afu, CXL_PSL_SERR_An);
 	serr = (serr & 0x00ffffffffff0000ULL) | (afu->serr_hwirq & 0xffff);
 	cxl_p1n_write(afu, CXL_PSL_SERR_An, serr);
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 
 	return 0;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 void cxl_native_release_psl_err_irq(struct cxl *adapter)
@@ -972,6 +985,8 @@ int cxl_native_register_serr_irq(struct cxl_afu *afu)
 	return 0;
 }
 
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 void cxl_native_release_serr_irq(struct cxl_afu *afu)
 {
@@ -1152,6 +1167,10 @@ const struct cxl_backend_ops cxl_native_ops = {
 	.psl_interrupt = NULL,
 	.ack_irq = native_ack_irq,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	.irq_wait = native_irq_wait,
+>>>>>>> upstream/master
 =======
 	.irq_wait = native_irq_wait,
 >>>>>>> upstream/master

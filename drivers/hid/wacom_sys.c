@@ -1861,6 +1861,12 @@ static int wacom_probe(struct hid_device *hdev,
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	wacom_wac->hid_data.inputmode = -1;
+	wacom_wac->mode_report = -1;
+
+>>>>>>> upstream/master
 =======
 	wacom_wac->hid_data.inputmode = -1;
 	wacom_wac->mode_report = -1;

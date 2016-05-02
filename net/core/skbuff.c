@@ -819,7 +819,11 @@ void napi_consume_skb(struct sk_buff *skb, int budget)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (unlikely(skb->fclone != SKB_FCLONE_UNAVAILABLE)) {
+=======
+	if (skb->fclone != SKB_FCLONE_UNAVAILABLE) {
+>>>>>>> upstream/master
 =======
 	if (skb->fclone != SKB_FCLONE_UNAVAILABLE) {
 >>>>>>> upstream/master
@@ -4528,6 +4532,10 @@ int skb_vlan_push(struct sk_buff *skb, __be16 vlan_proto, u16 vlan_tci)
 
 		skb_postpush_rcsum(skb, skb->data + (2 * ETH_ALEN), VLAN_HLEN);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		__skb_pull(skb, offset);
+>>>>>>> upstream/master
 =======
 		__skb_pull(skb, offset);
 >>>>>>> upstream/master

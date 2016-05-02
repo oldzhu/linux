@@ -630,6 +630,10 @@ config SND_SOC_RT5514
 config SND_SOC_RT5616
 	tristate "Realtek RT5616 CODEC"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	depends on I2C
+>>>>>>> upstream/master
 =======
 	depends on I2C
 >>>>>>> upstream/master

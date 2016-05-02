@@ -2506,7 +2506,11 @@ static const struct proto_ops netlink_ops = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	.ioctl =	sock_no_ioctl,
+=======
+	.ioctl =	netlink_ioctl,
+>>>>>>> upstream/master
 =======
 	.ioctl =	netlink_ioctl,
 >>>>>>> upstream/master

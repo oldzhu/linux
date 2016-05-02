@@ -2634,8 +2634,11 @@ static void mlx5e_destroy_netdev(struct mlx5_core_dev *mdev, void *vpriv)
 	mlx5e_disable_async_events(priv);
 	flush_scheduled_work();
 <<<<<<< HEAD
+<<<<<<< HEAD
 	unregister_netdev(netdev);
 =======
+=======
+>>>>>>> upstream/master
 	if (test_bit(MLX5_INTERFACE_STATE_SHUTDOWN, &mdev->intf_state)) {
 		netif_device_detach(netdev);
 		mutex_lock(&priv->state_lock);
@@ -2646,6 +2649,9 @@ static void mlx5e_destroy_netdev(struct mlx5_core_dev *mdev, void *vpriv)
 		unregister_netdev(netdev);
 	}
 
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	mlx5e_tc_cleanup(priv);
 	mlx5e_vxlan_cleanup(priv);

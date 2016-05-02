@@ -857,6 +857,10 @@ struct cxl_backend_ops {
 	irqreturn_t (*psl_interrupt)(int irq, void *data);
 	int (*ack_irq)(struct cxl_context *ctx, u64 tfc, u64 psl_reset_mask);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	void (*irq_wait)(struct cxl_context *ctx);
+>>>>>>> upstream/master
 =======
 	void (*irq_wait)(struct cxl_context *ctx);
 >>>>>>> upstream/master

@@ -279,7 +279,12 @@ static void user_sdma_free_request(struct user_sdma_request *, bool);
 static int pin_vector_pages(struct user_sdma_request *,
 			    struct user_sdma_iovec *);
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void unpin_vector_pages(struct mm_struct *, struct page **, unsigned);
+=======
+static void unpin_vector_pages(struct mm_struct *, struct page **, unsigned,
+			       unsigned);
+>>>>>>> upstream/master
 =======
 static void unpin_vector_pages(struct mm_struct *, struct page **, unsigned,
 			       unsigned);
@@ -305,7 +310,12 @@ static void activate_packet_queue(struct iowait *, int);
 static bool sdma_rb_filter(struct mmu_rb_node *, unsigned long, unsigned long);
 static int sdma_rb_insert(struct rb_root *, struct mmu_rb_node *);
 <<<<<<< HEAD
+<<<<<<< HEAD
 static void sdma_rb_remove(struct rb_root *, struct mmu_rb_node *, bool);
+=======
+static void sdma_rb_remove(struct rb_root *, struct mmu_rb_node *,
+			   struct mm_struct *);
+>>>>>>> upstream/master
 =======
 static void sdma_rb_remove(struct rb_root *, struct mmu_rb_node *,
 			   struct mm_struct *);
@@ -1043,6 +1053,7 @@ static u32 sdma_cache_evict(struct hfi1_user_sdma_pkt_q *pq, u32 npages)
 {
 	u32 cleared = 0;
 	struct sdma_mmu_node *node, *ptr;
+<<<<<<< HEAD
 
 	list_for_each_entry_safe_reverse(node, ptr, &pq->evict, list) {
 		/* Make sure that no one is still using the node. */
@@ -1138,10 +1149,107 @@ retry:
 	iovec->npages = npages;
 
 =======
+=======
+
+	list_for_each_entry_safe_reverse(node, ptr, &pq->evict, list) {
+		/* Make sure that no one is still using the node. */
+		if (!atomic_read(&node->refcount)) {
+			/*
+			 * Need to use the page count now as the remove callback
+			 * will free the node.
+			 */
+			cleared += node->npages;
+			spin_unlock(&pq->evict_lock);
+			hfi1_mmu_rb_remove(&pq->sdma_rb_root, &node->rb);
+			spin_lock(&pq->evict_lock);
+			if (cleared >= npages)
+				break;
+		}
+	}
+	return cleared;
+}
+
+static int pin_vector_pages(struct user_sdma_request *req,
+			    struct user_sdma_iovec *iovec) {
+	int ret = 0, pinned, npages, cleared;
+	struct page **pages;
+	struct hfi1_user_sdma_pkt_q *pq = req->pq;
+	struct sdma_mmu_node *node = NULL;
+	struct mmu_rb_node *rb_node;
+
+	rb_node = hfi1_mmu_rb_search(&pq->sdma_rb_root,
+				     (unsigned long)iovec->iov.iov_base,
+				     iovec->iov.iov_len);
+>>>>>>> upstream/master
 	if (rb_node && !IS_ERR(rb_node))
 		node = container_of(rb_node, struct sdma_mmu_node, rb);
 	else
 		rb_node = NULL;
+<<<<<<< HEAD
+
+	if (!node) {
+		node = kzalloc(sizeof(*node), GFP_KERNEL);
+		if (!node)
+			return -ENOMEM;
+
+		node->rb.addr = (unsigned long)iovec->iov.iov_base;
+		node->rb.len = iovec->iov.iov_len;
+		node->pq = pq;
+		atomic_set(&node->refcount, 0);
+		INIT_LIST_HEAD(&node->list);
+	}
+
+	npages = num_user_pages(&iovec->iov);
+	if (node->npages < npages) {
+		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
+		if (!pages) {
+			SDMA_DBG(req, "Failed page array alloc");
+			ret = -ENOMEM;
+			goto bail;
+		}
+		memcpy(pages, node->pages, node->npages * sizeof(*pages));
+
+		npages -= node->npages;
+retry:
+		if (!hfi1_can_pin_pages(pq->dd, pq->n_locked, npages)) {
+			spin_lock(&pq->evict_lock);
+			cleared = sdma_cache_evict(pq, npages);
+			spin_unlock(&pq->evict_lock);
+			if (cleared >= npages)
+				goto retry;
+		}
+		pinned = hfi1_acquire_user_pages(
+			((unsigned long)iovec->iov.iov_base +
+			 (node->npages * PAGE_SIZE)), npages, 0,
+			pages + node->npages);
+		if (pinned < 0) {
+			kfree(pages);
+			ret = pinned;
+			goto bail;
+		}
+		if (pinned != npages) {
+			unpin_vector_pages(current->mm, pages, node->npages,
+					   pinned);
+			ret = -EFAULT;
+			goto bail;
+		}
+		kfree(node->pages);
+		node->pages = pages;
+		node->npages += pinned;
+		npages = node->npages;
+		spin_lock(&pq->evict_lock);
+		if (!rb_node)
+			list_add(&node->list, &pq->evict);
+		else
+			list_move(&node->list, &pq->evict);
+		pq->n_locked += pinned;
+		spin_unlock(&pq->evict_lock);
+	}
+	iovec->pages = node->pages;
+	iovec->npages = npages;
+
+>>>>>>> upstream/master
+=======
 
 	if (!node) {
 		node = kzalloc(sizeof(*node), GFP_KERNEL);
@@ -1227,9 +1335,15 @@ bail:
 
 static void unpin_vector_pages(struct mm_struct *mm, struct page **pages,
 <<<<<<< HEAD
+<<<<<<< HEAD
 			       unsigned npages)
 {
 	hfi1_release_user_pages(mm, pages, npages, 0);
+=======
+			       unsigned start, unsigned npages)
+{
+	hfi1_release_user_pages(mm, pages + start, npages, 0);
+>>>>>>> upstream/master
 =======
 			       unsigned start, unsigned npages)
 {
@@ -1588,7 +1702,11 @@ static void user_sdma_free_request(struct user_sdma_request *req, bool unpin)
 				(unsigned long)req->iovs[i].iov.iov_base,
 				req->iovs[i].iov.iov_len);
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (!mnode)
+=======
+			if (!mnode || IS_ERR(mnode))
+>>>>>>> upstream/master
 =======
 			if (!mnode || IS_ERR(mnode))
 >>>>>>> upstream/master
@@ -1637,7 +1755,11 @@ static int sdma_rb_insert(struct rb_root *root, struct mmu_rb_node *mnode)
 
 static void sdma_rb_remove(struct rb_root *root, struct mmu_rb_node *mnode,
 <<<<<<< HEAD
+<<<<<<< HEAD
 			   bool notifier)
+=======
+			   struct mm_struct *mm)
+>>>>>>> upstream/master
 =======
 			   struct mm_struct *mm)
 >>>>>>> upstream/master
@@ -1651,8 +1773,11 @@ static void sdma_rb_remove(struct rb_root *root, struct mmu_rb_node *mnode,
 	spin_unlock(&node->pq->evict_lock);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	unpin_vector_pages(notifier ? NULL : current->mm, node->pages,
 =======
+=======
+>>>>>>> upstream/master
 	/*
 	 * If mm is set, we are being called by the MMU notifier and we
 	 * should not pass a mm_struct to unpin_vector_page(). This is to
@@ -1660,6 +1785,9 @@ static void sdma_rb_remove(struct rb_root *root, struct mmu_rb_node *mnode,
 	 * take the mmap_sem, which the MMU notifier has already taken.
 	 */
 	unpin_vector_pages(mm ? NULL : current->mm, node->pages, 0,
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 			   node->npages);
 	/*
@@ -1667,8 +1795,13 @@ static void sdma_rb_remove(struct rb_root *root, struct mmu_rb_node *mnode,
 	 * page count ourselves.
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (notifier)
 		current->mm->pinned_vm -= node->npages;
+=======
+	if (mm)
+		mm->pinned_vm -= node->npages;
+>>>>>>> upstream/master
 =======
 	if (mm)
 		mm->pinned_vm -= node->npages;

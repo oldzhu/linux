@@ -744,8 +744,11 @@ static void __nvme_process_cq(struct nvme_queue *nvmeq, unsigned int *tag)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if ((status & 1) != phase)
 			break;
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 =======
@@ -785,7 +788,11 @@ static void __nvme_process_cq(struct nvme_queue *nvmeq, unsigned int *tag)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		blk_mq_complete_request(req, status >> 1);
+=======
+		blk_mq_complete_request(req, le16_to_cpu(cqe.status) >> 1);
+>>>>>>> upstream/master
 =======
 		blk_mq_complete_request(req, le16_to_cpu(cqe.status) >> 1);
 >>>>>>> upstream/master
@@ -1502,8 +1509,12 @@ static int nvme_setup_io_queues(struct nvme_dev *dev)
 		dev_err(dev->ctrl.device,
 			"Could not set queue count (%d)\n", result);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		nr_io_queues = 0;
 		result = 0;
+=======
+		return 0;
+>>>>>>> upstream/master
 =======
 		return 0;
 >>>>>>> upstream/master
@@ -2120,6 +2131,10 @@ static void nvme_remove(struct pci_dev *pdev)
 	pci_set_drvdata(pdev, NULL);
 	flush_work(&dev->async_work);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	flush_work(&dev->reset_work);
+>>>>>>> upstream/master
 =======
 	flush_work(&dev->reset_work);
 >>>>>>> upstream/master

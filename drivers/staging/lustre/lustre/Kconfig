@@ -5,7 +5,11 @@ config LUSTRE_FS
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	select LNET
+=======
+	depends on LNET
+>>>>>>> upstream/master
 =======
 	depends on LNET
 >>>>>>> upstream/master

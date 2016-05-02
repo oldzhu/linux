@@ -136,6 +136,10 @@ static inline void tc_action_net_exit(struct tc_action_net *tn)
 {
 	tcf_hashinfo_destroy(tn->ops, tn->hinfo);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	kfree(tn->hinfo);
+>>>>>>> upstream/master
 =======
 	kfree(tn->hinfo);
 >>>>>>> upstream/master

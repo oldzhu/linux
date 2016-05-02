@@ -528,7 +528,11 @@ static int ll_read_ahead_page(const struct lu_env *env, struct cl_io *io,
  * up quickly which will affect read performance significantly. See LU-2816
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define RAS_INCREASE_STEP(inode) (ONE_MB_BRW_SIZE >> PAGE_CACHE_SHIFT)
+=======
+#define RAS_INCREASE_STEP(inode) (ONE_MB_BRW_SIZE >> PAGE_SHIFT)
+>>>>>>> upstream/master
 =======
 #define RAS_INCREASE_STEP(inode) (ONE_MB_BRW_SIZE >> PAGE_SHIFT)
 >>>>>>> upstream/master

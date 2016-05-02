@@ -5363,7 +5363,11 @@ int btrfs_compare_trees(struct btrfs_root *left_root,
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	tmp_buf = kmalloc(left_root->nodesize, GFP_KERNEL);
+=======
+	tmp_buf = kmalloc(left_root->nodesize, GFP_KERNEL | __GFP_NOWARN);
+>>>>>>> upstream/master
 =======
 	tmp_buf = kmalloc(left_root->nodesize, GFP_KERNEL | __GFP_NOWARN);
 >>>>>>> upstream/master

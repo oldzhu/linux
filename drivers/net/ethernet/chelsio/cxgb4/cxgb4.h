@@ -768,6 +768,11 @@ struct adapter {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+	void *iscsi_ppm;
+>>>>>>> upstream/master
 =======
 
 	void *iscsi_ppm;

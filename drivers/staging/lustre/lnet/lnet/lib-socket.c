@@ -169,7 +169,11 @@ lnet_ipif_enumerate(char ***namesp)
 		if (nalloc * sizeof(*ifr) > PAGE_SIZE) {
 			toobig = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
 			nalloc = PAGE_CACHE_SIZE / sizeof(*ifr);
+=======
+			nalloc = PAGE_SIZE / sizeof(*ifr);
+>>>>>>> upstream/master
 =======
 			nalloc = PAGE_SIZE / sizeof(*ifr);
 >>>>>>> upstream/master

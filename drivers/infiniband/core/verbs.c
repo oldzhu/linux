@@ -1861,7 +1861,12 @@ void ib_drain_qp(struct ib_qp *qp)
 {
 	ib_drain_sq(qp);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	ib_drain_rq(qp);
+=======
+	if (!qp->srq)
+		ib_drain_rq(qp);
+>>>>>>> upstream/master
 =======
 	if (!qp->srq)
 		ib_drain_rq(qp);

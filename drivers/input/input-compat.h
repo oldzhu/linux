@@ -18,8 +18,11 @@
 #ifdef CONFIG_COMPAT
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #define INPUT_COMPAT_TEST in_compat_syscall()
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 struct input_event_compat {

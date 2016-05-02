@@ -5689,6 +5689,7 @@ void btrfs_record_unlink_dir(struct btrfs_trans_handle *trans,
 record:
 	mutex_lock(&BTRFS_I(dir)->log_mutex);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	BTRFS_I(dir)->last_unlink_trans = trans->transid;
 	mutex_unlock(&BTRFS_I(dir)->log_mutex);
 }
@@ -5712,6 +5713,8 @@ void btrfs_record_snapshot_destroy(struct btrfs_trans_handle *trans,
 	BTRFS_I(dir)->last_unlink_trans = trans->transid;
 	mutex_unlock(&BTRFS_I(dir)->log_mutex);
 =======
+=======
+>>>>>>> upstream/master
 	BTRFS_I(dir)->last_unlink_trans = trans->transid;
 	mutex_unlock(&BTRFS_I(dir)->log_mutex);
 }
@@ -5734,6 +5737,9 @@ void btrfs_record_snapshot_destroy(struct btrfs_trans_handle *trans,
 	mutex_lock(&BTRFS_I(dir)->log_mutex);
 	BTRFS_I(dir)->last_unlink_trans = trans->transid;
 	mutex_unlock(&BTRFS_I(dir)->log_mutex);
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 }
 

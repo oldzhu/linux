@@ -5,7 +5,11 @@ CFLAGS = -Wall -O2 -g
 CFLAGS += -I../../../../usr/include/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 NET_PROGS = socket psock_fanout psock_tpacket reuseport_bpf reuseport_bpf_cpu
+=======
+NET_PROGS = socket psock_fanout psock_tpacket reuseport_bpf reuseport_bpf_cpu reuseport_dualstack
+>>>>>>> upstream/master
 =======
 NET_PROGS = socket psock_fanout psock_tpacket reuseport_bpf reuseport_bpf_cpu reuseport_dualstack
 >>>>>>> upstream/master

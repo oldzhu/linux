@@ -195,6 +195,10 @@ config GENEVE
 config MACSEC
 	tristate "IEEE 802.1AE MAC-level encryption (MACsec)"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	select CRYPTO
+>>>>>>> upstream/master
 =======
 	select CRYPTO
 >>>>>>> upstream/master

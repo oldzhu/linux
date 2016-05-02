@@ -58,7 +58,11 @@ static void vvp_page_fini_common(struct ccc_page *cp)
 
 	LASSERT(vmpage);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	page_cache_release(vmpage);
+=======
+	put_page(vmpage);
+>>>>>>> upstream/master
 =======
 	put_page(vmpage);
 >>>>>>> upstream/master

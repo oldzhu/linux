@@ -808,9 +808,12 @@ static int hfi1_file_close(struct inode *inode, struct file *fp)
 	uctxt->event_flags = 0;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	hfi1_user_exp_rcv_free(fdata);
 	hfi1_clear_ctxt_pkey(dd, uctxt->ctxt);
 
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	hfi1_stats.sps_ctxts--;
@@ -1146,6 +1149,7 @@ static int user_init(struct file *fp)
 
 	/* make sure that the context has already been setup */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (!test_bit(HFI1_CTXT_SETUP_DONE, &uctxt->event_flags)) {
 		ret = -EFAULT;
 		goto done;
@@ -1161,6 +1165,10 @@ static int user_init(struct file *fp)
 					       &uctxt->event_flags));
 		goto expected;
 	}
+=======
+	if (!test_bit(HFI1_CTXT_SETUP_DONE, &uctxt->event_flags))
+		return -EFAULT;
+>>>>>>> upstream/master
 =======
 	if (!test_bit(HFI1_CTXT_SETUP_DONE, &uctxt->event_flags))
 		return -EFAULT;
@@ -1220,6 +1228,7 @@ static int user_init(struct file *fp)
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 expected:
 	/*
 	 * Expected receive has to be setup for all processes (including
@@ -1233,6 +1242,9 @@ expected:
 	ret = hfi1_user_exp_rcv_init(fp);
 done:
 	return ret;
+=======
+	return 0;
+>>>>>>> upstream/master
 =======
 	return 0;
 >>>>>>> upstream/master
@@ -1304,13 +1316,19 @@ static int setup_ctxt(struct file *fp)
 				goto done;
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 	} else {
 		ret = wait_event_interruptible(uctxt->wait, !test_bit(
 					       HFI1_CTXT_MASTER_UNINIT,
 					       &uctxt->event_flags));
 		if (ret)
 			goto done;
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	}
 

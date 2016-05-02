@@ -1038,7 +1038,11 @@ restart_bulk:
 		CERROR("Unexpected # bytes transferred: %d (%ld expected)\n",
 		       req->rq_bulk->bd_nob_transferred,
 <<<<<<< HEAD
+<<<<<<< HEAD
 		       PAGE_CACHE_SIZE * op_data->op_npages);
+=======
+		       PAGE_SIZE * op_data->op_npages);
+>>>>>>> upstream/master
 =======
 		       PAGE_SIZE * op_data->op_npages);
 >>>>>>> upstream/master

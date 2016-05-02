@@ -360,7 +360,11 @@ static struct cpuidle_ops psci_cpuidle_ops __initdata = {
 	.init = psci_dt_cpu_init_idle,
 };
 
+<<<<<<< HEAD
 CPUIDLE_METHOD_OF_DECLARE(psci, "arm,psci", &psci_cpuidle_ops);
+=======
+CPUIDLE_METHOD_OF_DECLARE(psci, "psci", &psci_cpuidle_ops);
+>>>>>>> upstream/master
 #endif
 #endif
 

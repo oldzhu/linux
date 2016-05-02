@@ -327,6 +327,7 @@ static int skl_tplg_update_be_blob(struct snd_soc_dapm_widget *w,
 	}
 
 	return 0;
+<<<<<<< HEAD
 }
 
 static int skl_tplg_update_be_blob(struct snd_soc_dapm_widget *w,
@@ -386,6 +387,8 @@ static int skl_tplg_update_be_blob(struct snd_soc_dapm_widget *w,
 	}
 
 	return 0;
+=======
+>>>>>>> upstream/master
 }
 
 static void skl_tplg_update_module_params(struct snd_soc_dapm_widget *w,
@@ -736,6 +739,7 @@ static int skl_tplg_set_module_bind_params(struct snd_soc_dapm_widget *w,
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -796,6 +800,8 @@ static int skl_tplg_set_module_bind_params(struct snd_soc_dapm_widget *w,
 			}
 		}
 	}
+=======
+>>>>>>> upstream/master
 
 	return 0;
 }

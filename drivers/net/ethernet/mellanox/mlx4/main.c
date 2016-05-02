@@ -3808,19 +3808,29 @@ static int mlx4_init_one(struct pci_dev *pdev, const struct pci_device_id *id)
 	ret = devlink_register(devlink, &pdev->dev);
 	if (ret)
 		goto err_persist_free;
+<<<<<<< HEAD
 
 	ret = devlink_register(devlink, &pdev->dev);
 	if (ret)
 		goto err_persist_free;
+=======
+>>>>>>> upstream/master
 
 	ret =  __mlx4_init_one(pdev, id->driver_data, priv);
 	if (ret)
 		goto err_devlink_unregister;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	pci_save_state(pdev);
 	return 0;
 
+=======
+
+	pci_save_state(pdev);
+	return 0;
+
+>>>>>>> upstream/master
 =======
 
 	pci_save_state(pdev);
@@ -3964,7 +3974,11 @@ static void mlx4_remove_one(struct pci_dev *pdev)
 
 	pci_release_regions(pdev);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	pci_disable_device(pdev);
+=======
+	mlx4_pci_disable_device(dev);
+>>>>>>> upstream/master
 =======
 	mlx4_pci_disable_device(dev);
 >>>>>>> upstream/master
@@ -4108,6 +4122,7 @@ static pci_ers_result_t mlx4_pci_slot_reset(struct pci_dev *pdev)
 	pci_save_state(pdev);
 	return PCI_ERS_RESULT_RECOVERED;
 }
+<<<<<<< HEAD
 
 static void mlx4_pci_resume(struct pci_dev *pdev)
 {
@@ -4118,6 +4133,18 @@ static void mlx4_pci_resume(struct pci_dev *pdev)
 	int total_vfs;
 	int err;
 
+=======
+
+static void mlx4_pci_resume(struct pci_dev *pdev)
+{
+	struct mlx4_dev_persistent *persist = pci_get_drvdata(pdev);
+	struct mlx4_dev	 *dev  = persist->dev;
+	struct mlx4_priv *priv = mlx4_priv(dev);
+	int nvfs[MLX4_MAX_PORTS + 1] = {0, 0, 0};
+	int total_vfs;
+	int err;
+
+>>>>>>> upstream/master
 	mlx4_err(dev, "%s was called\n", __func__);
 	total_vfs = dev->persist->num_vfs;
 	memcpy(nvfs, dev->persist->nvfs, sizeof(dev->persist->nvfs));

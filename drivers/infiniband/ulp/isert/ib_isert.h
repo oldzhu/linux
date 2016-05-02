@@ -210,7 +210,10 @@ struct isert_conn {
 	struct isert_device	*device;
 	struct mutex		mutex;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	struct completion	wait_comp_err;
+=======
+>>>>>>> upstream/master
 =======
 >>>>>>> upstream/master
 	struct kref		kref;
