@@ -153,8 +153,10 @@ struct byt_community {
 		.name			= (n),			\
 		.pins			= (p),			\
 		.npins			= ARRAY_SIZE((p)),	\
-		.has_simple_funcs	= 1,		\
-		.simple_funcs		= (f),			\
+		.has_simple_funcs	= 1,			\
+		{						\
+			.simple_funcs		= (f),		\
+		},						\
 		.nfuncs			= ARRAY_SIZE((f)),	\
 	}
 #define PIN_GROUP_MIXED(n, p, f)				\
@@ -163,7 +165,9 @@ struct byt_community {
 		.pins			= (p),			\
 		.npins			= ARRAY_SIZE((p)),	\
 		.has_simple_funcs	= 0,			\
-		.mixed_funcs		= (f),			\
+		{						\
+			.mixed_funcs		= (f),		\
+		},						\
 		.nfuncs			= ARRAY_SIZE((f)),	\
 	}
 
@@ -397,9 +401,9 @@ static const struct byt_simple_func_mux byt_score_sata_mux[] = {
 static const unsigned int byt_score_plt_clk0_pins[] = { 96 };
 static const unsigned int byt_score_plt_clk1_pins[] = { 97 };
 static const unsigned int byt_score_plt_clk2_pins[] = { 98 };
-static const unsigned int byt_score_plt_clk4_pins[] = { 99 };
-static const unsigned int byt_score_plt_clk5_pins[] = { 100 };
-static const unsigned int byt_score_plt_clk3_pins[] = { 101 };
+static const unsigned int byt_score_plt_clk3_pins[] = { 99 };
+static const unsigned int byt_score_plt_clk4_pins[] = { 100 };
+static const unsigned int byt_score_plt_clk5_pins[] = { 101 };
 static const struct byt_simple_func_mux byt_score_plt_clk_mux[] = {
 	SIMPLE_FUNC("plt_clk", 1),
 };
