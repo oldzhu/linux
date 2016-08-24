@@ -1103,183 +1103,6 @@ static bool vxlan_remcsum(struct vxlanhdr *unparsed,
 	start = vxlan_rco_start(unparsed->vx_vni);
 	offset = start + vxlan_rco_offset(unparsed->vx_vni);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	plen = sizeof(struct vxlanhdr) + offset + sizeof(u16);
-
-	if (!pskb_may_pull(skb, plen))
-		return false;
-
-=======
-	if (!pskb_may_pull(skb, offset + sizeof(u16)))
-		return false;
-
->>>>>>> upstream/master
-=======
-	if (!pskb_may_pull(skb, offset + sizeof(u16)))
-		return false;
-
->>>>>>> upstream/master
-	skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, offset,
-			    !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
-out:
-	unparsed->vx_flags &= ~VXLAN_HF_RCO;
-	unparsed->vx_vni &= VXLAN_VNI_MASK;
-	return true;
-=======
-	if (!pskb_may_pull(skb, offset + sizeof(u16)))
-		return false;
-
-	skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, offset,
-			    !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
-out:
-	unparsed->vx_flags &= ~VXLAN_HF_RCO;
-	unparsed->vx_vni &= VXLAN_VNI_MASK;
-	return true;
-}
-
-static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
-				struct sk_buff *skb, u32 vxflags,
-				struct vxlan_metadata *md)
-{
-	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
-	struct metadata_dst *tun_dst;
-
-	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
-		goto out;
-
-	md->gbp = ntohs(gbp->policy_id);
-
-	tun_dst = (struct metadata_dst *)skb_dst(skb);
-	if (tun_dst) {
-		tun_dst->u.tun_info.key.tun_flags |= TUNNEL_VXLAN_OPT;
-		tun_dst->u.tun_info.options_len = sizeof(*md);
-	}
-	if (gbp->dont_learn)
-		md->gbp |= VXLAN_GBP_DONT_LEARN;
-
-	if (gbp->policy_applied)
-		md->gbp |= VXLAN_GBP_POLICY_APPLIED;
-
-	/* In flow-based mode, GBP is carried in dst_metadata */
-	if (!(vxflags & VXLAN_F_COLLECT_METADATA))
-		skb->mark = md->gbp;
-out:
-	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
->>>>>>> upstream/master
-}
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
-				struct sk_buff *skb, u32 vxflags,
-				struct vxlan_metadata *md)
-{
-	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
-	struct metadata_dst *tun_dst;
-
-	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
-		goto out;
-
-	md->gbp = ntohs(gbp->policy_id);
-
-=======
-
-static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
-				struct sk_buff *skb, u32 vxflags,
-				struct vxlan_metadata *md)
-{
-	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
-	struct metadata_dst *tun_dst;
-
-	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
-		goto out;
-
-	md->gbp = ntohs(gbp->policy_id);
-
->>>>>>> upstream/master
-	tun_dst = (struct metadata_dst *)skb_dst(skb);
-	if (tun_dst) {
-		tun_dst->u.tun_info.key.tun_flags |= TUNNEL_VXLAN_OPT;
-		tun_dst->u.tun_info.options_len = sizeof(*md);
-	}
-	if (gbp->dont_learn)
-		md->gbp |= VXLAN_GBP_DONT_LEARN;
-
-	if (gbp->policy_applied)
-		md->gbp |= VXLAN_GBP_POLICY_APPLIED;
-
-	/* In flow-based mode, GBP is carried in dst_metadata */
-	if (!(vxflags & VXLAN_F_COLLECT_METADATA))
-		skb->mark = md->gbp;
-out:
-	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
-}
-
-static bool vxlan_set_mac(struct vxlan_dev *vxlan,
-			  struct vxlan_sock *vs,
-			  struct sk_buff *skb)
-{
-<<<<<<< HEAD
-=======
-	if (!pskb_may_pull(skb, offset + sizeof(u16)))
-		return false;
-
-	skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, offset,
-			    !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
-out:
-	unparsed->vx_flags &= ~VXLAN_HF_RCO;
-	unparsed->vx_vni &= VXLAN_VNI_MASK;
-	return true;
-}
-
-static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
-				struct sk_buff *skb, u32 vxflags,
-				struct vxlan_metadata *md)
-{
-	struct vxlanhdr_gbp *gbp = (struct vxlanhdr_gbp *)unparsed;
-	struct metadata_dst *tun_dst;
-
-	if (!(unparsed->vx_flags & VXLAN_HF_GBP))
-		goto out;
-
-	md->gbp = ntohs(gbp->policy_id);
-
-	tun_dst = (struct metadata_dst *)skb_dst(skb);
-	if (tun_dst) {
-		tun_dst->u.tun_info.key.tun_flags |= TUNNEL_VXLAN_OPT;
-		tun_dst->u.tun_info.options_len = sizeof(*md);
-	}
-	if (gbp->dont_learn)
-		md->gbp |= VXLAN_GBP_DONT_LEARN;
-
-	if (gbp->policy_applied)
-		md->gbp |= VXLAN_GBP_POLICY_APPLIED;
-
-	/* In flow-based mode, GBP is carried in dst_metadata */
-	if (!(vxflags & VXLAN_F_COLLECT_METADATA))
-		skb->mark = md->gbp;
-out:
-	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
-}
-
-static bool vxlan_set_mac(struct vxlan_dev *vxlan,
-			  struct vxlan_sock *vs,
-			  struct sk_buff *skb)
-{
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
-=======
-static bool vxlan_set_mac(struct vxlan_dev *vxlan,
-			  struct vxlan_sock *vs,
-			  struct sk_buff *skb)
-{
->>>>>>> upstream/master
-=======
 	if (!pskb_may_pull(skb, offset + sizeof(u16)))
 		return false;
 
@@ -1364,7 +1187,6 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
 			  struct vxlan_sock *vs,
 			  struct sk_buff *skb)
 {
->>>>>>> upstream/master
 	union vxlan_addr saddr;
 
 	skb_reset_mac_header(skb);
@@ -1504,50 +1326,13 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
 		 */
 		goto drop;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-	if (!raw_proto) {
-		if (!vxlan_set_mac(vxlan, vs, skb))
-			goto drop;
-	} else {
-		skb_reset_mac_header(skb);
-		skb->dev = vxlan->dev;
-		skb->pkt_type = PACKET_HOST;
-	}
-
-=======
-
-	if (!vxlan_set_mac(vxlan, vs, skb))
-		goto drop;
-
->>>>>>> upstream/master
-	oiph = skb_network_header(skb);
-	skb_reset_network_header(skb);
-
-=======
-
-=======
-
->>>>>>> upstream/master
-=======
-
->>>>>>> upstream/master
 	if (!vxlan_set_mac(vxlan, vs, skb))
 		goto drop;
 
 	oiph = skb_network_header(skb);
 	skb_reset_network_header(skb);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
 		++vxlan->dev->stats.rx_frame_errors;
 		++vxlan->dev->stats.rx_errors;
@@ -2020,7 +1805,7 @@ static struct rtable *vxlan_get_route(struct vxlan_dev *vxlan,
 	fl4.flowi4_mark = skb->mark;
 	fl4.flowi4_proto = IPPROTO_UDP;
 	fl4.daddr = daddr;
-	fl4.saddr = vxlan->cfg.saddr.sin.sin_addr.s_addr;
+	fl4.saddr = *saddr;
 
 	rt = ip_route_output_key(vxlan->net, &fl4);
 	if (!IS_ERR(rt)) {
@@ -2057,28 +1842,8 @@ static struct dst_entry *vxlan6_get_route(struct vxlan_dev *vxlan,
 	fl6.flowi6_oif = oif;
 	fl6.flowi6_tos = RT_TOS(tos);
 	fl6.daddr = *daddr;
-	fl6.saddr = vxlan->cfg.saddr.sin6.sin6_addr;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	fl6.flowlabel = label;
-=======
+	fl6.saddr = *saddr;
 	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
->>>>>>> upstream/master
-=======
-	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
->>>>>>> upstream/master
-=======
-	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
->>>>>>> upstream/master
-=======
-	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
->>>>>>> upstream/master
-=======
-	fl6.flowlabel = ip6_make_flowinfo(RT_TOS(tos), label);
->>>>>>> upstream/master
 	fl6.flowi6_mark = skb->mark;
 	fl6.flowi6_proto = IPPROTO_UDP;
 
@@ -2150,7 +1915,8 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 	struct rtable *rt = NULL;
 	const struct iphdr *old_iph;
 	union vxlan_addr *dst;
-	union vxlan_addr remote_ip;
+	union vxlan_addr remote_ip, local_ip;
+	union vxlan_addr *src;
 	struct vxlan_metadata _md;
 	struct vxlan_metadata *md = &_md;
 	__be16 src_port = 0, dst_port;
@@ -2168,6 +1934,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		dst_port = rdst->remote_port ? rdst->remote_port : vxlan->cfg.dst_port;
 		vni = rdst->remote_vni;
 		dst = &rdst->remote_ip;
+		src = &vxlan->cfg.saddr;
 		dst_cache = &rdst->dst_cache;
 	} else {
 		if (!info) {
@@ -2178,11 +1945,15 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		dst_port = info->key.tp_dst ? : vxlan->cfg.dst_port;
 		vni = vxlan_tun_id_to_vni(info->key.tun_id);
 		remote_ip.sa.sa_family = ip_tunnel_info_af(info);
-		if (remote_ip.sa.sa_family == AF_INET)
+		if (remote_ip.sa.sa_family == AF_INET) {
 			remote_ip.sin.sin_addr.s_addr = info->key.u.ipv4.dst;
-		else
+			local_ip.sin.sin_addr.s_addr = info->key.u.ipv4.src;
+		} else {
 			remote_ip.sin6.sin6_addr = info->key.u.ipv6.dst;
+			local_ip.sin6.sin6_addr = info->key.u.ipv6.src;
+		}
 		dst = &remote_ip;
+		src = &local_ip;
 		dst_cache = &info->dst_cache;
 	}
 
@@ -2222,15 +1993,14 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 	}
 
 	if (dst->sa.sa_family == AF_INET) {
-		__be32 saddr;
-
 		if (!vxlan->vn4_sock)
 			goto drop;
 		sk = vxlan->vn4_sock->sock->sk;
 
 		rt = vxlan_get_route(vxlan, skb,
 				     rdst ? rdst->remote_ifindex : 0, tos,
-				     dst->sin.sin_addr.s_addr, &saddr,
+				     dst->sin.sin_addr.s_addr,
+				     &src->sin.sin_addr.s_addr,
 				     dst_cache, info);
 		if (IS_ERR(rt)) {
 			netdev_dbg(dev, "no route to %pI4\n",
@@ -2247,7 +2017,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		}
 
 		/* Bypass encapsulation if the destination is local */
-		if (rt->rt_flags & RTCF_LOCAL &&
+		if (!info && rt->rt_flags & RTCF_LOCAL &&
 		    !(rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))) {
 			struct vxlan_dev *dst_vxlan;
 
@@ -2273,13 +2043,12 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 		if (err < 0)
 			goto xmit_tx_error;
 
-		udp_tunnel_xmit_skb(rt, sk, skb, saddr,
+		udp_tunnel_xmit_skb(rt, sk, skb, src->sin.sin_addr.s_addr,
 				    dst->sin.sin_addr.s_addr, tos, ttl, df,
 				    src_port, dst_port, xnet, !udp_sum);
 #if IS_ENABLED(CONFIG_IPV6)
 	} else {
 		struct dst_entry *ndst;
-		struct in6_addr saddr;
 		u32 rt6i_flags;
 
 		if (!vxlan->vn6_sock)
@@ -2288,7 +2057,8 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 
 		ndst = vxlan6_get_route(vxlan, skb,
 					rdst ? rdst->remote_ifindex : 0, tos,
-					label, &dst->sin6.sin6_addr, &saddr,
+					label, &dst->sin6.sin6_addr,
+					&src->sin6.sin6_addr,
 					dst_cache, info);
 		if (IS_ERR(ndst)) {
 			netdev_dbg(dev, "no route to %pI6\n",
@@ -2307,7 +2077,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 
 		/* Bypass encapsulation if the destination is local */
 		rt6i_flags = ((struct rt6_info *)ndst)->rt6i_flags;
-		if (rt6i_flags & RTF_LOCAL &&
+		if (!info && rt6i_flags & RTF_LOCAL &&
 		    !(rt6i_flags & (RTCF_BROADCAST | RTCF_MULTICAST))) {
 			struct vxlan_dev *dst_vxlan;
 
@@ -2334,7 +2104,8 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
 			return;
 		}
 		udp_tunnel6_xmit_skb(ndst, sk, skb, dev,
-				     &saddr, &dst->sin6.sin6_addr, tos, ttl,
+				     &src->sin6.sin6_addr,
+				     &dst->sin6.sin6_addr, tos, ttl,
 				     label, src_port, dst_port, !udp_sum);
 #endif
 	}
