@@ -665,7 +665,7 @@ int f2fs_truncate(struct inode *inode)
 	if (err)
 		return err;
 
-	inode->i_mtime = inode->i_ctime = CURRENT_TIME;
+	inode->i_mtime = inode->i_ctime = current_time(inode);
 	f2fs_mark_inode_dirty_sync(inode);
 	return 0;
 }
@@ -714,7 +714,7 @@ int f2fs_setattr(struct dentry *dentry, struct iattr *attr)
 	struct inode *inode = d_inode(dentry);
 	int err;
 
-	err = inode_change_ok(inode, attr);
+	err = setattr_prepare(dentry, attr);
 	if (err)
 		return err;
 
@@ -742,7 +742,7 @@ int f2fs_setattr(struct dentry *dentry, struct iattr *attr)
 				if (err)
 					return err;
 			}
-			inode->i_mtime = inode->i_ctime = CURRENT_TIME;
+			inode->i_mtime = inode->i_ctime = current_time(inode);
 		}
 	}
 
@@ -766,10 +766,7 @@ const struct inode_operations f2fs_file_inode_operations = {
 	.get_acl	= f2fs_get_acl,
 	.set_acl	= f2fs_set_acl,
 #ifdef CONFIG_F2FS_FS_XATTR
-	.setxattr	= generic_setxattr,
-	.getxattr	= generic_getxattr,
 	.listxattr	= f2fs_listxattr,
-	.removexattr	= generic_removexattr,
 #endif
 	.fiemap		= f2fs_fiemap,
 };
@@ -1429,7 +1426,7 @@ static long f2fs_fallocate(struct file *file, int mode,
 	}
 
 	if (!ret) {
-		inode->i_mtime = inode->i_ctime = CURRENT_TIME;
+		inode->i_mtime = inode->i_ctime = current_time(inode);
 		f2fs_mark_inode_dirty_sync(inode);
 		f2fs_update_time(F2FS_I_SB(inode), REQ_TIME);
 	}
@@ -1521,7 +1518,7 @@ static int f2fs_ioc_setflags(struct file *filp, unsigned long arg)
 	fi->i_flags = flags;
 	inode_unlock(inode);
 
-	inode->i_ctime = CURRENT_TIME;
+	inode->i_ctime = current_time(inode);
 	f2fs_set_inode_flags(inode);
 out:
 	mnt_drop_write_file(filp);
