@@ -880,17 +880,13 @@ static int stmmac_init_phy(struct net_device *dev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	/* If attached to a switch, there is no reason to poll phy handler */
-	if (priv->plat->phy_bus_name)
-		if (!strcmp(priv->plat->phy_bus_name, "fixed"))
-			phydev->irq = PHY_IGNORE_INTERRUPT;
+	/* stmmac_adjust_link will change this to PHY_IGNORE_INTERRUPT to avoid
+	 * subsequent PHY polling, make sure we force a link transition if
+	 * we have a UP/DOWN/UP transition
+	 */
+	if (phydev->is_pseudo_fixed_link)
+		phydev->irq = PHY_POLL;
 
-=======
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 	pr_debug("stmmac_init_phy:  %s: attached to PHY (UID 0x%x)"
 		 " Link = %d\n", dev->name, phydev->phy_id, phydev->link);
 
